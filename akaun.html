@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ms">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Akaun Saya — e-Jejak Anak</title>
+  <meta name="description" content="Akaun ibu bapa: lihat butiran akaun dan tukar kata laluan.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css?v=20260806e">
+</head>
+<body data-page="akaun" data-auth="parent">
+  <div id="site-header"></div>
+
+  <header class="page-head">
+    <div class="container">
+      <nav class="breadcrumb"><a href="dashboard.html">Dashboard</a> / <span>Akaun Saya</span></nav>
+      <h1>Akaun Saya</h1>
+      <p>Lihat butiran akaun anda dan tukar kata laluan.</p>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container">
+      <div class="grid grid-2" style="gap:var(--sp-5); align-items:start">
+
+        <!-- Butiran akaun (baca sahaja) -->
+        <div>
+          <div class="section-head" style="margin-bottom:var(--sp-4)"><h2>Butiran Akaun</h2>
+            <p class="lead" style="font-size:var(--fs-md)">Maklumat akaun anda. Untuk menukar nama, e-mel atau telefon, sila hubungi pentadbir.</p>
+          </div>
+          <div class="card">
+            <div class="field"><label for="pr-name">Nama</label><input class="input" id="pr-name" readonly style="background:var(--brand-tint)"></div>
+            <div class="field"><label for="pr-email">E-mel</label><input class="input" id="pr-email" readonly style="background:var(--brand-tint)"></div>
+            <div class="field" style="margin-bottom:0"><label for="pr-phone">Telefon</label><input class="input" id="pr-phone" readonly style="background:var(--brand-tint)"></div>
+          </div>
+        </div>
+
+        <!-- Tukar kata laluan -->
+        <div>
+          <div class="section-head" style="margin-bottom:var(--sp-4)"><h2>Tukar Kata Laluan</h2>
+            <p class="lead" style="font-size:var(--fs-md)">Untuk keselamatan, masukkan kata laluan semasa anda sebelum menetapkan yang baharu.</p>
+          </div>
+          <div class="card">
+            <form id="password-form">
+              <div class="notice notice--warn" id="pw-msg" style="display:none; margin-bottom:var(--sp-3)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4M12 17h.01"/></svg><span></span></div>
+              <div class="field"><label for="pw-current">Kata Laluan Semasa</label><input class="input" type="password" id="pw-current" placeholder="••••••••" autocomplete="current-password" required></div>
+              <div class="field"><label for="pw-new">Kata Laluan Baharu</label><input class="input" type="password" id="pw-new" placeholder="Sekurang-kurangnya 6 aksara" autocomplete="new-password" required></div>
+              <div class="field"><label for="pw-confirm">Sahkan Kata Laluan Baharu</label><input class="input" type="password" id="pw-confirm" placeholder="Ulang kata laluan baharu" autocomplete="new-password" required></div>
+              <button class="btn btn--block" type="submit"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg> Kemas Kini Kata Laluan</button>
+            </form>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Naik taraf akaun (dipapar oleh main.js hanya untuk akaun e-Pembelajaran) -->
+      <div class="card" id="upgrade-card" style="display:none; margin-top:var(--sp-5); border-left:4px solid var(--accent); background:var(--accent-soft)">
+        <div class="flex items-center gap-3 wrap" style="justify-content:space-between">
+          <div style="min-width:0">
+            <h3 style="margin:0">Naik Taraf ke Akaun Saringan Anak</h3>
+            <p class="muted" style="margin:4px 0 0; font-size:var(--fs-sm)">Akaun anda kini <strong>e-Pembelajaran</strong> (belajar sahaja). Naik taraf untuk menambah profil anak &amp; membuat saringan perkembangan.</p>
+          </div>
+          <button class="btn" id="btn-upgrade" type="button" style="flex:none"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg> Naik Taraf Akaun</button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="assets/js/main.js?v=20260806r"></script>
+</body>
+</html>

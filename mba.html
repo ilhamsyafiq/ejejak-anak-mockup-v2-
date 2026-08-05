@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="ms">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rakan Rasmi — e-Jejak Anak</title>
+  <meta name="description" content="Rakan rasmi e-Jejak Anak: Transformasi OKU (USM) & e-MAIK, serta sorotan aktiviti komuniti.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css?v=20260806e">
+
+  <style>
+    /* Kad aktiviti (placeholder gambar + kapsyen) */
+    .akt-card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; margin:0; display:flex; flex-direction:column; box-shadow:var(--shadow-sm); }
+    .akt-media { position:relative; aspect-ratio:4/3; display:grid; place-items:center; }
+    .akt-media::after { content:attr(data-emoji); font-size:clamp(2.4rem,6vw,3.4rem); filter:drop-shadow(0 2px 4px rgba(0,0,0,.2)); }
+    .akt-media img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; }
+    .akt-body { padding:var(--sp-3); display:flex; flex-direction:column; gap:6px; }
+    .akt-body h3 { margin:0; font-size:var(--fs-md); }
+    .akt-date { font-size:var(--fs-xs); color:var(--muted); }
+  </style>
+</head>
+<body data-page="mba">
+  <div id="site-header"></div>
+
+  <header class="page-head">
+    <div class="container">
+      <nav class="breadcrumb"><a href="index.html">Beranda</a> / <span>Rakan Rasmi</span></nav>
+      <h1>Rakan Rasmi &amp; Komuniti</h1>
+      <p>e-Jejak Anak digerakkan dengan kerjasama rakan rasmi. Lihat juga sorotan aktiviti komuniti yang pernah dijalankan bersama MAIK &amp; USM.</p>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container">
+
+      <!-- ===== Rakan Rasmi (institusi sebenar) ===== -->
+      <section>
+        <div class="section-head" style="margin-bottom:var(--sp-3)">
+          <span class="eyebrow">Rakan Rasmi</span>
+          <h2 style="margin:0">Sokongan institusi rasmi</h2>
+          <p class="lead" style="font-size:var(--fs-md)">Klik untuk melawati laman rasmi rakan kami.</p>
+        </div>
+        <div class="grid grid-2" style="gap:var(--sp-4)">
+          <a class="card" href="https://transformasioku.kk.usm.my/" target="_blank" rel="noopener" style="display:flex;flex-direction:column;gap:var(--sp-2);text-decoration:none;border-left:4px solid var(--brand)">
+            <span class="chip chip--accent" style="align-self:flex-start">Rakan Rasmi · USM</span>
+            <strong style="font-family:var(--font-head);font-size:var(--fs-md);color:var(--ink)">Transformasi OKU <span aria-hidden="true">↗</span></strong>
+            <p class="muted" style="margin:0;flex:1">Program transformasi &amp; sokongan Orang Kurang Upaya (OKU), Universiti Sains Malaysia, Kampus Kesihatan Kubang Kerian.</p>
+            <span class="btn btn--ghost" style="align-self:flex-start">Lawati transformasioku.kk.usm.my</span>
+          </a>
+          <a class="card" href="https://www.e-maik.my/" target="_blank" rel="noopener" style="display:flex;flex-direction:column;gap:var(--sp-2);text-decoration:none;border-left:4px solid var(--accent)">
+            <span class="chip chip--accent" style="align-self:flex-start">Rakan Rasmi · MAIK</span>
+            <strong style="font-family:var(--font-head);font-size:var(--fs-md);color:var(--ink)">e-MAIK <span aria-hidden="true">↗</span></strong>
+            <p class="muted" style="margin:0;flex:1">Portal rasmi Majlis Agama Islam dan Adat Istiadat Melayu Kelantan (MAIK) — badan penaung utama komuniti Kelantan.</p>
+            <span class="btn btn--ghost" style="align-self:flex-start">Lawati e-maik.my</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- ===== Sorotan Aktiviti (placeholder / dummy) ===== -->
+      <section style="margin-top:var(--sp-6)">
+        <div class="section-head center" style="margin-bottom:var(--sp-4)">
+          <span class="eyebrow">Sorotan Aktiviti</span>
+          <h2>Aktiviti terdahulu bersama MAIK &amp; USM</h2>
+          <p class="lead">Antara program &amp; aktiviti komuniti yang pernah dijalankan. <strong>(gambar contoh — dummy; boleh diganti pentadbir)</strong></p>
+        </div>
+
+        <div class="grid grid-3">
+          <figure class="akt-card">
+            <div class="akt-media" data-emoji="🩺" style="background:linear-gradient(135deg,#12718A,#0C4A5A)">
+              <img src="assets/img/aktiviti/akt1.jpg" alt="Program saringan komuniti" loading="lazy" onerror="this.remove()">
+            </div>
+            <figcaption class="akt-body">
+              <span class="chip chip--accent" style="align-self:flex-start">MAIK</span>
+              <h3>Hari Saringan Perkembangan Komuniti</h3>
+              <p class="muted" style="margin:0">Saringan awal percuma untuk kanak-kanak di masjid &amp; dewan komuniti sekitar Kota Bharu.</p>
+              <span class="akt-date">Mac 2026 · Kota Bharu</span>
+            </figcaption>
+          </figure>
+
+          <figure class="akt-card">
+            <div class="akt-media" data-emoji="🧩" style="background:linear-gradient(135deg,#7C6BB0,#4E4080)">
+              <img src="assets/img/aktiviti/akt2.jpg" alt="Bengkel intervensi awal autisme" loading="lazy" onerror="this.remove()">
+            </div>
+            <figcaption class="akt-body">
+              <span class="chip chip--accent" style="align-self:flex-start">USM</span>
+              <h3>Bengkel Intervensi Awal Autisme</h3>
+              <p class="muted" style="margin:0">Latihan untuk ibu bapa &amp; penjaga mengenai tanda awal autisme dan teknik sokongan di rumah.</p>
+              <span class="akt-date">Feb 2026 · USM Kubang Kerian</span>
+            </figcaption>
+          </figure>
+
+          <figure class="akt-card">
+            <div class="akt-media" data-emoji="🎁" style="background:linear-gradient(135deg,#E0913C,#B96F1E)">
+              <img src="assets/img/aktiviti/akt3.jpg" alt="Sumbangan keluarga OKU" loading="lazy" onerror="this.remove()">
+            </div>
+            <figcaption class="akt-body">
+              <span class="chip chip--accent" style="align-self:flex-start">MAIK</span>
+              <h3>Sumbangan &amp; Bantuan Keluarga OKU</h3>
+              <p class="muted" style="margin:0">Agihan bantuan keperluan asas &amp; peralatan sokongan kepada keluarga kanak-kanak berkeperluan khas.</p>
+              <span class="akt-date">Jan 2026 · Pasir Mas</span>
+            </figcaption>
+          </figure>
+
+          <figure class="akt-card">
+            <div class="akt-media" data-emoji="👨‍👩‍👧" style="background:linear-gradient(135deg,#4FA96A,#357a4c)">
+              <img src="assets/img/aktiviti/akt4.jpg" alt="Latihan ibu bapa" loading="lazy" onerror="this.remove()">
+            </div>
+            <figcaption class="akt-body">
+              <span class="chip chip--accent" style="align-self:flex-start">USM</span>
+              <h3>Kem Kemahiran Keibubapaan</h3>
+              <p class="muted" style="margin:0">Sesi bimbingan kemahiran keibubapaan &amp; rangsangan perkembangan untuk keluarga muda.</p>
+              <span class="akt-date">Dis 2025 · Tanah Merah</span>
+            </figcaption>
+          </figure>
+
+          <figure class="akt-card">
+            <div class="akt-media" data-emoji="🎉" style="background:linear-gradient(135deg,#D06B7A,#A94B5A)">
+              <img src="assets/img/aktiviti/akt5.jpg" alt="Pelancaran e-Jejak Anak" loading="lazy" onerror="this.remove()">
+            </div>
+            <figcaption class="akt-body">
+              <span class="chip chip--accent" style="align-self:flex-start">MAIK &amp; USM</span>
+              <h3>Majlis Pelancaran e-Jejak Anak</h3>
+              <p class="muted" style="margin:0">Pelancaran rasmi sistem saringan e-Jejak Anak dengan kerjasama MAIK &amp; USM.</p>
+              <span class="akt-date">Nov 2025 · Kota Bharu</span>
+            </figcaption>
+          </figure>
+
+          <figure class="akt-card">
+            <div class="akt-media" data-emoji="🗣️" style="background:linear-gradient(135deg,#2A9D8F,#1E7268)">
+              <img src="assets/img/aktiviti/akt6.jpg" alt="Klinik terapi pertuturan" loading="lazy" onerror="this.remove()">
+            </div>
+            <figcaption class="akt-body">
+              <span class="chip chip--accent" style="align-self:flex-start">USM</span>
+              <h3>Klinik Terapi Pertuturan Bergerak</h3>
+              <p class="muted" style="margin:0">Khidmat saringan &amp; terapi pertuturan bergerak ke kawasan luar bandar Kelantan.</p>
+              <span class="akt-date">Okt 2025 · Gua Musang</span>
+            </figcaption>
+          </figure>
+        </div>
+
+        <!-- NOTA: Letakkan gambar aktiviti sebenar di assets/img/aktiviti/akt1.jpg .. akt6.jpg
+             (nisbah 4:3). Jika fail tiada, latar gradien + emoji dipaparkan sebagai placeholder. -->
+      </section>
+
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="assets/js/main.js?v=20260806r"></script>
+</body>
+</html>

@@ -1,0 +1,287 @@
+/* =====================================================================
+   e-JEJAK ANAK  —  widgets.css  (shared feature styles)
+   ---------------------------------------------------------------------
+   Dimuatkan oleh module loader di HUJUNG main.js pada halaman awam
+   (bukan halaman admin). Fail ini HANYA mengandungi gaya KONGSI:
+     - .video-embed        (pembalut video responsif 16:9)
+     - #autism-summary     (kad ringkasan saringan autisme, jalur warna)
+     - #knowledge-banner   (sepanduk pengguna e-Pembelajaran)
+     - #mba-public-root    (grid kad NGO/MBA di mba.html)
+   Semua warna & bentuk guna variable dari style.css (--brand, --ok,
+   --warn, --danger, --radius, dll) — tiada nilai warna "hardcoded".
+
+   NOTA: gaya untuk chatbot / kebolehcapaian (a11y) / butang bahasa (i18n)
+   TIDAK diletak di sini — modul masing-masing menyuntik gaya sendiri.
+   ===================================================================== */
+
+/* ------------------------------------------------------------------ */
+/* 1. VIDEO EMBED — pembalut responsif 16:9                            */
+/* ------------------------------------------------------------------ */
+.video-embed {
+  position: relative;
+  padding-top: 56.25%;           /* nisbah 16:9 */
+  height: 0;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-sm);
+}
+.video-embed iframe,
+.video-embed video,
+.video-embed object,
+.video-embed embed {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+/* Kapsyen kecil di bawah video (cth. "Video contoh — boleh diganti") */
+.video-embed__caption,
+.video-cap {
+  font-size: var(--fs-xs);
+  color: var(--muted);
+  margin-top: var(--sp-1);
+}
+
+/* ------------------------------------------------------------------ */
+/* 2. AUTISM SUMMARY — kad ringkasan saringan M-CHAT                   */
+/*    Jalur warna: rendah = --ok, sederhana = --warn, tinggi = --danger */
+/* ------------------------------------------------------------------ */
+#autism-summary {
+  --as: var(--muted);            /* warna aksen dinamik ikut band */
+  --as-soft: var(--line-2);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 6px solid var(--as);
+  border-radius: var(--radius);
+  padding: var(--sp-4);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: var(--sp-4);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Band ditetapkan oleh main.js dengan menambah salah satu kelas ini
+   pada #autism-summary (atau elemennya). */
+#autism-summary.band-rendah   { --as: var(--ok);     --as-soft: var(--ok-soft); }
+#autism-summary.band-sederhana{ --as: var(--warn);   --as-soft: var(--warn-soft); }
+#autism-summary.band-tinggi   { --as: var(--danger); --as-soft: var(--danger-soft); }
+
+/* Jalur latar lembut di kepala kad */
+#autism-summary::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 4px;
+  background: var(--as);
+}
+
+#autism-summary .as-head {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-3);
+  flex-wrap: wrap;
+}
+#autism-summary .as-title {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: var(--fs-md);
+  color: var(--ink);
+  margin: 0;
+}
+
+/* Lencana band — guna warna aksen dinamik */
+#autism-summary .as-band {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: var(--fs-xs);
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  padding: 0.35em 0.85em;
+  border-radius: 999px;
+  color: var(--as);
+  background: var(--as-soft);
+  border: 1px solid color-mix(in srgb, var(--as) 30%, transparent);
+}
+
+/* Angka peratus risiko besar */
+#autism-summary .as-score {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: var(--sp-2) 0 var(--sp-3);
+}
+#autism-summary .as-score b {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: var(--fs-2xl);
+  line-height: 1;
+  color: var(--as);
+}
+#autism-summary .as-score span {
+  font-size: var(--fs-sm);
+  color: var(--muted);
+}
+
+/* Bar peratus (guna .progress-bar bila ada; ini varian setempat) */
+#autism-summary .as-meter {
+  height: 10px;
+  border-radius: 999px;
+  background: var(--line-2);
+  overflow: hidden;
+  margin-bottom: var(--sp-3);
+}
+#autism-summary .as-meter > span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--as);
+  transition: width .5s ease;
+}
+
+/* Penafian penting — ini saringan, bukan diagnosis */
+#autism-summary .as-note {
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+  background: var(--as-soft);
+  border-radius: var(--radius-sm);
+  padding: var(--sp-2) var(--sp-3);
+  margin: 0;
+}
+
+/* ------------------------------------------------------------------ */
+/* 3. KNOWLEDGE BANNER — sambutan pengguna e-Pembelajaran              */
+/* ------------------------------------------------------------------ */
+#knowledge-banner {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  background: linear-gradient(135deg,
+              color-mix(in srgb, var(--accent) 22%, var(--surface)),
+              var(--accent-soft));
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--line));
+  border-radius: var(--radius-lg);
+  padding: var(--sp-4);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: var(--sp-4);
+}
+#knowledge-banner .kb-ico {
+  flex: none;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--accent) 30%, #fff);
+  color: #7a4a00;
+}
+#knowledge-banner .kb-ico svg { width: 28px; height: 28px; }
+#knowledge-banner .kb-body { flex: 1; min-width: 0; }
+#knowledge-banner h2,
+#knowledge-banner h3 {
+  font-size: var(--fs-md);
+  margin: 0 0 2px;
+  color: #6b4200;
+}
+#knowledge-banner p {
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+  max-width: none;
+}
+
+/* ------------------------------------------------------------------ */
+/* 4. MBA / NGO PUBLIC ROOT — grid kad rakan komuniti (mba.html)       */
+/* ------------------------------------------------------------------ */
+#mba-public-root {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--sp-4);
+}
+
+/* Kad NGO individu (markup diisi oleh inline script mba.html) */
+#mba-public-root .mba-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: var(--sp-4);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  transition: transform .15s ease, box-shadow .2s ease, border-color .2s ease;
+  position: relative;
+  overflow: hidden;
+}
+#mba-public-root .mba-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+  border-color: color-mix(in srgb, var(--brand) 35%, var(--line));
+}
+
+/* Kad tonjolan (featured) — jalur jenama di tepi */
+#mba-public-root .mba-card.is-featured {
+  border-color: color-mix(in srgb, var(--brand) 45%, var(--line));
+}
+#mba-public-root .mba-card.is-featured::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 5px;
+  background: var(--brand);
+}
+
+#mba-public-root .mba-card h3 {
+  font-size: var(--fs-md);
+  margin: 0;
+  color: var(--ink);
+}
+#mba-public-root .mba-card p {
+  font-size: var(--fs-sm);
+  color: var(--muted);
+  margin: 0;
+  max-width: none;
+  flex: 1;
+}
+
+/* Baris meta (kategori • kawasan) */
+#mba-public-root .mba-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-1) var(--sp-2);
+  font-size: var(--fs-xs);
+  color: var(--muted);
+}
+#mba-public-root .mba-meta .dot { color: var(--line); }
+
+/* Kaki kad (kenalan / slot) */
+#mba-public-root .mba-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  font-size: var(--fs-xs);
+  color: var(--ink-2);
+  border-top: 1px solid var(--line-2);
+  padding-top: var(--sp-2);
+  margin-top: auto;
+}
+
+/* ------------------------------------------------------------------ */
+/* 5. RESPONSIF                                                        */
+/* ------------------------------------------------------------------ */
+@media (max-width: 640px) {
+  #knowledge-banner { flex-direction: column; text-align: center; }
+  #knowledge-banner .kb-ico { margin: 0 auto; }
+  #mba-public-root { grid-template-columns: 1fr; }
+  #autism-summary .as-score b { font-size: var(--fs-xl); }
+}

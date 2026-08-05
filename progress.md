@@ -3,15 +3,35 @@
 > Fail ini merekod status pembangunan mockup. **Sambung kerja dari bahagian
 > "LANGKAH SETERUSNYA" di bawah.** Kemas kini fail ini setiap kali ada perubahan.
 
-Terakhir dikemas kini: sesi pembangunan (28 Julai 2026) — **impersonasi/"Login as"**
-(pentadbir→ibu bapa; superadmin→doktor & pentadbir lain, dgn bar "Mod Penyamaran") +
-**tab Urus Pengguna** (jadual bersatu ibu bapa & staf, lajur User Level, tindakan
-sunting/lihat/reset-kata-laluan/padam/login-as; **borang akaun staf jadi modal** via
-butang *Tambah Akaun Baharu*) + **Laporan Pengguna → "Lihat Laporan"** (modal ringkasan
-+ jawapan boleh kembang, cetak/PDF) + **halaman Profil Saya ibu bapa** (`profil.html`,
-tukar kata laluan sahaja) + **baiki butang Log Masuk hilang di mobile**. Cache `?v=`
-kini `20260728j`. Sebelum ini (27 Jul): logo baharu, re-theme MAIK, audit UX, responsif
-mobile, footer accordion; sistem 4 peranan, Cetak/PDF, carta trend (Canvas).
+Terakhir dikemas kini: **6 Ogos 2026** (folder salinan `ejejak-anak-mockup-copy`).
+Cache semasa: `main.js?v=20260806r`, `style.css?v=20260806e`, `FEATURE_V=20260806p`.
+
+### Sesi 6 Ogos 2026 — perluasan besar (ciri + struktur)
+- **Pendaftaran:** OTP (demo) dgn pilihan saluran **e-mel / SMS**; jenis akaun **Saringan Anak**
+  vs **e-Pembelajaran (knowledge)**; medan wajib; borang daftar direka semula.
+- **Data keluarga:** ibu & bapa (nama/IC/telefon/pekerjaan/gaji) + **daerah** (Kelantan) —
+  dipindah ke halaman **Profil → Maklumat Keluarga** (`profil.html`).
+- **Anak:** medan **tempat lahir**; **Maklumat Anak** dipisah ke `anak.html`.
+- **Saringan:** mod **Perkembangan / M-CHAT (autisme) / Profil Deria** + ringkasan **% risiko autisme**.
+- **Dashboard ibu bapa** dinyahserabut → ringkasan + navigasi ahli baharu; **Akaun Saya** (`akaun.html`)
+  untuk tukar kata laluan; **Sejarah** jadi hab pilih anak.
+- **Akses:** e-Pembelajaran (artikel/tips/aktiviti/FAQ) **awam**; **video** perlu log masuk.
+  Nav awam vs nav ahli diasingkan.
+- **Panel admin:** tab **Program & E-mel Blast** (mock), **Urus Setia/Kehadiran**, **NGO/MBA**,
+  **Urus Video**, penapis **daerah** di Urus Pengguna.
+- **Aksesibiliti** diperluas: saiz/jarak teks, songsang warna, nada kelabu, garis bawah pautan,
+  kursor besar, panduan bacaan, teks↔suara.
+- **Hero** guna foto kanak-kanak; **Rakan NGO** = Rakan Rasmi (Transformasi OKU USM, e-MAIK) +
+  galeri aktiviti placeholder; **Tentang Kami** serlah pautan rakan rasmi.
+- **Skala UI 1.25× lalai** (`:root{zoom}`) + nav kolaps hamburger ≤1200px.
+- **Ciri baharu (mockup):** Lupa Kata Laluan berfungsi; **Program** ibu bapa (`program.html`);
+  **naik taraf** akaun e-Pembelajaran→Saringan; **Urus Video** admin (`ejejak_videos`).
+- Modul ciri di `assets/js/features/` (chatbot, a11y, i18n, programs-blast, attendance, mba-report)
+  dimuat oleh `loadFeatureModules()` dalam main.js.
+
+### Arkib
+28 Jul: impersonasi "Login as", Urus Pengguna, Laporan Pengguna, Profil ibu bapa, baiki nav mobile.
+27 Jul: logo/re-theme MAIK, audit UX, responsif, footer accordion; 4 peranan, Cetak/PDF, carta Canvas.
 
 ---
 
@@ -214,6 +234,51 @@ jadual di atas. Cadangan yang BELUM dibina (ikut keutamaan):
 5. **Notifikasi mock** — papar pemberitahuan kepada ibu bapa bila doktor hubungi.
 6. **Penambahbaikan kecil**: pengesahan borang lebih ketat, keadaan kosong,
    kebolehcapaian (ARIA) untuk modal.
+
+### 📋 SPEC: Pendaftaran berbilang peranan — Ibu Bapa / Guru / NGO (BELUM dibina)
+> **Status:** reka bentuk diluluskan, simpan untuk dibina kemudian. Sekarang
+> `daftar.html` cipta akaun **parent sahaja** (`role: 'parent'` di `main.js`
+> pengendali `#register-form`). Spec ini sokong item backlog pengguna: OTP daftar,
+> e-learning "belajar sahaja", ibu bapa tanpa anak, medan wajib, filter daerah.
+
+**Idea teras:** pisahkan **SIAPA** (peranan) dan **KENAPA** (tujuan).
+
+1. **Langkah 1 — pemilih peranan** (kad segmen): Ibu Bapa/Penjaga · Guru · NGO/Organisasi.
+   Borang tukar medan ikut pilihan (satu borang dinamik, BUKAN 3 halaman berasingan).
+2. **Langkah 2 — tujuan (ibu bapa sahaja):** ( ) Buat saringan anak  ( ) Belajar sahaja (e-learning).
+   Guru & NGO default tujuan = `learning`.
+
+**Medan wajib ikut peranan:**
+- Semua: nama penuh, e-mel, telefon, kata laluan+sahkan, **Daerah** (dropdown), setuju Terma.
+- Ibu bapa: + tujuan (saringan/belajar).
+- Guru: + nama sekolah/institusi, jawatan.
+- NGO: + nama organisasi, No. pendaftaran (ROS), jawatan.
+- **Daerah** dikutip masa daftar → terus sambung ke item "filter by district" & "report MBA analisa".
+
+**OTP (item "tambah OTP untuk register"):** selepas isi telefon → butang "Hantar OTP"
+→ modal 6 digit. Mockup: kod palsu tetap (cth. `123456`) + auto-verify; tambah
+`phone_verified: true`. Sistem sebenar (Laravel): guna paket OTP SMS.
+
+**Hala tuju selepas daftar:**
+- Ibu bapa → saringan: sambung ke *tambah profil anak → soal selidik* (laluan sedia ada).
+- Ibu bapa "belajar sahaja" / Guru / NGO: **langkau anak & soal selidik**, terus ke
+  Pusat Pendidikan (e-learning). Menu selepas log masuk sembunyikan "Anak Saya"/Saringan
+  untuk akaun `purpose:'learning'` — hanya e-learning + sijil.
+
+**Perubahan model data (localStorage `ejejak_users`):**
+```js
+{ role: 'parent' | 'teacher' | 'ngo',
+  purpose: 'screening' | 'learning',   // ibu bapa sahaja; guru/ngo default 'learning'
+  district: 'Kota Bharu',
+  org_name, org_reg_no, jawatan,        // ikut peranan
+  phone_verified: true }
+```
+`role` sedia wujud — cuma tambah nilai `teacher`/`ngo`. Login & Urus Pengguna sedia ada kekal jalan.
+
+**Fail terlibat bila bina:** `daftar.html` (pemilih peranan + medan dinamik + modal OTP),
+`assets/js/main.js` (pengendali `#register-form` ~baris 766-778: cabang ikut peranan/tujuan,
+simpan medan baru, hala tuju), `pendidikan.html`/menu (sembunyi Saringan utk `learning`).
+Ingat: bump `?v=` di semua HTML selepas edit CSS/JS.
 
 ### Idea seni bina masa depan (jika skop berkembang)
 - ✅ **SIAP**: peranan Doktor (USM) vs Pentadbir (MAIK) kini berasingan dengan

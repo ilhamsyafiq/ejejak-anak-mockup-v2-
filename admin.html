@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=20260805b">
+  <link rel="stylesheet" href="assets/css/style.css?v=20260806e">
 </head>
 <body data-page="admin" data-auth="admin">
 
@@ -49,7 +49,11 @@
         <button class="tab" data-target="tab-statistik" data-roles="superadmin,admin,doctor">Statistik Penggunaan</button>
         <button class="tab" data-target="tab-soalan" data-roles="doctor">Urus Soalan &amp; Domain</button>
         <button class="tab" data-target="tab-artikel" data-roles="superadmin,admin">Urus Artikel</button>
+        <button class="tab" data-target="tab-video" data-roles="superadmin,admin">Urus Video</button>
         <button class="tab" data-target="tab-pengguna" data-roles="superadmin,admin">Urus Pengguna</button>
+        <button class="tab" data-target="tab-program" data-roles="superadmin,admin">Program &amp; E-mel Blast</button>
+        <button class="tab" data-target="tab-urussetia" data-roles="superadmin,admin">Urus Setia / Kehadiran</button>
+        <button class="tab" data-target="tab-mba" data-roles="superadmin,admin">NGO / MBA</button>
         <button class="tab" data-target="tab-laporan" data-roles="superadmin,admin">Laporan Pengguna</button>
         <button class="tab" data-target="tab-log" data-roles="superadmin,admin">Log Aktiviti</button>
         <button class="tab" data-target="tab-akaun" data-roles="superadmin,admin,doctor">Profil Saya</button>
@@ -243,6 +247,22 @@
               <option value="admin">Pentadbir</option>
             </select>
           </div>
+          <div class="field" style="margin:0; min-width:170px">
+            <label for="user-district-filter">Daerah</label>
+            <select class="select" id="user-district-filter">
+              <option value="semua">Semua Daerah</option>
+              <option value="Kota Bharu">Kota Bharu</option>
+              <option value="Pasir Mas">Pasir Mas</option>
+              <option value="Tumpat">Tumpat</option>
+              <option value="Pasir Puteh">Pasir Puteh</option>
+              <option value="Bachok">Bachok</option>
+              <option value="Machang">Machang</option>
+              <option value="Tanah Merah">Tanah Merah</option>
+              <option value="Kuala Krai">Kuala Krai</option>
+              <option value="Gua Musang">Gua Musang</option>
+              <option value="Jeli">Jeli</option>
+            </select>
+          </div>
           <button class="btn btn--ghost" id="user-reload" type="button"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/></svg> Muat Semula</button>
         </div>
         <p class="muted" id="user-count" style="font-size:var(--fs-sm); margin:0 0 var(--sp-3)"></p>
@@ -251,6 +271,209 @@
             <thead><tr><th>Didaftar</th><th>Nama</th><th>User Level</th><th>E-mel</th><th>Telefon</th><th>Anak</th><th>Saringan</th><th style="text-align:right">Tindakan</th></tr></thead>
             <tbody id="user-rows"></tbody>
           </table>
+        </div>
+      </section>
+
+      <!-- ===== TAB: PROGRAM & E-MEL BLAST (superadmin/admin) ===== -->
+      <section class="tab-panel" id="tab-program" data-roles="superadmin,admin">
+        <div class="section-head" style="margin-bottom:var(--sp-4)">
+          <h2>Program &amp; E-mel Blast</h2>
+          <p class="lead" style="font-size:var(--fs-md)">Cipta program (cth. Hari Pelancaran, Klinik Saringan) dan hantar jemputan e-mel kepada ibu bapa mengikut daerah. <em>(Demo/simulasi — tiada e-mel sebenar dihantar.)</em></p>
+        </div>
+
+        <div class="grid grid-2" style="gap:var(--sp-5); align-items:start">
+          <!-- Senarai program -->
+          <div>
+            <h3 style="margin-bottom:var(--sp-3)">Senarai Program</h3>
+            <div class="grid" id="program-list" style="grid-template-columns:1fr; gap:var(--sp-3)"></div>
+          </div>
+
+          <!-- Cipta program baharu -->
+          <div class="card">
+            <h3>Cipta Program Baharu</h3>
+            <form id="program-form">
+              <div class="field"><label for="pg-title">Tajuk Program</label><input class="input" id="pg-title" placeholder="cth. Hari Pelancaran e-Jejak Anak" required></div>
+              <div class="field-row">
+                <div class="field"><label for="pg-date">Tarikh</label><input class="input" type="date" id="pg-date" required></div>
+                <div class="field"><label for="pg-location">Lokasi</label><input class="input" id="pg-location" placeholder="cth. Dewan MAIK, Kota Bharu" required></div>
+              </div>
+              <div class="field"><label for="pg-desc">Keterangan</label><textarea class="input" id="pg-desc" rows="3" placeholder="Butiran ringkas program & sasaran peserta…"></textarea></div>
+              <div class="field">
+                <label for="pg-districts">Daerah Sasaran <span class="muted" style="font-weight:400">(tahan Ctrl / Cmd untuk pilih lebih satu — kosong = semua daerah)</span></label>
+                <select class="select" id="pg-districts" multiple size="6">
+                  <option value="Kota Bharu">Kota Bharu</option>
+                  <option value="Pasir Mas">Pasir Mas</option>
+                  <option value="Tumpat">Tumpat</option>
+                  <option value="Pasir Puteh">Pasir Puteh</option>
+                  <option value="Bachok">Bachok</option>
+                  <option value="Machang">Machang</option>
+                  <option value="Tanah Merah">Tanah Merah</option>
+                  <option value="Kuala Krai">Kuala Krai</option>
+                  <option value="Gua Musang">Gua Musang</option>
+                  <option value="Jeli">Jeli</option>
+                </select>
+              </div>
+              <button class="btn btn--block" type="submit"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg> Simpan Program</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Kawasan E-mel Blast -->
+        <div class="card" id="blast-root" style="margin-top:var(--sp-5)">
+          <h3>E-mel Blast Jemputan <span class="chip" style="margin-left:6px">Simulasi</span></h3>
+          <p class="muted" style="font-size:var(--fs-sm); margin-bottom:var(--sp-3)">Pilih daerah sasaran; sistem akan mengira bilangan ibu bapa yang layak dan menghantar jemputan (disimulasikan). Log penghantaran dipaparkan di bawah.</p>
+          <div class="flex gap-3 wrap" style="align-items:end; margin-bottom:var(--sp-3)">
+            <div class="field" style="margin:0; min-width:200px">
+              <label for="blast-district">Daerah Sasaran</label>
+              <select class="select" id="blast-district">
+                <option value="semua">Semua Daerah</option>
+                <option value="Kota Bharu">Kota Bharu</option>
+                <option value="Pasir Mas">Pasir Mas</option>
+                <option value="Tumpat">Tumpat</option>
+                <option value="Pasir Puteh">Pasir Puteh</option>
+                <option value="Bachok">Bachok</option>
+                <option value="Machang">Machang</option>
+                <option value="Tanah Merah">Tanah Merah</option>
+                <option value="Kuala Krai">Kuala Krai</option>
+                <option value="Gua Musang">Gua Musang</option>
+                <option value="Jeli">Jeli</option>
+              </select>
+            </div>
+            <div class="mini-stat" style="min-width:150px"><b class="tnum" id="blast-count">0</b><span>Penerima layak</span></div>
+            <button class="btn" id="blast-send" type="button"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg> Hantar Blast (Simulasi)</button>
+          </div>
+          <div id="blast-log"></div>
+        </div>
+      </section>
+
+      <!-- ===== TAB: URUS SETIA / KEHADIRAN (superadmin/admin) ===== -->
+      <section class="tab-panel" id="tab-urussetia" data-roles="superadmin,admin">
+        <div class="section-head" style="margin-bottom:var(--sp-4)">
+          <h2>Urus Setia / Kehadiran</h2>
+          <p class="lead" style="font-size:var(--fs-md)">Pentadbir isi senarai peserta dijangka hadir; urus setia hanya tanda ✓ kehadiran pada hari pelancaran. <em>(Demo/simulasi.)</em></p>
+        </div>
+
+        <div class="flex gap-3 wrap" style="margin-bottom:var(--sp-4); align-items:end">
+          <div class="field" style="margin:0; min-width:260px">
+            <label for="att-program">Pilih Program</label>
+            <select class="select" id="att-program"></select>
+          </div>
+          <div class="mini-stat" style="min-width:150px"><b class="tnum" id="att-count">0</b><span>Hadir / Jumlah</span></div>
+        </div>
+
+        <div class="grid grid-2" style="gap:var(--sp-5); align-items:start">
+          <!-- Senarai kehadiran -->
+          <div>
+            <h3 style="margin-bottom:var(--sp-3)">Senarai Kehadiran</h3>
+            <div class="table-wrap">
+              <table class="data">
+                <thead><tr><th>Nama</th><th>Telefon</th><th>Daerah</th><th>Kehadiran</th><th style="text-align:right">Tindakan</th></tr></thead>
+                <tbody id="attendance-list"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Tambah peserta dijangka -->
+          <div class="card">
+            <h3>Tambah Peserta Dijangka</h3>
+            <p class="muted" style="font-size:var(--fs-sm); margin-bottom:var(--sp-3)">Diisi oleh pentadbir sebelum hari program.</p>
+            <form id="att-add-form">
+              <div class="field"><label for="att-name">Nama Peserta</label><input class="input" id="att-name" placeholder="cth. Puan Aminah binti Yusof" required></div>
+              <div class="field"><label for="att-phone">Telefon</label><input class="input" id="att-phone" placeholder="cth. 0123456789"></div>
+              <div class="field"><label for="att-district">Daerah</label>
+                <select class="select" id="att-district">
+                  <option value="Kota Bharu">Kota Bharu</option>
+                  <option value="Pasir Mas">Pasir Mas</option>
+                  <option value="Tumpat">Tumpat</option>
+                  <option value="Pasir Puteh">Pasir Puteh</option>
+                  <option value="Bachok">Bachok</option>
+                  <option value="Machang">Machang</option>
+                  <option value="Tanah Merah">Tanah Merah</option>
+                  <option value="Kuala Krai">Kuala Krai</option>
+                  <option value="Gua Musang">Gua Musang</option>
+                  <option value="Jeli">Jeli</option>
+                </select>
+              </div>
+              <button class="btn btn--block" type="submit"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg> Tambah ke Senarai</button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== TAB: NGO / MBA (superadmin/admin) ===== -->
+      <section class="tab-panel" id="tab-mba" data-roles="superadmin,admin">
+        <div class="section-head" style="margin-bottom:var(--sp-4)">
+          <h2>NGO / MBA</h2>
+          <p class="lead" style="font-size:var(--fs-md)">Direktori rakan NGO / MBA (Majlis Belia Anak) &amp; analisa penglibatan mengikut kategori dan kawasan. <em>(Demo/simulasi.)</em></p>
+        </div>
+
+        <!-- Laporan & analisa -->
+        <div id="mba-report-root" style="margin-bottom:var(--sp-5)"></div>
+
+        <!-- Direktori & tambah NGO -->
+        <div class="grid grid-2" style="gap:var(--sp-5); align-items:start" id="mba-admin">
+          <div>
+            <h3 style="margin-bottom:var(--sp-3)">Direktori NGO / MBA</h3>
+            <div class="grid" id="mba-list" style="grid-template-columns:1fr; gap:var(--sp-3)"></div>
+          </div>
+          <div class="card">
+            <h3>Tambah NGO / MBA</h3>
+            <form id="mba-form">
+              <div class="field"><label for="mba-name">Nama NGO / Organisasi</label><input class="input" id="mba-name" placeholder="cth. Persatuan Autisme Kelantan" required></div>
+              <div class="field"><label for="mba-category">Kategori</label>
+                <select class="select" id="mba-category">
+                  <option value="Autisme">Autisme</option>
+                  <option value="OKU / Kurang Upaya">OKU / Kurang Upaya</option>
+                  <option value="Kesihatan Kanak-kanak">Kesihatan Kanak-kanak</option>
+                  <option value="Pendidikan Awal">Pendidikan Awal</option>
+                  <option value="Kebajikan Keluarga">Kebajikan Keluarga</option>
+                  <option value="Lain-lain">Lain-lain</option>
+                </select>
+              </div>
+              <div class="field"><label for="mba-area">Kawasan / Daerah</label>
+                <select class="select" id="mba-area">
+                  <option value="Kota Bharu">Kota Bharu</option>
+                  <option value="Pasir Mas">Pasir Mas</option>
+                  <option value="Tumpat">Tumpat</option>
+                  <option value="Pasir Puteh">Pasir Puteh</option>
+                  <option value="Bachok">Bachok</option>
+                  <option value="Machang">Machang</option>
+                  <option value="Tanah Merah">Tanah Merah</option>
+                  <option value="Kuala Krai">Kuala Krai</option>
+                  <option value="Gua Musang">Gua Musang</option>
+                  <option value="Jeli">Jeli</option>
+                </select>
+              </div>
+              <div class="field"><label for="mba-contact">Hubungi</label><input class="input" id="mba-contact" placeholder="cth. 09-123 4567 / emel@ngo.org"></div>
+              <div class="field"><label for="mba-desc">Keterangan Perkhidmatan</label><textarea class="input" id="mba-desc" rows="3" placeholder="Perkhidmatan / sokongan yang ditawarkan…"></textarea></div>
+              <label class="checkbox" style="margin-bottom:var(--sp-3)"><input type="checkbox" id="mba-featured"> Papar sebagai rakan pilihan (featured) di halaman awam</label>
+              <button class="btn btn--block" type="submit"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg> Simpan NGO</button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== TAB: URUS VIDEO (Pusat Pendidikan) ===== -->
+      <section class="tab-panel" id="tab-video" data-roles="superadmin,admin">
+        <div class="section-head" style="margin-bottom:var(--sp-4)">
+          <h2>Urus Video Pembelajaran</h2>
+          <p class="lead" style="font-size:var(--fs-md)">Tambah, sunting atau padam video yang dipaparkan di Pusat Pendidikan. Masukkan <strong>ID YouTube</strong> (contoh: bahagian selepas <code>watch?v=</code>).</p>
+        </div>
+        <div class="grid grid-2" style="gap:var(--sp-5); align-items:start">
+          <div class="grid" id="video-admin-list" style="grid-template-columns:1fr; gap:var(--sp-3)"></div>
+          <div class="card">
+            <h3 id="video-form-title">Tambah Video</h3>
+            <form id="video-form">
+              <div class="field"><label for="vid-title">Tajuk Video</label><input class="input" id="vid-title" placeholder="cth. Rangsang Pertuturan Anak" required></div>
+              <div class="field"><label for="vid-youtube">ID YouTube</label><input class="input" id="vid-youtube" placeholder="cth. dQw4w9WgXcQ" required><span class="muted" style="font-size:var(--fs-xs)">Daripada URL: youtube.com/watch?v=<strong>ID</strong></span></div>
+              <div class="field"><label for="vid-desc">Penerangan Ringkas</label><textarea class="input" id="vid-desc" rows="3"></textarea></div>
+              <div class="flex gap-2">
+                <button class="btn" type="submit">Simpan</button>
+                <button class="btn btn--ghost" type="button" id="video-reset">Set Semula</button>
+              </div>
+            </form>
+            <p class="muted" style="font-size:var(--fs-xs); margin-top:var(--sp-3)">Video dipapar kepada pengguna berdaftar di <strong>Pusat Pendidikan</strong>.</p>
+          </div>
         </div>
       </section>
 
@@ -485,7 +708,7 @@
     </div>
   </footer>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
-  <script src="assets/js/main.js?v=20260805a"></script>
+  <script src="assets/js/main.js?v=20260806r"></script>
   <script>
     // Log keluar doktor (kawalan akses dikendalikan oleh guard() dalam main.js)
     document.getElementById('logout').addEventListener('click', function (e) {

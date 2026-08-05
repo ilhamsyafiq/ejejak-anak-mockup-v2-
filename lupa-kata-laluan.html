@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=20260805b">
+  <link rel="stylesheet" href="assets/css/style.css?v=20260806e">
 </head>
 <body data-page="login">
   <div id="site-header"></div>
@@ -16,27 +16,58 @@
   <main class="auth-wrap">
     <aside class="auth-aside">
       <span class="eyebrow" style="color:var(--accent)">Pemulihan Akaun</span>
-      <h2>Lupa kata laluan? Jangan risau.</h2>
-      <p>Masukkan e-mel berdaftar anda dan kami akan menghantar pautan untuk menetapkan semula kata laluan.</p>
+      <p class="auth-aside__title">Lupa kata laluan? Jangan risau.</p>
+      <p>Masukkan e-mel berdaftar anda, sahkan kod pengesahan, dan tetapkan kata laluan baharu.</p>
     </aside>
 
     <div class="auth-main">
       <div class="auth-card">
         <h1 style="font-size:var(--fs-xl)">Set Semula Kata Laluan</h1>
-        <p class="muted">Pautan pemulihan akan dihantar ke e-mel berdaftar sahaja.</p>
-        <form class="form-card mt-4" onsubmit="event.preventDefault(); this.innerHTML='<div class=&quot;advisory advisory--ok&quot;><svg viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2.4&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;><path d=&quot;M20 6 9 17l-5-5&quot;/></svg><p>Jika e-mel ini berdaftar, pautan pemulihan telah dihantar. Sila semak peti masuk anda.</p></div>';">
-          <div class="field">
-            <label for="email">Alamat E-mel</label>
-            <input class="input" type="email" id="email" placeholder="nama@contoh.com" required>
+
+        <!-- LANGKAH 1: e-mel -->
+        <form class="form-card mt-4" id="fp-form" data-page-el="1">
+          <p class="muted" style="margin:0 0 var(--sp-3)">Masukkan e-mel akaun anda untuk menerima kod pengesahan.</p>
+          <div id="fp-step1">
+            <div class="notice notice--warn" id="fp-msg" style="display:none; margin-bottom:var(--sp-3)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4M12 17h.01"/></svg><span></span></div>
+            <div class="field">
+              <label for="fp-email">Alamat E-mel</label>
+              <input class="input" type="email" id="fp-email" placeholder="nama@contoh.com" required>
+            </div>
+            <button class="btn btn--block btn--lg" type="submit">Hantar Kod Pengesahan</button>
           </div>
-          <button class="btn btn--block btn--lg" type="submit">Hantar Pautan Pemulihan</button>
-          <p class="center muted mt-3" style="margin:0"><a href="login.html">← Kembali ke log masuk</a></p>
+
+          <!-- LANGKAH 2: kod + kata laluan baharu (disembunyikan sehingga langkah 1 selesai) -->
+          <div id="fp-step2" style="display:none">
+            <div class="notice notice--ok" id="fp-demo" style="margin-bottom:var(--sp-3)"></div>
+            <div class="notice notice--warn" id="fp-msg2" style="display:none; margin-bottom:var(--sp-3)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4M12 17h.01"/></svg><span></span></div>
+            <div class="field">
+              <label for="fp-code">Kod Pengesahan (OTP)</label>
+              <input class="input" type="text" inputmode="numeric" maxlength="6" id="fp-code" placeholder="cth. 123456">
+            </div>
+            <div class="field">
+              <label for="fp-new">Kata Laluan Baharu</label>
+              <input class="input" type="password" id="fp-new" placeholder="Sekurang-kurangnya 6 aksara" autocomplete="new-password">
+            </div>
+            <div class="field">
+              <label for="fp-confirm">Sahkan Kata Laluan Baharu</label>
+              <input class="input" type="password" id="fp-confirm" placeholder="Ulang kata laluan baharu" autocomplete="new-password">
+            </div>
+            <button class="btn btn--block btn--lg" type="button" id="fp-reset">Tetapkan Kata Laluan Baharu</button>
+          </div>
+
+          <!-- SELESAI -->
+          <div class="advisory advisory--ok" id="fp-done" style="display:none; align-items:center; gap:var(--sp-2); margin-top:var(--sp-2)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            <p style="margin:0">Kata laluan berjaya ditetapkan semula. Anda kini boleh <a href="login.html">log masuk</a> dengan kata laluan baharu.</p>
+          </div>
+
+          <p class="center muted mt-3" style="margin:var(--sp-3) 0 0"><a href="login.html">← Kembali ke log masuk</a></p>
         </form>
       </div>
     </div>
   </main>
 
   <div id="site-footer"></div>
-  <script src="assets/js/main.js?v=20260805a"></script>
+  <script src="assets/js/main.js?v=20260806r"></script>
 </body>
 </html>

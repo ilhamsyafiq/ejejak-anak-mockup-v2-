@@ -4,76 +4,61 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Dashboard — e-Jejak Anak</title>
-  <meta name="description" content="Dashboard ibu bapa: urus profil anak dan saringan.">
+  <meta name="description" content="Dashboard ibu bapa: ringkasan akaun, anak, sejarah & profil.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=20260805b">
+  <link rel="stylesheet" href="assets/css/style.css?v=20260806e">
+
 </head>
 <body data-page="dashboard" data-auth="parent">
   <div id="site-header"></div>
 
   <header class="page-head">
     <div class="container">
-      <nav class="breadcrumb"><a href="index.html">Beranda</a> / <span>Dashboard</span></nav>
+      <nav class="breadcrumb"><span>Dashboard</span></nav>
       <h1>Selamat kembali, <span data-user-name>Ibu Bapa</span> 👋</h1>
-      <p>Urus profil anak anda dan mulakan saringan perkembangan baharu.</p>
+      <p>Ringkasan akaun anda. Gunakan navigasi di atas atau kad di bawah untuk ke setiap bahagian.</p>
     </div>
   </header>
 
   <main class="section">
-    <div class="container">
+    <!-- #dash-hub = penanda halaman dashboard untuk main.js (initDashboard) -->
+    <div class="container" id="dash-hub">
 
-      <!-- Ringkasan (dikira dari data akaun) -->
+      <!-- Ringkasan -->
       <div class="grid grid-3" style="margin-bottom:var(--sp-5)">
-        <div class="card"><div class="mini-stat"><b class="tnum" id="st-children">0</b><span>Profil anak</span></div></div>
-        <div class="card"><div class="mini-stat"><b class="tnum" id="st-screenings">0</b><span>Saringan selesai</span></div></div>
-        <div class="card"><div class="mini-stat"><b class="tnum" id="st-avg">0%</b><span>Purata kemahiran dicapai</span></div></div>
+        <div class="card" data-screening-only><div class="mini-stat"><b class="tnum" id="st-children">0</b><span>Profil anak</span></div></div>
+        <div class="card" data-screening-only><div class="mini-stat"><b class="tnum" id="st-screenings">0</b><span>Saringan selesai</span></div></div>
+        <div class="card" data-screening-only><div class="mini-stat"><b class="tnum" id="st-avg">0%</b><span>Purata kemahiran dicapai</span></div></div>
       </div>
 
-      <div class="flex items-center justify-between wrap gap-3" style="margin-bottom:var(--sp-4)">
-        <h2 style="margin:0">Profil Anak</h2>
+      <!-- Banner akaun e-Pembelajaran (dipapar oleh main.js untuk akaun 'knowledge') -->
+      <div class="notice" id="dash-knowledge" style="display:none; margin-bottom:var(--sp-5); align-items:center; gap:var(--sp-3)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        <span>Akaun anda ialah akaun <strong>e-Pembelajaran</strong> — tiada saringan anak diperlukan. Terokai bahan pembelajaran di <a href="pendidikan.html">Pusat e-Pembelajaran</a>.</span>
       </div>
 
-      <div class="notice mt-0" id="empty-hint" style="display:none; margin-bottom:var(--sp-4)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-        <span>Anda belum menambah profil anak. Tambah anak dahulu untuk memulakan saringan.</span>
-      </div>
-
-      <!-- Kad anak dijana oleh main.js -->
-      <div class="dash-grid" id="child-grid"></div>
-
-      <!-- Borang tambah anak -->
-      <div class="card mt-5" id="add-child-card" style="max-width:640px">
-        <h3>Tambah Profil Anak</h3>
-        <p class="muted" style="font-size:var(--fs-sm)">Umur dikira secara automatik daripada tarikh lahir.</p>
-        <form id="add-child-form">
-          <div class="field">
-            <label for="cn">Nama Penuh Anak</label>
-            <input class="input" id="cn" type="text" placeholder="cth. Aisyah binti Rahman" required>
+      <!-- Sejarah saringan terkini (ringkas) -->
+      <div data-screening-only>
+        <div class="flex items-center justify-between wrap gap-3" style="margin-bottom:var(--sp-3)">
+          <h2 style="margin:0">Saringan Terkini</h2>
+          <a class="btn btn--ghost" href="sejarah.html">Lihat Semua Sejarah</a>
+        </div>
+        <div class="card" style="padding:0; overflow:hidden">
+          <div class="table-wrap">
+            <table class="data">
+              <thead><tr><th>Anak</th><th>Tarikh</th><th>Umur</th><th>Markah</th><th>Triage</th><th></th></tr></thead>
+              <tbody id="dash-history"></tbody>
+            </table>
           </div>
-          <div class="field-row">
-            <div class="field">
-              <label for="dob">Tarikh Lahir</label>
-              <input class="input" id="dob" type="date" required>
-            </div>
-            <div class="field">
-              <label for="gender">Jantina</label>
-              <select class="select" id="gender" required>
-                <option value="">Pilih…</option>
-                <option value="lelaki">Lelaki</option>
-                <option value="perempuan">Perempuan</option>
-              </select>
-            </div>
-          </div>
-          <button class="btn" type="submit"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg> Simpan Profil</button>
-        </form>
+        </div>
       </div>
 
     </div>
   </main>
 
   <div id="site-footer"></div>
-  <script src="assets/js/main.js?v=20260805a"></script>
+  <script src="assets/js/main.js?v=20260806r"></script>
 </body>
 </html>

@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=20260805b">
+  <link rel="stylesheet" href="assets/css/style.css?v=20260806e">
 </head>
 <body data-page="keputusan" data-auth="parent">
   <div id="site-header"></div>
@@ -49,6 +49,9 @@
         </div>
       </div>
 
+      <!-- Ringkasan Saringan Autisme (M-CHAT) — diisi oleh main.js apabila keputusan mempunyai autismRisk -->
+      <section id="autism-summary" style="display:none"></section>
+
       <!-- Skor per domain -->
       <div class="card" style="margin-bottom:var(--sp-5)">
         <h3>Markah mengikut domain</h3>
@@ -86,7 +89,7 @@
   </main>
 
   <div id="site-footer"></div>
-  <script src="assets/js/main.js?v=20260805a"></script>
+  <script src="assets/js/main.js?v=20260806r"></script>
   <script>
     // Tarikh hari ini (paparan sahaja)
     document.getElementById('today').textContent =

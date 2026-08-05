@@ -3,61 +3,78 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Profil Saya — e-Jejak Anak</title>
-  <meta name="description" content="Profil akaun ibu bapa: lihat butiran akaun dan tukar kata laluan.">
+  <title>Maklumat Keluarga — e-Jejak Anak</title>
+  <meta name="description" content="Maklumat keluarga ibu bapa: daerah serta butiran ibu & bapa.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=20260805b">
+  <link rel="stylesheet" href="assets/css/style.css?v=20260806e">
 </head>
 <body data-page="profil" data-auth="parent">
   <div id="site-header"></div>
 
   <header class="page-head">
     <div class="container">
-      <nav class="breadcrumb"><a href="index.html">Beranda</a> / <a href="dashboard.html">Dashboard</a> / <span>Profil Saya</span></nav>
-      <h1>Profil Saya</h1>
-      <p>Lihat butiran akaun anda dan tukar kata laluan.</p>
+      <nav class="breadcrumb"><a href="dashboard.html">Dashboard</a> / <span>Maklumat Keluarga</span></nav>
+      <h1>Maklumat Keluarga</h1>
+      <p>Lengkapkan daerah serta butiran ibu &amp; bapa. Maklumat ini membantu doktor menghubungi anda dan digunakan dalam laporan.</p>
     </div>
   </header>
 
   <main class="section">
-    <div class="container">
-      <div class="grid grid-2" style="gap:var(--sp-5); align-items:start">
+    <div class="container" style="max-width:720px">
+      <div class="card">
+        <form id="family-form">
+          <div class="notice notice--ok" id="fam-msg" style="display:none; margin-bottom:var(--sp-3)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span></span></div>
 
-        <!-- Butiran akaun (baca sahaja) -->
-        <div>
-          <div class="section-head" style="margin-bottom:var(--sp-4)"><h2>Butiran Akaun</h2>
-            <p class="lead" style="font-size:var(--fs-md)">Maklumat akaun anda. Untuk menukar nama, e-mel atau telefon, sila hubungi pentadbir.</p>
+          <div class="field">
+            <label for="fam-district">Daerah (Kelantan)</label>
+            <select class="select" id="fam-district">
+              <option value="">— Pilih daerah —</option>
+              <option value="Kota Bharu">Kota Bharu</option>
+              <option value="Pasir Mas">Pasir Mas</option>
+              <option value="Tumpat">Tumpat</option>
+              <option value="Pasir Puteh">Pasir Puteh</option>
+              <option value="Bachok">Bachok</option>
+              <option value="Machang">Machang</option>
+              <option value="Tanah Merah">Tanah Merah</option>
+              <option value="Kuala Krai">Kuala Krai</option>
+              <option value="Gua Musang">Gua Musang</option>
+              <option value="Jeli">Jeli</option>
+            </select>
           </div>
-          <div class="card">
-            <div class="field"><label for="pr-name">Nama</label><input class="input" id="pr-name" readonly style="background:var(--brand-tint)"></div>
-            <div class="field"><label for="pr-email">E-mel</label><input class="input" id="pr-email" readonly style="background:var(--brand-tint)"></div>
-            <div class="field"><label for="pr-phone">Telefon</label><input class="input" id="pr-phone" readonly style="background:var(--brand-tint)"></div>
-          </div>
-        </div>
 
-        <!-- Tukar kata laluan -->
-        <div>
-          <div class="section-head" style="margin-bottom:var(--sp-4)"><h2>Tukar Kata Laluan</h2>
-            <p class="lead" style="font-size:var(--fs-md)">Untuk keselamatan, masukkan kata laluan semasa anda sebelum menetapkan yang baharu.</p>
+          <!-- Maklumat Bapa -->
+          <div class="notice" style="margin:var(--sp-3) 0 var(--sp-2)"><strong>Maklumat Bapa</strong></div>
+          <div class="field"><label for="fam-father-name">Nama Bapa</label><input class="input" type="text" id="fam-father-name" placeholder="Nama penuh bapa"></div>
+          <div class="field-row">
+            <div class="field"><label for="fam-father-ic">No. Kad Pengenalan</label><input class="input" type="text" id="fam-father-ic" placeholder="cth. 800101-03-5555"></div>
+            <div class="field"><label for="fam-father-phone">No. Telefon</label><input class="input" type="tel" id="fam-father-phone" placeholder="cth. 0123456789"></div>
           </div>
-          <div class="card">
-            <form id="password-form">
-              <div class="notice notice--warn" id="pw-msg" style="display:none; margin-bottom:var(--sp-3)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4M12 17h.01"/></svg><span></span></div>
-              <div class="field"><label for="pw-current">Kata Laluan Semasa</label><input class="input" type="password" id="pw-current" placeholder="••••••••" autocomplete="current-password" required></div>
-              <div class="field"><label for="pw-new">Kata Laluan Baharu</label><input class="input" type="password" id="pw-new" placeholder="Sekurang-kurangnya 6 aksara" autocomplete="new-password" required></div>
-              <div class="field"><label for="pw-confirm">Sahkan Kata Laluan Baharu</label><input class="input" type="password" id="pw-confirm" placeholder="Ulang kata laluan baharu" autocomplete="new-password" required></div>
-              <button class="btn btn--block" type="submit"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg> Kemas Kini Kata Laluan</button>
-            </form>
+          <div class="field-row">
+            <div class="field"><label for="fam-father-job">Pekerjaan</label><input class="input" type="text" id="fam-father-job" placeholder="cth. Peniaga"></div>
+            <div class="field"><label for="fam-father-income">Pendapatan Bulanan (RM)</label><input class="input" type="number" min="0" id="fam-father-income" placeholder="cth. 3000"></div>
           </div>
-        </div>
 
+          <!-- Maklumat Ibu -->
+          <div class="notice" style="margin:var(--sp-3) 0 var(--sp-2)"><strong>Maklumat Ibu</strong></div>
+          <div class="field"><label for="fam-mother-name">Nama Ibu</label><input class="input" type="text" id="fam-mother-name" placeholder="Nama penuh ibu"></div>
+          <div class="field-row">
+            <div class="field"><label for="fam-mother-ic">No. Kad Pengenalan</label><input class="input" type="text" id="fam-mother-ic" placeholder="cth. 820202-03-6666"></div>
+            <div class="field"><label for="fam-mother-phone">No. Telefon</label><input class="input" type="tel" id="fam-mother-phone" placeholder="cth. 0198765432"></div>
+          </div>
+          <div class="field-row">
+            <div class="field"><label for="fam-mother-job">Pekerjaan</label><input class="input" type="text" id="fam-mother-job" placeholder="cth. Suri rumah"></div>
+            <div class="field"><label for="fam-mother-income">Pendapatan Bulanan (RM)</label><input class="input" type="number" min="0" id="fam-mother-income" placeholder="cth. 0"></div>
+          </div>
+
+          <button class="btn btn--block" type="submit"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Simpan Maklumat Keluarga</button>
+        </form>
       </div>
     </div>
   </main>
 
   <div id="site-footer"></div>
-  <script src="assets/js/main.js?v=20260805a"></script>
+  <script src="assets/js/main.js?v=20260806r"></script>
 </body>
 </html>
