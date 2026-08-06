@@ -109,7 +109,7 @@
         '<div class="flex gap-2 wrap" style="justify-content:space-between; align-items:flex-start">' +
           '<div style="min-width:0">' +
             '<strong style="font-family:var(--font-head); font-size:var(--fs-md); display:block">' + esc(p.title) + '</strong>' +
-            '<div class="muted" style="font-size:var(--fs-sm); margin-top:4px; display:flex; gap:var(--sp-3); flex-wrap:wrap">' +
+            '<div class="muted prog-meta" style="font-size:var(--fs-sm); margin-top:4px; display:flex; gap:var(--sp-3); flex-wrap:wrap">' +
               '<span>' + (ico.clock || '') + ' ' + esc(dateOnly(p.date)) + '</span>' +
               '<span>' + (ico.pin || '') + ' ' + esc(p.location || 'Lokasi belum ditetapkan') + '</span>' +
             '</div>' +

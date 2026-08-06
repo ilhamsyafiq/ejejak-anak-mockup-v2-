@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="ms">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tentang Kami — e-Jejak Anak</title>
+  <meta name="description" content="Kisah e-Jejak Anak: cetusan idea kerjasama MAIK & USM untuk saringan awal perkembangan kanak-kanak di Kelantan, matlamat, nilai dan rakan pelaksana.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css?v=20260806j">
+
+  <style>
+    /* ===== Halaman Tentang Kami ===== */
+    .about-lead { max-width:760px; }
+
+    /* Dua penaja — kad institusi */
+    .founders { display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-4); }
+    .founder-card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:var(--sp-5); box-shadow:var(--shadow-sm); display:flex; flex-direction:column; gap:10px; }
+    .founder-card__logo { width:64px; height:64px; object-fit:contain; }
+    .founder-card h3 { margin:0; font-size:var(--fs-lg); }
+    .founder-card .role { font-size:var(--fs-xs); font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--brand); }
+
+    /* Garis masa cetusan idea */
+    .timeline { position:relative; margin:var(--sp-4) 0 0; padding-left:34px; }
+    .timeline::before { content:""; position:absolute; left:11px; top:6px; bottom:6px; width:2px; background:var(--line); }
+    .tl-item { position:relative; padding:0 0 var(--sp-4) 0; }
+    .tl-item:last-child { padding-bottom:0; }
+    .tl-item::before { content:""; position:absolute; left:-28px; top:4px; width:14px; height:14px; border-radius:50%; background:var(--brand); box-shadow:0 0 0 4px var(--brand-tint); }
+    .tl-item h4 { margin:0 0 4px; font-size:var(--fs-md); }
+    .tl-item .yr { font-size:var(--fs-xs); font-weight:700; color:var(--accent); letter-spacing:.03em; }
+    .tl-item p { margin:4px 0 0; color:var(--ink-2); }
+
+    /* Nilai / matlamat */
+    .goal-card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:var(--sp-4); box-shadow:var(--shadow-sm); height:100%; }
+    .goal-card .qc-ico { display:inline-grid; place-items:center; width:44px; height:44px; border-radius:12px; background:var(--brand-tint); color:var(--brand); margin-bottom:10px; }
+    .goal-card .qc-ico svg { width:24px; height:24px; }
+    .goal-card h3 { margin:0 0 6px; font-size:var(--fs-md); }
+    .goal-card p { margin:0; color:var(--ink-2); }
+
+    /* Petik/misi highlight */
+    .mission { background:var(--brand-tint); border-radius:var(--radius); padding:var(--sp-6); text-align:center; }
+    .mission h2 { max-width:820px; margin:0 auto; }
+    .mission .lead { max-width:680px; margin:var(--sp-3) auto 0; }
+
+    /* Angka ringkas */
+    .stat-strip { display:grid; grid-template-columns:repeat(4,1fr); gap:var(--sp-3); }
+    .stat-strip .stat { text-align:center; padding:var(--sp-3); }
+    .stat-strip .num { font-family:var(--font-head); font-weight:800; font-size:clamp(1.8rem,4vw,2.4rem); color:var(--brand); line-height:1; }
+    .stat-strip .lbl { font-size:var(--fs-xs); color:var(--muted); margin-top:6px; }
+
+    @media (max-width:820px){
+      .founders, .stat-strip { grid-template-columns:1fr 1fr; }
+    }
+    @media (max-width:560px){
+      .founders, .stat-strip { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body data-page="tentang">
+  <div id="site-header"></div>
+
+  <header class="page-head">
+    <div class="container">
+      <nav class="breadcrumb"><a href="index.html">Beranda</a> / <span>Tentang Kami</span></nav>
+      <h1>Tentang e-Jejak Anak</h1>
+      <p>Satu inisiatif kerjasama MAIK &amp; USM — memperkasakan ibu bapa mengesan tanda perkembangan anak, lebih awal.</p>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ===== 1. Pengenalan ===== -->
+    <section class="section">
+      <div class="container">
+        <div class="grid grid-2" style="align-items:center; gap:var(--sp-6)">
+          <div>
+            <span class="eyebrow">Apa itu e-Jejak Anak</span>
+            <h2>Saringan awal perkembangan kanak-kanak, di hujung jari ibu bapa.</h2>
+            <p class="lead about-lead">e-Jejak Anak ialah sebuah sistem saringan awal berasaskan web yang membolehkan ibu bapa dan penjaga menilai pencapaian tumbesaran anak merentasi <strong>lima domain perkembangan</strong> — Motor Kasar, Motor Halus, Bahasa, Sosial dan Kognitif — mengikut umur sebenar anak dalam bulan.</p>
+            <p class="about-lead" style="color:var(--ink-2)">Ia direka supaya boleh digunakan di rumah, pada bila-bila masa, secara percuma. Matlamatnya mudah tetapi penting: <strong>kesan awal, bertindak awal</strong>, dan beri setiap anak permulaan terbaik dalam hidup.</p>
+          </div>
+          <div class="card" style="background:var(--brand-tint); border:0; padding:var(--sp-5)">
+            <span class="chip chip--accent">Penafian Penting</span>
+            <p class="mt-3" style="color:var(--ink-2)">Sistem ini menyediakan <strong>saringan awal sahaja</strong> dan <strong>bukan diagnosis perubatan</strong>. Sekiranya terdapat kebimbangan tentang perkembangan anak, sila rujuk pegawai perubatan, klinik kesihatan atau pakar pediatrik yang bertauliah.</p>
+            <a class="btn btn--ghost mt-3" href="pendidikan.html#faq">Baca Soalan Lazim <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 2. Cetusan Idea ===== -->
+    <section class="section section--soft">
+      <div class="container">
+        <div class="section-head center">
+          <span class="eyebrow">Cetusan Idea</span>
+          <h2>Bagaimana e-Jejak Anak bermula</h2>
+          <p class="lead" style="max-width:760px;margin-inline:auto">Idea ini lahir daripada satu keprihatinan yang dikongsi bersama antara <strong>Majlis Agama Islam &amp; Adat Istiadat Melayu Kelantan (MAIK)</strong> dan <strong>Universiti Sains Malaysia (USM)</strong>.</p>
+        </div>
+
+        <div class="grid grid-2" style="gap:var(--sp-6);align-items:start">
+          <div>
+            <p style="color:var(--ink-2)">Ramai masalah perkembangan kanak-kanak — lewat bercakap, lewat berjalan, kesukaran interaksi sosial — sebenarnya boleh dibantu dengan lebih baik jika <strong>dikesan lebih awal</strong>. Malangnya, di kawasan luar bandar dan pinggir bandar Kelantan, banyak keluarga tidak menyedari tanda-tanda awal ini, atau tiada akses mudah kepada saringan profesional.</p>
+            <p style="color:var(--ink-2)">Pihak <strong>USM (melalui program Transformasi OKU, Kubang Kerian)</strong> mempunyai kepakaran klinikal dan penyelidikan dalam perkembangan kanak-kanak. Manakala <strong>MAIK</strong> mempunyai jaringan komuniti, kariah dan kebajikan yang luas untuk sampai kepada keluarga di seluruh negeri.</p>
+            <p style="color:var(--ink-2)">Daripada pertemuan dua kekuatan inilah tercetus idea: <strong>bina satu alat digital yang mudah, percuma dan dalam Bahasa Malaysia</strong> — supaya setiap ibu bapa boleh membuat saringan awal sendiri, dan dirujuk kepada pihak yang betul apabila diperlukan.</p>
+          </div>
+
+          <div class="timeline">
+            <div class="tl-item">
+              <span class="yr">Keprihatinan</span>
+              <h4>Jurang saringan awal</h4>
+              <p>Ramai kanak-kanak terlepas peluang intervensi awal kerana tanda perkembangan tidak dikesan tepat pada masanya.</p>
+            </div>
+            <div class="tl-item">
+              <span class="yr">Kerjasama</span>
+              <h4>MAIK bertemu USM</h4>
+              <p>Kepakaran klinikal USM digabung dengan jaringan komuniti MAIK — dua kekuatan yang saling melengkapi.</p>
+            </div>
+            <div class="tl-item">
+              <span class="yr">Penyelesaian</span>
+              <h4>Satu alat digital untuk semua</h4>
+              <p>Senarai semak perkembangan mengikut umur diterjemah menjadi sistem web yang boleh diguna sendiri oleh ibu bapa.</p>
+            </div>
+            <div class="tl-item">
+              <span class="yr">Hari ini</span>
+              <h4>e-Jejak Anak</h4>
+              <p>Saringan lima domain, sokongan e-pembelajaran, dan rujukan kepada doktor &amp; NGO — semuanya dalam satu platform.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 3. Misi ===== -->
+    <section class="section">
+      <div class="container">
+        <div class="mission">
+          <span class="eyebrow">Misi Kami</span>
+          <h2>Tiada anak yang tertinggal kerana tanda awal terlepas pandang.</h2>
+          <p class="lead" style="color:var(--ink-2)">Kami percaya setiap keluarga — tanpa mengira lokasi atau latar belakang — berhak kepada alat yang membantu mereka memahami tumbesaran anak dan bertindak awal dengan yakin.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 4. Matlamat / Nilai ===== -->
+    <section class="section section--soft">
+      <div class="container">
+        <div class="section-head center">
+          <span class="eyebrow">Matlamat</span>
+          <h2>Apa yang ingin kami capai</h2>
+        </div>
+        <div class="grid grid-3" style="gap:var(--sp-4)">
+          <div class="goal-card">
+            <span class="qc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span>
+            <h3>Kesan awal</h3>
+            <p>Membolehkan saringan perkembangan dilakukan seawal mungkin, di rumah, tanpa kos.</p>
+          </div>
+          <div class="goal-card">
+            <span class="qc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg></span>
+            <h3>Bertindak awal</h3>
+            <p>Menghubungkan keluarga yang memerlukan kepada doktor USM &amp; sokongan komuniti dengan pantas.</p>
+          </div>
+          <div class="goal-card">
+            <span class="qc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span>
+            <h3>Perkasa ibu bapa</h3>
+            <p>Menyediakan e-pembelajaran, artikel &amp; tips keibubapaan dalam Bahasa Malaysia yang mudah difahami.</p>
+          </div>
+          <div class="goal-card">
+            <span class="qc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+            <h3>Jangkau komuniti</h3>
+            <p>Menggunakan jaringan MAIK &amp; NGO untuk sampai kepada keluarga di seluruh 10 daerah Kelantan.</p>
+          </div>
+          <div class="goal-card">
+            <span class="qc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg></span>
+            <h3>Jaga privasi</h3>
+            <p>Data anak dikendalikan dengan selamat &amp; hormat — mematuhi tanggungjawab perlindungan data peribadi.</p>
+          </div>
+          <div class="goal-card">
+            <span class="qc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 10h20M7 15h4"/></svg></span>
+            <h3>Percuma &amp; mudah</h3>
+            <p>Boleh diakses melalui desktop atau telefon, tanpa yuran, untuk semua rakyat Kelantan.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 5. Dua Peneraju ===== -->
+    <section class="section">
+      <div class="container">
+        <div class="section-head center">
+          <span class="eyebrow">Peneraju &amp; Rakan Rasmi</span>
+          <h2>Digerakkan bersama USM &amp; MAIK</h2>
+          <p class="lead" style="max-width:700px;margin-inline:auto">Dua institusi yang menggabungkan kepakaran klinikal dan jangkauan komuniti untuk manfaat anak-anak Kelantan.</p>
+        </div>
+        <div class="founders">
+          <div class="founder-card">
+            <img class="founder-card__logo" src="assets/img/logo-usm.png?v=2" alt="Logo USM" onerror="this.style.display='none'">
+            <span class="role">Kepakaran Klinikal &amp; Penyelidikan</span>
+            <h3>Universiti Sains Malaysia (USM)</h3>
+            <p style="color:var(--ink-2);margin:0">Melalui program <strong>Transformasi OKU</strong>, USM Kubang Kerian menyumbang kepakaran perubatan, penyelidikan perkembangan kanak-kanak, dan sokongan doktor untuk kes yang memerlukan penilaian lanjut.</p>
+            <a class="btn btn--ghost mt-3" href="https://transformasioku.kk.usm.my/" target="_blank" rel="noopener">Lawati Transformasi OKU <span aria-hidden="true">↗</span></a>
+          </div>
+          <div class="founder-card">
+            <img class="founder-card__logo" src="assets/img/logo-maik.png?v=2" alt="Logo MAIK" onerror="this.style.display='none'">
+            <span class="role">Jaringan Komuniti &amp; Kebajikan</span>
+            <h3>Majlis Agama Islam &amp; Adat Istiadat Melayu Kelantan (MAIK)</h3>
+            <p style="color:var(--ink-2);margin:0">MAIK menyumbang jaringan kariah, komuniti dan program kebajikan yang membolehkan sistem ini sampai kepada keluarga di seluruh negeri, termasuk kawasan luar bandar.</p>
+            <a class="btn btn--ghost mt-3" href="https://www.e-maik.my/" target="_blank" rel="noopener">Lawati e-MAIK <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 6. Angka ringkas ===== -->
+    <section class="section section--soft">
+      <div class="container">
+        <div class="stat-strip">
+          <div class="stat"><div class="num">5</div><div class="lbl">Domain perkembangan disaring</div></div>
+          <div class="stat"><div class="num">10</div><div class="lbl">Daerah Kelantan dijangkau</div></div>
+          <div class="stat"><div class="num">2</div><div class="lbl">Institusi peneraju (USM &amp; MAIK)</div></div>
+          <div class="stat"><div class="num">RM0</div><div class="lbl">Percuma untuk semua keluarga</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 7. CTA ===== -->
+    <section class="section">
+      <div class="container">
+        <div class="card" style="background:linear-gradient(120deg,var(--brand),var(--brand-2,#8A0D11));color:#fff;border:0;padding:var(--sp-6);text-align:center">
+          <h2 style="color:#fff;margin:0 0 8px">Mula jejak perkembangan anak anda hari ini</h2>
+          <p style="color:#F6DFE0;max-width:560px;margin:0 auto var(--sp-4)">Daftar percuma dalam beberapa minit dan lakukan saringan pertama anak anda.</p>
+          <div style="display:flex;gap:var(--sp-3);justify-content:center;flex-wrap:wrap">
+            <a class="btn btn--accent btn--lg" href="daftar.html" data-when="guest">Daftar Percuma</a>
+            <a class="btn btn--accent btn--lg" href="dashboard.html" data-when="user" style="display:none">Ke Dashboard</a>
+            <a class="btn btn--light btn--lg" href="pendidikan.html">Terokai Pusat Pendidikan</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="assets/js/main.js?v=20260806x"></script>
+</body>
+</html>

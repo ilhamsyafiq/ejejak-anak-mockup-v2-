@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=20260806e">
+  <link rel="stylesheet" href="assets/css/style.css?v=20260806j">
 </head>
 <body data-page="admin" data-auth="admin">
 
@@ -46,15 +46,12 @@
       <!-- Tab navigasi (Modul 6 + doktor) -->
       <div class="tabs" role="tablist">
         <button class="tab is-active" data-target="tab-saringan" data-roles="doctor">Keputusan Saringan</button>
-        <button class="tab" data-target="tab-statistik" data-roles="superadmin,admin,doctor">Statistik Penggunaan</button>
-        <button class="tab" data-target="tab-soalan" data-roles="doctor">Urus Soalan &amp; Domain</button>
-        <button class="tab" data-target="tab-artikel" data-roles="superadmin,admin">Urus Artikel</button>
-        <button class="tab" data-target="tab-video" data-roles="superadmin,admin">Urus Video</button>
+        <button class="tab" data-target="tab-statistik" data-roles="superadmin,admin,doctor">Statistik</button>
+        <button class="tab" data-target="tab-soalan" data-roles="doctor">Urus Soalan</button>
+        <button class="tab" data-target="tab-kandungan" data-roles="superadmin,admin">Urus Kandungan</button>
         <button class="tab" data-target="tab-pengguna" data-roles="superadmin,admin">Urus Pengguna</button>
-        <button class="tab" data-target="tab-program" data-roles="superadmin,admin">Program &amp; E-mel Blast</button>
-        <button class="tab" data-target="tab-urussetia" data-roles="superadmin,admin">Urus Setia / Kehadiran</button>
-        <button class="tab" data-target="tab-mba" data-roles="superadmin,admin">NGO / MBA</button>
-        <button class="tab" data-target="tab-laporan" data-roles="superadmin,admin">Laporan Pengguna</button>
+        <button class="tab" data-target="tab-programkehadiran" data-roles="superadmin,admin">Program &amp; Kehadiran</button>
+        <button class="tab" data-target="tab-penjana" data-roles="superadmin,admin">Laporan</button>
         <button class="tab" data-target="tab-log" data-roles="superadmin,admin">Log Aktiviti</button>
         <button class="tab" data-target="tab-akaun" data-roles="superadmin,admin,doctor">Profil Saya</button>
       </div>
@@ -92,14 +89,14 @@
         <p class="muted" id="sub-count" style="font-size:var(--fs-sm); margin:0 0 var(--sp-3)"></p>
         <div class="table-wrap">
           <table class="data">
-            <thead><tr><th>Anak</th><th>Ibu Bapa</th><th>Tarikh Hantar</th><th>Markah &amp; Triage</th><th>Status</th><th>Tindakan</th></tr></thead>
+            <thead><tr><th>Anak</th><th>Ibu Bapa</th><th>Tarikh Hantar</th><th>Skor &amp; Triage</th><th>Status</th><th>Tindakan</th></tr></thead>
             <tbody id="sub-rows"></tbody>
           </table>
         </div>
         <p class="muted mt-4" style="font-size:var(--fs-xs); max-width:75ch">
-          <strong>Triage:</strong> <span class="triage triage--ok"><span class="tdot"></span>Pemantauan</span> = semua kemahiran dicapai ·
-          <span class="triage triage--warn"><span class="tdot"></span>Perhatian</span> = ≥70% dicapai ·
-          <span class="triage triage--ref"><span class="tdot"></span>Perlu Rujukan</span> = &lt;70% dicapai.
+          <strong>Triage (mengikut risiko autisme M-CHAT/Sensori):</strong> <span class="triage triage--ok"><span class="tdot"></span>Pemantauan</span> = risiko rendah (&lt;30%) ·
+          <span class="triage triage--warn"><span class="tdot"></span>Perhatian</span> = risiko sederhana (30–59%) ·
+          <span class="triage triage--ref"><span class="tdot"></span>Perlu Rujukan</span> = risiko tinggi (≥60%).
         </p>
       </section>
 
@@ -125,8 +122,8 @@
         </div>
 
         <div class="card">
-          <h3>Purata Pencapaian Mengikut Domain</h3>
-          <p class="muted" style="font-size:var(--fs-sm)">Merentas semua saringan yang direkodkan.</p>
+          <h3>Purata Risiko Autisme Mengikut Jenis Saringan</h3>
+          <p class="muted" style="font-size:var(--fs-sm)">Purata peratus risiko merentas semua saringan M-CHAT &amp; Sensori yang direkodkan.</p>
           <div class="domain-scores mt-4" id="stat-domains"></div>
         </div>
       </section>
@@ -134,87 +131,13 @@
       <!-- ===== TAB 3: URUS SOALAN & DOMAIN (Modul 6: Tambah soalan) ===== -->
       <section class="tab-panel" id="tab-soalan">
         <div class="section-head" style="margin-bottom:var(--sp-4)">
-          <h2>Urus Soalan &amp; Domain</h2>
-          <p class="lead" style="font-size:var(--fs-md)">Tambah / padam soalan pada mana-mana domain, atau cipta domain perkembangan baharu. Perubahan terus muncul dalam saringan ibu bapa.</p>
-        </div>
-
-        <!-- Ringkasan bilangan soalan mengikut kumpulan umur -->
-        <div class="card" style="margin-bottom:var(--sp-5)">
-          <h3 style="margin-bottom:4px">Bilangan Soalan Mengikut Kumpulan Umur</h3>
-          <p class="muted" style="font-size:var(--fs-sm); margin-bottom:var(--sp-3)">Bilangan soalan berkaitan bagi setiap kumpulan umur & domain (satu soalan boleh merentas beberapa kumpulan). Sel <span style="color:var(--danger); font-weight:700">merah</span> = tiada soalan.</p>
-          <div class="table-wrap">
-            <table class="data" id="coverage-table"></table>
-          </div>
-        </div>
-
-        <!-- Penapis domain & kumpulan umur -->
-        <div class="flex gap-3 wrap" style="margin-bottom:var(--sp-4); align-items:end">
-          <div class="field" style="margin:0; min-width:200px">
-            <label for="filter-domain">Tapis Domain</label>
-            <select class="select" id="filter-domain"></select>
-          </div>
-          <div class="field" style="margin:0; min-width:200px">
-            <label for="filter-band">Tapis Kumpulan Umur</label>
-            <select class="select" id="filter-band"></select>
-          </div>
+          <h2>Urus Soalan Saringan</h2>
+          <p class="lead" style="font-size:var(--fs-md)">Tambah / padam soalan bagi <strong>M-CHAT</strong> (tanda awal autisme) &amp; <strong>Profil Deria</strong> (sensori). Perubahan terus muncul dalam saringan ibu bapa. Setiap soalan mempunyai <strong>isyarat risiko</strong> — jawapan yang menandakan kebimbangan (klik untuk tukar).</p>
         </div>
 
         <div class="grid grid-2" style="gap:var(--sp-5); align-items:start">
-          <div class="grid" id="domain-list" style="grid-template-columns:1fr; gap:var(--sp-3)"></div>
-          <div class="card">
-            <h3>Tambah Domain Baharu</h3>
-            <form id="add-domain-form">
-              <div class="field"><label for="dom-name">Nama Domain</label><input class="input" id="dom-name" placeholder="cth. Kemahiran Deria" required></div>
-              <div class="field"><label>Warna</label><div class="swatches" id="color-swatches"></div></div>
-              <div class="field"><label>Ikon</label><div class="icon-picks" id="icon-picks"></div></div>
-              <div class="field"><label for="dom-band">Kumpulan Umur (untuk semua soalan domain ini)</label>
-                <select class="select" id="dom-band"></select>
-              </div>
-              <div class="field">
-                <label for="dom-questions">Soalan <span class="muted" style="font-weight:400">(satu baris = satu soalan)</span></label>
-                <textarea class="input" id="dom-questions" rows="4" placeholder="Adakah anak anda bertindak balas terhadap bunyi?&#10;Adakah anak anda mengenali sentuhan?"></textarea>
-              </div>
-              <button class="btn btn--block" type="submit"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg> Tambah Domain</button>
-            </form>
-          </div>
-        </div>
-      </section>
-
-      <!-- ===== TAB 4: URUS ARTIKEL (Modul 6: Kemas kini artikel) ===== -->
-      <section class="tab-panel" id="tab-artikel">
-        <div class="section-head" style="margin-bottom:var(--sp-4)">
-          <h2>Urus Kandungan Pendidikan</h2>
-          <p class="lead" style="font-size:var(--fs-md)">Tambah, sunting, terbit atau padam artikel, tips, aktiviti dan soalan lazim yang dipaparkan di Pusat Pendidikan.</p>
-        </div>
-        <div class="flex gap-2 wrap" style="margin-bottom:var(--sp-4)">
-          <button class="filter-chip is-active" data-artfilter="semua">Semua</button>
-          <button class="filter-chip" data-artfilter="artikel">Artikel</button>
-          <button class="filter-chip" data-artfilter="tips">Tips</button>
-          <button class="filter-chip" data-artfilter="aktiviti">Aktiviti</button>
-          <button class="filter-chip" data-artfilter="faq">Soalan Lazim</button>
-        </div>
-        <div class="grid grid-2" style="gap:var(--sp-5); align-items:start">
-          <div class="grid" id="article-list" style="grid-template-columns:1fr; gap:var(--sp-3)"></div>
-          <div class="card">
-            <h3 id="art-form-title">Tambah Artikel</h3>
-            <form id="article-form">
-              <div class="field"><label for="art-cat">Kategori</label>
-                <select class="select" id="art-cat" required>
-                  <option value="artikel">Artikel</option>
-                  <option value="tips">Tips Keibubapaan</option>
-                  <option value="aktiviti">Aktiviti di Rumah</option>
-                  <option value="faq">Soalan Lazim (FAQ)</option>
-                </select>
-              </div>
-              <div class="field"><label for="art-title">Tajuk / Soalan</label><input class="input" id="art-title" placeholder="Tajuk artikel atau soalan FAQ" required></div>
-              <div class="field"><label for="art-body">Kandungan / Jawapan</label><textarea class="input" id="art-body" rows="5" required></textarea></div>
-              <label class="checkbox" style="margin-bottom:var(--sp-3)"><input type="checkbox" id="art-pub" checked> Terbitkan (papar kepada ibu bapa)</label>
-              <div class="flex gap-2">
-                <button class="btn" type="submit">Simpan</button>
-                <button class="btn btn--ghost" type="button" id="art-reset">Set Semula</button>
-              </div>
-            </form>
-          </div>
+          <div class="card" id="screen-mchat"></div>
+          <div class="card" id="screen-sensori"></div>
         </div>
       </section>
 
@@ -274,8 +197,13 @@
         </div>
       </section>
 
-      <!-- ===== TAB: PROGRAM & E-MEL BLAST (superadmin/admin) ===== -->
-      <section class="tab-panel" id="tab-program" data-roles="superadmin,admin">
+      <!-- ===== TAB: PROGRAM & KEHADIRAN (gabung Program + Urus Setia) ===== -->
+      <section class="tab-panel" id="tab-programkehadiran" data-roles="superadmin,admin">
+        <div class="subtabs" data-subtabs>
+          <button class="subtab is-active" data-subtarget="sub-program">Program &amp; E-mel Blast</button>
+          <button class="subtab" data-subtarget="sub-kehadiran">Urus Setia / Kehadiran</button>
+        </div>
+        <div class="subpanel is-active" id="sub-program">
         <div class="section-head" style="margin-bottom:var(--sp-4)">
           <h2>Program &amp; E-mel Blast</h2>
           <p class="lead" style="font-size:var(--fs-md)">Cipta program (cth. Hari Pelancaran, Klinik Saringan) dan hantar jemputan e-mel kepada ibu bapa mengikut daerah. <em>(Demo/simulasi — tiada e-mel sebenar dihantar.)</em></p>
@@ -344,10 +272,8 @@
           </div>
           <div id="blast-log"></div>
         </div>
-      </section>
-
-      <!-- ===== TAB: URUS SETIA / KEHADIRAN (superadmin/admin) ===== -->
-      <section class="tab-panel" id="tab-urussetia" data-roles="superadmin,admin">
+        </div><!-- /sub-program -->
+        <div class="subpanel" id="sub-kehadiran">
         <div class="section-head" style="margin-bottom:var(--sp-4)">
           <h2>Urus Setia / Kehadiran</h2>
           <p class="lead" style="font-size:var(--fs-md)">Pentadbir isi senarai peserta dijangka hadir; urus setia hanya tanda ✓ kehadiran pada hari pelancaran. <em>(Demo/simulasi.)</em></p>
@@ -365,12 +291,8 @@
           <!-- Senarai kehadiran -->
           <div>
             <h3 style="margin-bottom:var(--sp-3)">Senarai Kehadiran</h3>
-            <div class="table-wrap">
-              <table class="data">
-                <thead><tr><th>Nama</th><th>Telefon</th><th>Daerah</th><th>Kehadiran</th><th style="text-align:right">Tindakan</th></tr></thead>
-                <tbody id="attendance-list"></tbody>
-              </table>
-            </div>
+            <!-- attendance.js suntik jadual penuh (table-wrap + table) ke sini -->
+            <div id="attendance-list"></div>
           </div>
 
           <!-- Tambah peserta dijangka -->
@@ -398,10 +320,17 @@
             </form>
           </div>
         </div>
+        </div><!-- /sub-kehadiran -->
       </section>
 
-      <!-- ===== TAB: NGO / MBA (superadmin/admin) ===== -->
-      <section class="tab-panel" id="tab-mba" data-roles="superadmin,admin">
+      <!-- ===== TAB: URUS KANDUNGAN (gabung Artikel + Video + NGO/MBA) ===== -->
+      <section class="tab-panel" id="tab-kandungan" data-roles="superadmin,admin">
+        <div class="subtabs" data-subtabs>
+          <button class="subtab is-active" data-subtarget="sub-artikel">Artikel &amp; FAQ</button>
+          <button class="subtab" data-subtarget="sub-video">Video</button>
+          <button class="subtab" data-subtarget="sub-mba">NGO / MBA</button>
+        </div>
+        <div class="subpanel" id="sub-mba">
         <div class="section-head" style="margin-bottom:var(--sp-4)">
           <h2>NGO / MBA</h2>
           <p class="lead" style="font-size:var(--fs-md)">Direktori rakan NGO / MBA (Majlis Belia Anak) &amp; analisa penglibatan mengikut kategori dan kawasan. <em>(Demo/simulasi.)</em></p>
@@ -451,10 +380,8 @@
             </form>
           </div>
         </div>
-      </section>
-
-      <!-- ===== TAB: URUS VIDEO (Pusat Pendidikan) ===== -->
-      <section class="tab-panel" id="tab-video" data-roles="superadmin,admin">
+        </div><!-- /sub-mba -->
+        <div class="subpanel" id="sub-video">
         <div class="section-head" style="margin-bottom:var(--sp-4)">
           <h2>Urus Video Pembelajaran</h2>
           <p class="lead" style="font-size:var(--fs-md)">Tambah, sunting atau padam video yang dipaparkan di Pusat Pendidikan. Masukkan <strong>ID YouTube</strong> (contoh: bahagian selepas <code>watch?v=</code>).</p>
@@ -475,21 +402,83 @@
             <p class="muted" style="font-size:var(--fs-xs); margin-top:var(--sp-3)">Video dipapar kepada pengguna berdaftar di <strong>Pusat Pendidikan</strong>.</p>
           </div>
         </div>
+        </div><!-- /sub-video -->
+        <div class="subpanel is-active" id="sub-artikel">
+        <div class="section-head" style="margin-bottom:var(--sp-4)">
+          <h2>Urus Kandungan Pendidikan</h2>
+          <p class="lead" style="font-size:var(--fs-md)">Tambah, sunting, terbit atau padam artikel, tips, aktiviti dan soalan lazim yang dipaparkan di Pusat Pendidikan.</p>
+        </div>
+        <div class="flex gap-2 wrap" style="margin-bottom:var(--sp-4)">
+          <button class="filter-chip is-active" data-artfilter="semua">Semua</button>
+          <button class="filter-chip" data-artfilter="artikel">Artikel</button>
+          <button class="filter-chip" data-artfilter="tips">Tips</button>
+          <button class="filter-chip" data-artfilter="aktiviti">Aktiviti</button>
+          <button class="filter-chip" data-artfilter="faq">Soalan Lazim</button>
+        </div>
+        <div class="grid grid-2" style="gap:var(--sp-5); align-items:start">
+          <div class="grid" id="article-list" style="grid-template-columns:1fr; gap:var(--sp-3)"></div>
+          <div class="card">
+            <h3 id="art-form-title">Tambah Artikel</h3>
+            <form id="article-form">
+              <div class="field"><label for="art-cat">Kategori</label>
+                <select class="select" id="art-cat" required>
+                  <option value="artikel">Artikel</option>
+                  <option value="tips">Tips Keibubapaan</option>
+                  <option value="aktiviti">Aktiviti di Rumah</option>
+                  <option value="faq">Soalan Lazim (FAQ)</option>
+                </select>
+              </div>
+              <div class="field"><label for="art-title">Tajuk / Soalan</label><input class="input" id="art-title" placeholder="Tajuk artikel atau soalan FAQ" required></div>
+              <div class="field"><label for="art-body">Kandungan / Jawapan</label><textarea class="input" id="art-body" rows="5" required></textarea></div>
+              <label class="checkbox" style="margin-bottom:var(--sp-3)"><input type="checkbox" id="art-pub" checked> Terbitkan (papar kepada ibu bapa)</label>
+              <div class="flex gap-2">
+                <button class="btn" type="submit">Simpan</button>
+                <button class="btn btn--ghost" type="button" id="art-reset">Set Semula</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        </div><!-- /sub-artikel -->
       </section>
 
-      <!-- ===== TAB 5: LAPORAN PENGGUNA (Modul 6: Jana laporan) ===== -->
-      <section class="tab-panel" id="tab-laporan">
-        <div class="flex items-center justify-between wrap gap-3" style="margin-bottom:var(--sp-4)">
-          <div class="section-head" style="margin:0">
-              <h2>Laporan Pengguna</h2>
-          </div>
-          <button class="btn" id="export-csv"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg> Muat Turun CSV</button>
+      <!-- ===== TAB: PENJANA LAPORAN (fleksibel — superadmin & pentadbir) ===== -->
+      <section class="tab-panel" id="tab-penjana" data-roles="superadmin,admin">
+        <div class="section-head" style="margin-bottom:var(--sp-4)">
+          <h2>Penjana Laporan</h2>
+          <p class="lead" style="font-size:var(--fs-md)">Pilih sumber data &amp; penapis, kemudian jana untuk dipapar, dimuat turun (CSV) atau dicetak (PDF).</p>
         </div>
+
+        <div class="card" style="margin-bottom:var(--sp-4)">
+          <div class="grid grid-4" style="gap:var(--sp-3); align-items:end">
+            <div class="field" style="margin:0">
+              <label for="rb-source">Sumber Data</label>
+              <select class="select" id="rb-source">
+                <option value="saringan">Saringan (M-CHAT / Sensori)</option>
+                <option value="pengguna">Pengguna (Ibu Bapa)</option>
+                <option value="anak">Profil Anak</option>
+                <option value="kehadiran">Program &amp; Kehadiran</option>
+              </select>
+            </div>
+            <div class="field" style="margin:0"><label for="rb-from">Dari Tarikh</label><input class="input" type="date" id="rb-from"></div>
+            <div class="field" style="margin:0"><label for="rb-to">Hingga Tarikh</label><input class="input" type="date" id="rb-to"></div>
+            <div class="field" style="margin:0"><label for="rb-district">Daerah</label><select class="select" id="rb-district"></select></div>
+            <div class="field" style="margin:0" data-when-source="saringan"><label for="rb-type">Jenis Saringan</label>
+              <select class="select" id="rb-type"><option value="semua">Semua</option><option value="mchat">M-CHAT</option><option value="sensori">Sensori</option></select></div>
+            <div class="field" style="margin:0" data-when-source="saringan"><label for="rb-band">Band Risiko</label>
+              <select class="select" id="rb-band"><option value="semua">Semua</option><option value="rendah">Rendah</option><option value="sederhana">Sederhana</option><option value="tinggi">Tinggi</option></select></div>
+            <div class="field" style="margin:0" data-when-source="saringan"><label for="rb-status">Status</label>
+              <select class="select" id="rb-status"><option value="semua">Semua</option><option value="baharu">Baharu</option><option value="dihubungi">Dihubungi</option></select></div>
+          </div>
+          <div class="flex gap-2 wrap mt-4">
+            <button class="btn" id="rb-generate"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 14 4-4 3 3 5-6"/></svg> Jana Laporan</button>
+            <button class="btn btn--ghost" id="rb-csv"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg> Muat Turun CSV</button>
+            <button class="btn btn--ghost" id="rb-pdf"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v8H6z"/></svg> Cetak / PDF</button>
+          </div>
+        </div>
+
+        <p class="muted" id="rb-count" style="font-size:var(--fs-sm); margin:0 0 var(--sp-3)">Pilih penapis dan tekan <strong>Jana Laporan</strong>.</p>
         <div class="table-wrap">
-          <table class="data">
-            <thead><tr><th>Nama</th><th>E-mel</th><th>Telefon</th><th>Bil. Anak</th><th>Bil. Saringan</th><th>Purata</th><th>Saringan Terakhir</th><th>Tindakan</th></tr></thead>
-            <tbody id="report-rows"></tbody>
-          </table>
+          <table class="data" id="rb-table"></table>
         </div>
       </section>
 
@@ -642,24 +631,6 @@
     </div>
   </div>
 
-  <!-- Modal laporan pengguna (Laporan Pengguna → Lihat Laporan) -->
-  <div class="modal-overlay" id="report-modal" role="dialog" aria-modal="true" aria-labelledby="rp-title">
-    <div class="modal" style="max-width:680px">
-      <div class="modal__head">
-        <div>
-          <h3 id="rp-title">Laporan Pengguna</h3>
-          <p class="muted" id="rp-sub" style="font-size:var(--fs-sm)">Ringkasan saringan anak</p>
-        </div>
-        <button class="modal__close" id="rp-close" aria-label="Tutup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
-      </div>
-      <div class="modal__body" id="rp-body" style="max-height:64vh; overflow:auto"></div>
-      <div style="padding:var(--sp-3) var(--sp-4); border-top:1px solid var(--line); display:flex; gap:var(--sp-2); justify-content:flex-end; flex-wrap:wrap">
-        <button class="btn btn--ghost" id="rp-print" type="button"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v8H6z"/></svg> Cetak</button>
-        <button class="btn" id="rp-pdf" type="button"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg> Muat Turun PDF</button>
-      </div>
-    </div>
-  </div>
-
   <!-- Modal tambah / sunting akaun staf (doktor & pentadbir) -->
   <div class="modal-overlay" id="staff-modal" role="dialog" aria-modal="true" aria-labelledby="admin-form-title">
     <div class="modal" style="max-width:560px">
@@ -708,7 +679,7 @@
     </div>
   </footer>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
-  <script src="assets/js/main.js?v=20260806r"></script>
+  <script src="assets/js/main.js?v=20260806x"></script>
   <script>
     // Log keluar doktor (kawalan akses dikendalikan oleh guard() dalam main.js)
     document.getElementById('logout').addEventListener('click', function (e) {

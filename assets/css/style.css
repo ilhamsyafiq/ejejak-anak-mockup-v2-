@@ -277,7 +277,7 @@ img { max-width: 100%; display: block; }
 .menu > li > a {
   display: flex; align-items: center; gap: 5px; white-space: nowrap;
   font-family: var(--font-head); font-weight: 600; font-size: var(--fs-sm);
-  color: var(--ink-2); padding: 0.6em 0.75em; border-radius: 8px;
+  color: var(--ink-2); padding: 0.6em 0.62em; border-radius: 8px;
 }
 .menu > li > a:hover { color: var(--brand); background: var(--brand-soft); text-decoration: none; }
 .menu > li > a[aria-current="page"] { color: var(--brand); }
@@ -665,6 +665,17 @@ img { max-width: 100%; display: block; }
 .tab.is-active { color: var(--brand); border-bottom-color: var(--accent); }
 .tab-panel { display: none; }
 .tab-panel.is-active { display: block; animation: fade .3s ease; }
+
+/* Sub-tab dalam panel yang digabung (Urus Kandungan, Program & Kehadiran). */
+.subtabs { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: var(--sp-4); border-bottom: 1px solid var(--line); }
+.subtab {
+  font-family: var(--font-head); font-weight: 600; font-size: var(--fs-sm); cursor: pointer;
+  padding: 0.5em 0.9em; border: 0; background: none; color: var(--muted); border-bottom: 2px solid transparent;
+}
+.subtab:hover { color: var(--brand); }
+.subtab.is-active { color: var(--brand); border-bottom-color: var(--accent); }
+.subpanel { display: none; }
+.subpanel.is-active { display: block; animation: fade .25s ease; }
 @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 
 .faq-item { border: 1px solid var(--line); border-radius: var(--radius); background: #fff; margin-bottom: var(--sp-3); overflow: hidden; }
@@ -736,6 +747,15 @@ table.data tr:last-child td { border-bottom: 0; }
 .notice--warn { background: var(--warn-soft); color: #8a4b12; }
 .notice--warn svg { color: var(--warn); }
 
+/* Baris maklumat kad Program (tarikh/lokasi): ikon inline perlu disaiz —
+   tanpa peraturan ini SVG render pada saiz lalai penyemak imbas (gergasi). */
+.prog-meta span { display: inline-flex; align-items: center; gap: 6px; }
+.prog-meta svg { width: 15px; height: 15px; flex: none; color: var(--brand); }
+
+/* Ikon inline (pin daerah/jam dll.) dalam sel jadual data — hadkan saiz supaya
+   tidak render gergasi. Sasar hanya SVG dalam teks .muted (bukan butang aksi). */
+.data td .muted svg { width: 14px; height: 14px; flex: none; vertical-align: -2px; color: var(--brand); }
+
 /* ------------------------------------------------------------------ */
 /* 17b. ADMIN / PANEL DOKTOR — triage, modal hubungi                  */
 /* ------------------------------------------------------------------ */
@@ -804,13 +824,19 @@ html, body { overflow-x: clip; }
 .menu { flex: 0 1 auto; }
 .nav__cta { margin-left: auto; }
 
-/* Nav bertukar ke menu hamburger apabila ruang tidak mencukupi (≤1200px)
-   supaya menu tidak berhimpit/bertindih dengan brand (3 logo + teks).
+/* Header (topbar + nav) diberi sedikit ruang lebih daripada kandungan halaman
+   (1180px) supaya menu AHLI yang lebih panjang (7 item) tidak menolak butang
+   "Log Keluar" keluar skrin pada skala 1.25. Kedua-dua baris kekal sejajar. */
+.nav .container, .topbar .container { max-width: 1280px; }
+
+/* Nav bertukar ke menu hamburger apabila ruang tidak mencukupi (≤1280px)
+   supaya menu tidak berhimpit/bertindih dengan brand (3 logo + teks) atau
+   menolak butang Log Keluar keluar skrin (menu ahli 7 item pada skala 1.25).
    Menu jadi panel gelongsor; dropdown dibuka sebaris. */
-@media (max-width: 1200px) {
+@media (max-width: 1280px) {
   .brand__tag { display: none; }   /* jimat ruang: sembunyi tagline pada nav padat */
 }
-@media (max-width: 1200px) {
+@media (max-width: 1280px) {
   .nav-toggle { display: inline-flex; }
   .menu {
     position: fixed; inset: var(--nav-h) 0 auto 0; flex-direction: column; align-items: stretch;

@@ -159,6 +159,13 @@ const ARTICLE_CATS = { artikel: 'Artikel', tips: 'Tips Keibubapaan', aktiviti: '
    superadmin (Webimpian) → admin (MAIK/USM) → doctor (USM) → [parent]. */
 const ORGS = ['USM', 'MAIK', 'Webimpian'];
 const ROLE_LABEL = { superadmin: 'Superadmin', admin: 'Pentadbir', doctor: 'Doktor', parent: 'Ibu Bapa' };
+// Label chip nama staf di header panel — buang peranan yang sudah tersemat dalam
+// nama (cth. "Webimpian (Superadmin)"), & papar org hanya untuk pentadbir/doktor.
+function staffChipLabel(name, role, org) {
+  const clean = String(name || '').replace(/\s*\((?:Superadmin|Pentadbir|Doktor|Admin)\)\s*$/i, '').trim();
+  const orgPart = (role === 'admin' || role === 'doctor') && org ? ` (${org})` : '';
+  return `${clean} · ${ROLE_LABEL[role] || role}${orgPart}`;
+}
 // Peranan yang dibenarkan lihat setiap tab panel (juga ditanda dalam admin.html).
 const TAB_ROLES = {
   'tab-saringan': ['doctor'],
@@ -362,7 +369,7 @@ function ensureSeed() {
       { id: 'LSEED1', at: '2026-07-24T08:30:00', actorId: 'SA1', actorName: 'Webimpian (Superadmin)', actorRole: 'superadmin', actorOrg: 'Webimpian', action: 'login', detail: 'Log masuk panel' },
     ]);
   }
-  if (read('ejejak_seed_v5', false)) return;
+  if (read('ejejak_seed_v6', false)) return;
 
   if (getUsers().length === 0) {
     // Pengguna benih dengan medan baharu: accountType, verified, district, father, mother.
@@ -439,62 +446,66 @@ function ensureSeed() {
     children.forEach(c => { if (cbf[c.id] && !c.tempatLahir) { c.tempatLahir = cbf[c.id]; cChanged = true; } });
     if (cChanged) saveChildren(children);
   }
-  // Isi/segar semula sesi contoh. Jika hanya wujud data benih lama (id 'SEED…'),
-  // ganti dengan set 6-bulan yang baharu; kekalkan saringan sebenar (id 'S…').
-  const existingSubs = getSubmissions();
-  const onlySeeded = existingSubs.length > 0 && existingSubs.every(s => String(s.id).startsWith('SEED'));
-  if (existingSubs.length === 0 || onlySeeded) {
-    // Meta anak (tetap) — dikongsi merentas banyak sesi saringan.
-    const kids = {
-      C1: { uid: 'U1', name: 'Aisyah binti Rahman', gender: 'perempuan', pName: 'Siti Nurhaliza', pPhone: '0123456789', pEmail: 'ibu@contoh.com' },
-      C2: { uid: 'U1', name: 'Haziq bin Rahman',    gender: 'lelaki',    pName: 'Siti Nurhaliza', pPhone: '0123456789', pEmail: 'ibu@contoh.com' },
-      C3: { uid: 'U2', name: 'Nurin Damia',         gender: 'perempuan', pName: 'Farah Aziz',     pPhone: '0176543210', pEmail: 'farah@contoh.com' },
-      C4: { uid: 'U3', name: 'Danish Iman',         gender: 'lelaki',    pName: 'Amirul Hakim',   pPhone: '0112223344', pEmail: 'amir@contoh.com' },
+  // Benih sesi saringan demo — kini M-CHAT & Sensori sahaja (saringan
+  // perkembangan telah dibuang). Buang SEMUA benih lama (id 'SEED…', termasuk
+  // data perkembangan usang) & kekalkan saringan sebenar (id 'S…').
+  const realSubs = getSubmissions().filter(s => !String(s.id).startsWith('SEED'));
+  // Meta anak (tetap) — dikongsi merentas banyak sesi saringan.
+  const kids = {
+    C1: { uid: 'U1', name: 'Aisyah binti Rahman', gender: 'perempuan', pName: 'Siti Nurhaliza', pPhone: '0123456789', pEmail: 'ibu@contoh.com' },
+    C2: { uid: 'U1', name: 'Haziq bin Rahman',    gender: 'lelaki',    pName: 'Siti Nurhaliza', pPhone: '0123456789', pEmail: 'ibu@contoh.com' },
+    C3: { uid: 'U2', name: 'Nurin Damia',         gender: 'perempuan', pName: 'Farah Aziz',     pPhone: '0176543210', pEmail: 'farah@contoh.com' },
+    C4: { uid: 'U3', name: 'Danish Iman',         gender: 'lelaki',    pName: 'Amirul Hakim',   pPhone: '0112223344', pEmail: 'amir@contoh.com' },
+  };
+  const seedItems = getScreeningItems();
+  // Sesi merentas 6 bulan (Feb–Jul 2026) untuk carta trend — pelbagai jenis & band.
+  // [cid, tarikh, umur(bln), jenis, % risiko sasaran, status]
+  const sess = [
+    ['C1', '2026-02-10T09:00:00', 18, 'mchat',   17, 'dihubungi'],
+    ['C3', '2026-02-22T15:30:00', 20, 'mchat',    8, 'dihubungi'],
+    ['C4', '2026-03-05T10:20:00', 26, 'sensori', 25, 'dihubungi'],
+    ['C1', '2026-03-19T09:45:00', 19, 'sensori', 38, 'baharu'],
+    ['C3', '2026-04-02T11:10:00', 22, 'mchat',   42, 'baharu'],
+    ['C4', '2026-04-14T14:00:00', 27, 'mchat',   67, 'dihubungi'],
+    ['C1', '2026-05-08T08:50:00', 21, 'mchat',   25, 'baharu'],
+    ['C3', '2026-05-17T10:05:00', 24, 'sensori', 13, 'baharu'],
+    ['C4', '2026-05-29T13:20:00', 29, 'sensori', 50, 'baharu'],
+    ['C1', '2026-06-15T11:40:00', 22, 'mchat',   33, 'baharu'],
+    ['C3', '2026-06-24T15:15:00', 26, 'mchat',   58, 'dihubungi'],
+    ['C4', '2026-07-24T16:20:00', 30, 'mchat',   75, 'baharu'],
+    ['C1', '2026-07-25T09:15:00', 23, 'sensori', 25, 'baharu'],
+    ['C3', '2026-07-25T14:40:00', 27, 'mchat',   17, 'baharu'],
+  ];
+  const seeds = sess
+    .map(([cid, date, age, type, riskPct, status]) => ({ ...kids[cid], cid, age, date, type, riskPct, status }))
+    .sort((a, b) => (a.date < b.date ? 1 : -1)); // terbaharu dahulu
+  const seededSubs = seeds.map((s, i) => {
+    const meta = SCREEN_META[s.type];
+    const arr = seedItems[s.type] || [];
+    const len = arr.length || 1;
+    const riskCount = Math.max(0, Math.min(len, Math.round(len * s.riskPct / 100)));
+    // Item pertama ditanda "berisiko" (jawapan = riskIf); selebihnya normal.
+    const answers = arr.map((q, idx) => {
+      const atRisk = idx < riskCount;
+      const answer = atRisk ? q.riskIf : (q.riskIf === 'ya' ? 'tidak' : 'ya');
+      return { text: q.text, answer, atRisk };
+    });
+    const risk = answers.filter(a => a.atRisk).length;
+    const autismRisk = Math.round(risk / len * 100);
+    const autismBand = autismBandFor(autismRisk);
+    const achieved = len - risk;
+    return {
+      id: 'SEED' + i, submittedAt: s.date, type: s.type, userId: s.uid, childId: s.cid,
+      childName: s.name, childGender: s.gender, ageMonths: s.age, ageGroup: ageGroupLabel(s.age),
+      parentName: s.pName, parentPhone: s.pPhone, parentEmail: s.pEmail,
+      total: len, totalAchieved: achieved, totalNot: risk,
+      autismRisk, autismBand,
+      domains: { [meta.code]: { name: meta.name, color: meta.color, achieved, total: len, items: answers } },
+      status: s.status, note: '',
     };
-    // Sejarah sesi merentas 6 bulan (Feb–Jul 2026) untuk carta trend.
-    // [cid, tarikh, umur(bulan), nisbah dicapai, status]
-    const sess = [
-      ['C1', '2026-02-10T09:00:00', 13, 0.70, 'dihubungi'],
-      ['C4', '2026-02-22T15:30:00', 25, 0.65, 'dihubungi'],
-      ['C2', '2026-03-05T10:20:00', 38, 0.55, 'dihubungi'],
-      ['C1', '2026-03-19T09:45:00', 14, 0.80, 'baharu'],
-      ['C3', '2026-04-02T11:10:00',  6, 1.00, 'baharu'],
-      ['C4', '2026-04-14T14:00:00', 27, 0.60, 'dihubungi'],
-      ['C2', '2026-04-28T16:35:00', 40, 0.50, 'dihubungi'],
-      ['C1', '2026-05-08T08:50:00', 16, 0.85, 'baharu'],
-      ['C3', '2026-05-17T10:05:00',  8, 0.90, 'baharu'],
-      ['C4', '2026-05-29T13:20:00', 28, 0.70, 'baharu'],
-      ['C2', '2026-06-06T09:30:00', 41, 0.45, 'dihubungi'],
-      ['C1', '2026-06-15T11:40:00', 17, 0.75, 'baharu'],
-      ['C3', '2026-06-24T15:15:00',  9, 0.95, 'baharu'],
-      ['C4', '2026-06-30T10:00:00', 29, 0.65, 'baharu'],
-      ['C1', '2026-07-25T09:15:00', 18, 0.75, 'baharu'],
-      ['C2', '2026-07-25T14:40:00', 42, 0.50, 'baharu'],
-      ['C3', '2026-07-24T11:05:00', 10, 1.00, 'dihubungi'],
-      ['C4', '2026-07-24T16:20:00', 30, 0.60, 'baharu'],
-    ];
-    const seeds = sess
-      .map(([cid, date, age, ratio, status]) => ({ ...kids[cid], cid, age, date, ratio, status }))
-      .sort((a, b) => (a.date < b.date ? 1 : -1)); // terbaharu dahulu
-    saveSubmissions(seeds.map((s, i) => {
-      const fd = domainsForAge(s.age);
-      const domains = {}; let ta = 0, tot = 0;
-      fd.forEach(d => {
-        const k = Math.round(d.qs.length * s.ratio);
-        const items = d.qs.map((q, idx) => ({ text: q.text, answer: idx < k ? 'ya' : 'tidak' }));
-        const ach = items.filter(x => x.answer === 'ya').length;
-        domains[d.code] = { name: d.name, color: d.color, achieved: ach, total: d.qs.length, items };
-        ta += ach; tot += d.qs.length;
-      });
-      return {
-        id: 'SEED' + i, submittedAt: s.date, userId: s.uid, childId: s.cid,
-        childName: s.name, childGender: s.gender, ageMonths: s.age, ageGroup: ageGroupLabel(s.age),
-        parentName: s.pName, parentPhone: s.pPhone, parentEmail: s.pEmail,
-        total: tot, totalAchieved: ta, totalNot: tot - ta, domains, status: s.status, note: '',
-      };
-    }));
-  }
-  write('ejejak_seed_v5', true);
+  });
+  saveSubmissions([...seededSubs, ...realSubs]); // benih (terbaharu dahulu) + rekod sebenar
+  write('ejejak_seed_v6', true);
 }
 
 /* ---------- 5. HEADER / FOOTER (satu sumber) ----------------------- */
@@ -506,7 +517,7 @@ const SITE = {
   // berdaftar dapat MEMBER_MENU dalam buildHeader.
   menu: [
     { label: 'Beranda', href: 'index.html', key: 'beranda' },
-    { label: 'Tentang Kami', href: 'index.html#tentang', key: 'tentang' },
+    { label: 'Tentang Kami', href: 'tentangkami.html', key: 'tentang' },
     { label: '5 Domain', key: 'domain', children: [
       { label: '5 Domain Perkembangan', href: 'index.html#domain' },
       { label: 'Cara Guna', href: 'index.html#cara' },
@@ -634,7 +645,7 @@ function buildFooter() {
           <summary><h4>Pautan Pantas</h4>${ICONS.chevronDown}</summary>
           <div class="acc-body">
             <ul>
-              <li><a href="index.html#tentang">Tentang Kami</a></li>
+              <li><a href="tentangkami.html">Tentang Kami</a></li>
               <li><a href="saringan.html">Mula Saringan</a></li>
               <li><a href="index.html#domain">5 Domain</a></li>
               <li><a href="dashboard.html">Dashboard</a></li>
@@ -763,7 +774,7 @@ function setupRoleAccess() {
 
   // Papar nama + peranan (+ organisasi) di header panel.
   const nameEl = document.getElementById('doctor-name');
-  if (nameEl) nameEl.textContent = `${me.name} · ${ROLE_LABEL[role] || role}${me.org ? ' (' + me.org + ')' : ''}`;
+  if (nameEl) nameEl.textContent = staffChipLabel(me.name, role, me.org);
 
   // Tapis tab mengikut peranan.
   const tabs = [...wrap.querySelectorAll('.tab')];
@@ -829,6 +840,20 @@ function initTabs() {
       panels.forEach(p => p.classList.remove('is-active'));
       tab.classList.add('is-active');
       group.querySelector('#' + tab.dataset.target)?.classList.add('is-active');
+    }));
+  });
+}
+// Sub-tab dalam panel yang digabung (kelas berasingan supaya tak berlanggar
+// dengan tab utama initTabs). Setiap [data-subtabs] ada .subtab + .subpanel.
+function initSubTabs() {
+  document.querySelectorAll('[data-subtabs]').forEach(group => {
+    const tabs = [...group.querySelectorAll('.subtab')];
+    const panels = [...group.parentElement.querySelectorAll(':scope > .subpanel')];
+    tabs.forEach(tab => tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('is-active'));
+      panels.forEach(p => p.classList.remove('is-active'));
+      tab.classList.add('is-active');
+      document.getElementById(tab.dataset.subtarget)?.classList.add('is-active');
     }));
   });
 }
@@ -1081,7 +1106,7 @@ function initDashboard() {
   const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
   set('st-children', kids.length);
   set('st-screenings', subs.length);
-  const avg = subs.length ? Math.round(subs.reduce((a, s) => a + s.totalAchieved / s.total, 0) / subs.length * 100) : 0;
+  const avg = avgScore(subs);
   set('st-avg', avg + '%');
 
   // Akaun e-Pembelajaran: sembunyikan elemen khusus saringan, papar banner.
@@ -1228,6 +1253,25 @@ function autismBandFor(pct) {
   return 'rendah';
 }
 
+/* Metadata dua jenis saringan aktif (perkembangan telah dibuang). */
+const SCREEN_META = {
+  mchat:   { code: 'MCHAT',   name: 'Saringan Autisme (M-CHAT)', short: 'M-CHAT', icon: 'help', color: '#7C6BB0' },
+  sensori: { code: 'SENSORI', name: 'Profil Deria (Sensori)',    short: 'Deria',  icon: 'bulb', color: '#E0913C' },
+};
+
+/* Item soalan saringan (M-CHAT & Sensori) kini BOLEH DIEDIT oleh doktor —
+   dipindah dari pemalar ke localStorage supaya tab "Urus Soalan" boleh
+   tambah/padam. Setiap item: { text, riskIf: 'ya'|'tidak' }. */
+function getScreeningItems() {
+  let it = read('ejejak_screen_items', null);
+  if (!it || !Array.isArray(it.mchat) || !Array.isArray(it.sensori)) {
+    it = { mchat: MCHAT_ITEMS.slice(), sensori: SENSORI_ITEMS.slice() };
+    write('ejejak_screen_items', it);
+  }
+  return it;
+}
+function saveScreeningItems(it) { write('ejejak_screen_items', it); }
+
 function initScreening() {
   const host = document.getElementById('screening-form');
   if (!host) return;
@@ -1280,7 +1324,7 @@ function initScreening() {
   const modeTabs = document.getElementById('screen-mode');
   function selectedChild() { return kids.find(c => c.id === childSelect.value) || kids[0]; }
 
-  let mode = 'perkembangan';   // 'perkembangan' | 'mchat' | 'sensori'
+  let mode = 'mchat';   // 'mchat' | 'sensori' (saringan perkembangan telah dibuang)
   let total = 0;
 
   // Domain + soalan yang SEPADAN dengan umur anak (Checklist mengikut umur)
@@ -1367,10 +1411,10 @@ function initScreening() {
     host.innerHTML = '';
 
     const cfg = kind === 'mchat'
-      ? { code: 'MCHAT', name: 'Saringan Autisme (M-CHAT)', icon: 'help', color: '#7C6BB0', items: MCHAT_ITEMS,
+      ? { code: 'MCHAT', name: 'Saringan Autisme (M-CHAT)', icon: 'help', color: '#7C6BB0', items: getScreeningItems().mchat,
           banner: `${ICONS.info}<span><strong>Saringan tanda awal autisme (M-CHAT)</strong> — paling sesuai untuk kanak-kanak <strong>16–30 bulan</strong>. Jawab berdasarkan tingkah laku biasa anak. <em>(demo/simulasi — bukan diagnosis)</em></span>`,
           note: 'Saringan ini <strong>bukan diagnosis</strong>. Ia hanya menganggarkan risiko untuk membantu keputusan sama ada rujukan profesional diperlukan.' }
-      : { code: 'SENSORI', name: 'Profil Deria (Sensori)', icon: 'bulb', color: '#E0913C', items: SENSORI_ITEMS,
+      : { code: 'SENSORI', name: 'Profil Deria (Sensori)', icon: 'bulb', color: '#E0913C', items: getScreeningItems().sensori,
           banner: `${ICONS.info}<span><strong>Profil deria ringkas</strong> — menilai cara anak bertindak balas terhadap bunyi, sentuhan, gerakan &amp; cahaya. <em>(demo/simulasi — bukan diagnosis)</em></span>`,
           note: 'Profil deria ini <strong>bukan diagnosis</strong>. Rujuk ahli terapi cara kerja (OT) jika terdapat kebimbangan.' };
 
@@ -1388,8 +1432,7 @@ function initScreening() {
   }
 
   function build() {
-    if (mode === 'perkembangan') buildDevelopment();
-    else buildYnScreen(mode);
+    buildYnScreen(mode);   // hanya M-CHAT & Sensori (saringan perkembangan dibuang)
   }
 
   // Maklumat ibu bapa (dari akaun — selari dengan data doktor)
@@ -1430,7 +1473,7 @@ function initScreening() {
     }
 
     if (mode === 'mchat' || mode === 'sensori') {
-      const items = mode === 'mchat' ? MCHAT_ITEMS : SENSORI_ITEMS;
+      const items = getScreeningItems()[mode];
       const code = mode === 'mchat' ? 'MCHAT' : 'SENSORI';
       const domName = mode === 'mchat' ? 'Saringan Autisme (M-CHAT)' : 'Profil Deria (Sensori)';
       const domColor = mode === 'mchat' ? '#7C6BB0' : '#E0913C';
@@ -1611,10 +1654,34 @@ function initResult() {
 
 /* ---------- 13. PANEL DOKTOR: KEPUTUSAN + HUBUNGI ------------------ */
 function triageOf(s) {
+  // M-CHAT / Sensori: triage mengikut band risiko autisme (pct = % risiko).
+  if (typeof s.autismRisk === 'number') {
+    const band = s.autismBand || autismBandFor(s.autismRisk);
+    if (band === 'tinggi')    return { label: 'Perlu Rujukan', cls: 'triage--ref',  row: 'row-ref',  pct: s.autismRisk, risk: true };
+    if (band === 'sederhana') return { label: 'Perhatian',     cls: 'triage--warn', row: 'row-warn', pct: s.autismRisk, risk: true };
+    return { label: 'Pemantauan', cls: 'triage--ok', row: 'row-ok', pct: s.autismRisk, risk: true };
+  }
+  // Rekod perkembangan lama (jika masih ada) — logik nisbah kemahiran dicapai.
   const pct = Math.round((s.totalAchieved / s.total) * 100);
-  if (s.totalNot === 0) return { label: 'Pemantauan', cls: 'triage--ok', row: 'row-ok', pct };
-  if (pct < 70) return { label: 'Perlu Rujukan', cls: 'triage--ref', row: 'row-ref', pct };
-  return { label: 'Perhatian', cls: 'triage--warn', row: 'row-warn', pct };
+  if (s.totalNot === 0) return { label: 'Pemantauan', cls: 'triage--ok', row: 'row-ok', pct, risk: false };
+  if (pct < 70) return { label: 'Perlu Rujukan', cls: 'triage--ref', row: 'row-ref', pct, risk: false };
+  return { label: 'Perhatian', cls: 'triage--warn', row: 'row-warn', pct, risk: false };
+}
+// Sel skor untuk jadual/ringkasan: risiko% (M-CHAT/Sensori) atau markah (perkembangan).
+function scoreCellHTML(s, t) {
+  if (t.risk) return `<span class="muted">Risiko</span> <strong class="tnum">${s.autismRisk}%</strong>`;
+  return `<strong class="tnum">${s.totalAchieved}/${s.total}</strong> <span class="muted">(${t.pct}%)</span>`;
+}
+// Label jenis saringan untuk paparan staf.
+function screenTypeLabel(s) { return (SCREEN_META[s.type] || {}).short || 'Perkembangan'; }
+// Adakah jawapan item ini "berisiko" (papar merah)? M-CHAT/Sensori guna atRisk;
+// rekod perkembangan lama: jawapan 'tidak' = belum dicapai (merah).
+function answerFlagged(it) { return ('atRisk' in it) ? it.atRisk : (it.answer !== 'ya'); }
+// Purata skor sesuai jenis: % risiko (M-CHAT/Sensori) atau % kemahiran (perkembangan).
+function avgScore(subs) {
+  if (!subs.length) return 0;
+  const sum = subs.reduce((a, s) => a + (typeof s.autismRisk === 'number' ? s.autismRisk / 100 : s.totalAchieved / s.total), 0);
+  return Math.round(sum / subs.length * 100);
 }
 function waLink(phone) { let p = (phone || '').replace(/\D/g, ''); if (p.startsWith('0')) p = '60' + p.slice(1); return 'https://wa.me/' + p; }
 function fmtDate(iso) {
@@ -1661,18 +1728,19 @@ function initAdmin() {
     }
     rows.innerHTML = shown.map(s => {
       const t = triageOf(s);
-      const bars = Object.values(s.domains).map(d => {
+      const typeChip = `<span class="chip" style="padding:.05em .5em; font-size:.68rem">${screenTypeLabel(s)}</span>`;
+      const bars = t.risk ? '' : `<span class="mini-domains">${Object.values(s.domains).map(d => {
         const p = d.achieved / d.total;
         return `<i style="background:${d.color}; opacity:${0.25 + p * 0.75}" title="${d.name}: ${d.achieved}/${d.total}"></i>`;
-      }).join('');
+      }).join('')}</span>`;
       const contact = s.parentPhone || s.parentEmail || '—';
       return `<tr class="${t.row}">
-        <td class="sev"><strong>${s.childName}</strong><br>
+        <td class="sev"><strong>${s.childName}</strong> ${typeChip}<br>
           <span class="muted" style="font-size:var(--fs-xs)">${s.childGender || '-'} · ${ageText(s.ageMonths)} · ${s.ageGroup}</span>
-          <span class="mini-domains">${bars}</span></td>
+          ${bars}</td>
         <td>${s.parentName}<br><span class="muted" style="font-size:var(--fs-xs)">${contact}</span></td>
         <td class="muted" style="font-size:var(--fs-sm); white-space:nowrap">${fmtDate(s.submittedAt)}</td>
-        <td><strong class="tnum">${s.totalAchieved}/${s.total}</strong> <span class="muted">(${t.pct}%)</span><br>
+        <td>${scoreCellHTML(s, t)}<br>
           <span class="triage ${t.cls}"><span class="tdot"></span>${t.label}</span></td>
         <td><span class="status-pill ${s.status}">${s.status === 'dihubungi' ? 'Dihubungi' : 'Baharu'}</span>${s.contactedBy ? `<br><span class="muted" style="font-size:var(--fs-xs)">${s.contactedBy}</span>` : ''}</td>
         <td><div class="flex gap-2" style="flex-wrap:wrap">
@@ -1696,14 +1764,16 @@ function initAdmin() {
     const t = triageOf(s);
     document.getElementById('m-child').textContent = `${s.childName} · ${ageText(s.ageMonths)} · ${s.ageGroup}`;
     document.getElementById('m-parent').textContent = s.parentName;
+    const mScore = t.risk ? `Risiko autisme: <strong>${s.autismRisk}%</strong> (${screenTypeLabel(s)})` : `Markah: <strong>${s.totalAchieved}/${s.total} (${t.pct}%)</strong>`;
     document.getElementById('m-summary').innerHTML =
-      `Markah: <strong>${s.totalAchieved}/${s.total} (${t.pct}%)</strong> · <span class="triage ${t.cls}"><span class="tdot"></span>${t.label}</span>`;
+      `${mScore} · <span class="triage ${t.cls}"><span class="tdot"></span>${t.label}</span>`;
     document.getElementById('m-info').innerHTML =
       (s.parentPhone ? `<div class="contact-row">${ICONS.phone}<span><b>Telefon:</b> ${s.parentPhone}</span></div>` : '') +
       (s.parentEmail ? `<div class="contact-row">${ICONS.mail}<span><b>E-mel:</b> ${s.parentEmail}</span></div>` : '') +
       `<div class="contact-row">${ICONS.baby}<span><b>Status:</b> ${s.status === 'dihubungi' ? 'Sudah dihubungi' : 'Belum dihubungi'}${s.contactedBy ? ` oleh ${s.contactedBy}` : ''}${s.contactedAt ? ` · ${fmtDate(s.contactedAt)}` : ''}</span></div>`;
     const subj = encodeURIComponent('e-Jejak Anak — Susulan Keputusan Saringan ' + s.childName);
-    const body = encodeURIComponent(`Salam ${s.parentName},\n\nSaya ${admin ? admin.name : 'doktor'} dari e-Jejak Anak. Berdasarkan keputusan saringan perkembangan ${s.childName} (${s.totalAchieved}/${s.total} kemahiran dicapai), kami ingin menjemput anda untuk sesi susulan.\n\nSekian, terima kasih.`);
+    const resultTxt = t.risk ? `saringan ${screenTypeLabel(s)} (risiko autisme ${s.autismRisk}%)` : `saringan perkembangan (${s.totalAchieved}/${s.total} kemahiran dicapai)`;
+    const body = encodeURIComponent(`Salam ${s.parentName},\n\nSaya ${admin ? admin.name : 'doktor'} dari e-Jejak Anak. Berdasarkan keputusan ${resultTxt} bagi ${s.childName}, kami ingin menjemput anda untuk sesi susulan.\n\nSekian, terima kasih.`);
     const call = document.getElementById('m-call'), wa = document.getElementById('m-wa'), mail = document.getElementById('m-mail');
     call.href = s.parentPhone ? 'tel:' + s.parentPhone : '#';
     wa.href = s.parentPhone ? waLink(s.parentPhone) : '#';
@@ -1728,19 +1798,26 @@ function initAdmin() {
     const s = getSubmissions().find(x => x.id === vb.dataset.view);
     if (!s) return;
     const t = triageOf(s);
+    const isRisk = typeof s.autismRisk === 'number';
+    const dScore = isRisk ? `Risiko autisme <strong>${s.autismRisk}%</strong> · ${screenTypeLabel(s)}` : `<strong>${s.totalAchieved}/${s.total} (${t.pct}%)</strong>`;
     document.getElementById('d-child').innerHTML =
-      `${s.childName} · ${ageText(s.ageMonths)} · ${s.ageGroup} · ${fmtDate(s.submittedAt)} · <strong>${s.totalAchieved}/${s.total} (${t.pct}%)</strong>`;
+      `${s.childName} · ${ageText(s.ageMonths)} · ${s.ageGroup} · ${fmtDate(s.submittedAt)} · ${dScore}`;
     document.getElementById('d-body').innerHTML = Object.values(s.domains).map(d => {
       const items = d.items || [];
       const li = items.length
-        ? items.map((it, i) => `<li class="flex items-center gap-2" style="justify-content:space-between; padding:.5em .7em; border-radius:8px; background:var(--brand-tint); font-size:var(--fs-sm)">
+        ? items.map((it, i) => {
+            // M-CHAT/Sensori: warna ikut 'atRisk' (jawapan berisiko = merah).
+            const flagged = ('atRisk' in it) ? it.atRisk : (it.answer !== 'ya');
+            return `<li class="flex items-center gap-2" style="justify-content:space-between; padding:.5em .7em; border-radius:8px; background:var(--brand-tint); font-size:var(--fs-sm)">
             <span>${i + 1}. ${it.text}</span>
-            <span class="triage ${it.answer === 'ya' ? 'triage--ok' : 'triage--warn'}" style="flex:none">${it.answer === 'ya' ? 'Ya' : 'Tidak'}</span></li>`).join('')
+            <span class="triage ${flagged ? 'triage--warn' : 'triage--ok'}" style="flex:none">${it.answer === 'ya' ? 'Ya' : 'Tidak'}</span></li>`;
+          }).join('')
         : `<li class="muted" style="font-size:var(--fs-sm)">Butiran jawapan tidak direkod untuk rekod contoh ini.</li>`;
+      const domMeta = isRisk ? `${d.total - d.achieved}/${d.total} berisiko` : `${d.achieved}/${d.total} dicapai`;
       return `<div style="margin-bottom:var(--sp-4)">
         <div class="flex items-center gap-2" style="border-bottom:2px solid ${d.color}; padding-bottom:6px; margin-bottom:8px">
           <strong style="color:${d.color}">${d.name}</strong>
-          <span class="muted" style="margin-left:auto; font-size:var(--fs-xs)">${d.achieved}/${d.total} dicapai</span>
+          <span class="muted" style="margin-left:auto; font-size:var(--fs-xs)">${domMeta}</span>
         </div>
         <ul style="list-style:none; padding:0; margin:0; display:grid; gap:6px">${li}</ul>
       </div>`;
@@ -1768,160 +1845,86 @@ function initAdmin() {
 }
 
 /* ---------- 14. PENTADBIR: URUS DOMAIN & SOALAN (Modul 6) ---------- */
+// Urus item soalan saringan M-CHAT & Sensori (menggantikan pengurusan domain
+// perkembangan yang telah dibuang). Item disimpan di ejejak_screen_items.
 function initDomainAdmin() {
-  const listEl = document.getElementById('domain-list');
-  if (!listEl) return;
+  const host = document.getElementById('screen-mchat');
+  if (!host) return;
   if ((currentAdmin()?.role || 'doctor') !== 'doctor') return; // soalan = klinikal (doktor)
-  let pickIcon = DOMAIN_ICONS[0];
-  let pickColor = DOMAIN_COLORS[0];
-  let fDomain = 'all', fBand = 'all';
+  const KINDS = ['mchat', 'sensori'];
+  const elFor = (kind) => document.getElementById('screen-' + kind);
 
-  // Jadual ringkasan: bilangan soalan berkaitan setiap kumpulan umur × domain
-  function renderCoverage() {
-    const cov = document.getElementById('coverage-table');
-    if (!cov) return;
-    const doms = getDomains();
-    const head = '<thead><tr><th>Kumpulan Umur</th>' +
-      doms.map(d => `<th style="white-space:nowrap">${d.name}</th>`).join('') +
-      '<th>Jumlah</th></tr></thead>';
-    const rows = AGE_GROUPS.map(([lo, hi, label]) => {
-      let rowTotal = 0;
-      const cells = doms.map(d => {
-        const n = d.questions.filter(q => q.minM <= hi && q.maxM >= lo).length;
-        rowTotal += n;
-        return `<td class="tnum"${n === 0 ? ' style="color:var(--danger); font-weight:700"' : ''}>${n}</td>`;
-      }).join('');
-      return `<tr><td><strong>${label}</strong></td>${cells}<td class="tnum"><strong>${rowTotal}</strong></td></tr>`;
-    }).join('');
-    cov.innerHTML = head + '<tbody>' + rows + '</tbody>';
-  }
-
-  function populateFilters() {
-    const fd = document.getElementById('filter-domain');
-    if (fd) {
-      const doms = getDomains();
-      if (!doms.some(d => d.code === fDomain)) fDomain = 'all';
-      fd.innerHTML = '<option value="all">Semua Domain</option>' +
-        doms.map(d => `<option value="${d.code}"${d.code === fDomain ? ' selected' : ''}>${d.name}</option>`).join('');
-    }
-    const fb = document.getElementById('filter-band');
-    if (fb && !fb.dataset.ready) {
-      fb.innerHTML = '<option value="all">Semua Umur</option>' +
-        AGE_GROUPS.map(([lo, hi, l]) => `<option value="${lo}-${hi}">${l}</option>`).join('');
-      fb.dataset.ready = '1';
-    }
-    if (fb) fb.value = fBand;
-  }
-
-  function render() {
-    renderCoverage();
-    populateFilters();
-    let domains = getDomains();
-    if (fDomain !== 'all') domains = domains.filter(d => d.code === fDomain);
-    const [blo, bhi] = fBand !== 'all' ? fBand.split('-').map(Number) : [0, 72];
-    const qMatch = (q) => fBand === 'all' || (q.minM <= bhi && q.maxM >= blo);
-    const defBand = fBand !== 'all' ? fBand : '0-72';
-
-    listEl.innerHTML = domains.map(d => {
-      const ql = d.questions.map((q, i) => ({ q, i })).filter(o => qMatch(o.q));
-      const qhtml = ql.length
-        ? ql.map((o, pos) => `<li class="flex items-center gap-2" style="justify-content:space-between; font-size:var(--fs-sm); background:var(--brand-tint); padding:.5em .7em; border-radius:8px">
-            <span><b style="color:var(--muted)">${pos + 1}.</b> ${o.q.text} <span class="chip" style="padding:.05em .5em; font-size:.68rem">${bandLabel(o.q)}</span></span>
-            <button class="btn btn--ghost" data-del-q="${d.code}|${o.i}" title="Padam soalan" style="padding:.2em .45em; flex:none">${ICONS.trash}</button>
-          </li>`).join('')
-        : `<li class="muted" style="font-size:var(--fs-sm)">Tiada soalan untuk tapisan ini.</li>`;
-      return `
-      <div class="card" style="--dc:${d.color}; border-left:4px solid ${d.color}">
-        <div class="flex items-center gap-2" style="justify-content:space-between">
-          <div class="flex items-center gap-2">
-            <span class="domain-card__ico" style="width:38px;height:38px;margin:0">${ICONS[d.icon] || ICONS.star}</span>
-            <strong style="font-family:var(--font-head)">${d.name}</strong>
-            <span class="muted" style="font-size:var(--fs-xs)">(${ql.length})</span>
-          </div>
-          ${d.locked ? `<span class="chip">Domain teras</span>`
-            : `<button class="btn btn--ghost" data-del-domain="${d.code}" style="padding:.35em .7em">${ICONS.trash} Padam domain</button>`}
+  function renderKind(kind) {
+    const el = elFor(kind);
+    if (!el) return;
+    const meta = SCREEN_META[kind];
+    const items = getScreeningItems()[kind] || [];
+    const li = items.length
+      ? items.map((q, i) => `<li class="flex items-center gap-2" style="justify-content:space-between; font-size:var(--fs-sm); background:var(--brand-tint); padding:.5em .7em; border-radius:8px">
+          <span><b style="color:var(--muted)">${i + 1}.</b> ${q.text}</span>
+          <span class="flex gap-1" style="flex:none">
+            <button class="btn btn--ghost" data-flipq="${kind}|${i}" title="Klik untuk tukar jawapan yang menandakan risiko" style="padding:.15em .55em; font-size:.68rem; white-space:nowrap">Risiko: ${q.riskIf === 'ya' ? 'Ya' : 'Tidak'}</button>
+            <button class="btn btn--ghost" data-delq="${kind}|${i}" title="Padam soalan" style="padding:.2em .45em">${ICONS.trash}</button>
+          </span>
+        </li>`).join('')
+      : `<li class="muted" style="font-size:var(--fs-sm)">Tiada soalan lagi. Tambah di bawah.</li>`;
+    el.style.setProperty('--dc', meta.color);
+    el.style.borderLeft = '4px solid ' + meta.color;
+    el.innerHTML = `
+      <div class="flex items-center gap-2" style="justify-content:space-between">
+        <div class="flex items-center gap-2">
+          <span class="domain-card__ico" style="width:38px;height:38px;margin:0">${ICONS[meta.icon] || ICONS.star}</span>
+          <strong style="font-family:var(--font-head)">${meta.name}</strong>
+          <span class="muted" style="font-size:var(--fs-xs)">(${items.length})</span>
         </div>
-        <ul style="list-style:none; padding:0; margin:var(--sp-3) 0 0; display:grid; gap:6px">${qhtml}</ul>
-        <form data-add-q="${d.code}" class="flex gap-2 wrap mt-3">
-          <input class="input" name="q" placeholder="Tambah soalan baharu…" style="flex:1; min-width:180px" required>
-          <select class="select" name="band" title="Kumpulan umur" style="flex:none; width:auto">${ageBandOptions(defBand)}</select>
-          <button class="btn" type="submit" style="flex:none">${ICONS.plus} Soalan</button>
-        </form>
-      </div>`;
-    }).join('') || `<div class="notice">${ICONS.info}<span>Tiada domain sepadan dengan tapisan.</span></div>`;
+      </div>
+      <ul style="list-style:none; padding:0; margin:var(--sp-3) 0 0; display:grid; gap:6px">${li}</ul>
+      <form data-addq="${kind}" class="flex gap-2 wrap mt-3">
+        <input class="input" name="q" placeholder="Tambah soalan baharu…" style="flex:1; min-width:180px" required>
+        <select class="select" name="riskIf" title="Jawapan yang menandakan risiko" style="flex:none; width:auto">
+          <option value="tidak">Risiko jika: Tidak</option>
+          <option value="ya">Risiko jika: Ya</option>
+        </select>
+        <button class="btn" type="submit" style="flex:none">${ICONS.plus} Soalan</button>
+      </form>`;
+  }
 
-    listEl.querySelectorAll('[data-del-domain]').forEach(btn => btn.addEventListener('click', () => {
-      if (!confirm('Padam domain ini daripada saringan?')) return;
-      saveDomains(getDomains().filter(d => d.code !== btn.dataset.delDomain));
-      render();
-    }));
-    listEl.querySelectorAll('[data-del-q]').forEach(btn => btn.addEventListener('click', () => {
-      const [code, idx] = btn.dataset.delQ.split('|');
-      const domains = getDomains();
-      const d = domains.find(x => x.code === code);
-      if (d) { d.questions.splice(Number(idx), 1); saveDomains(domains); render(); }
-    }));
-    listEl.querySelectorAll('[data-add-q]').forEach(form => form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const code = form.dataset.addQ;
-      const input = form.querySelector('input[name=q]');
-      const q = (input.value || '').trim();
+  function renderAll() {
+    KINDS.forEach(renderKind);
+    document.querySelectorAll('[data-delq]').forEach(btn => btn.onclick = () => {
+      const [kind, idx] = btn.dataset.delq.split('|');
+      if (!confirm('Padam soalan ini daripada saringan?')) return;
+      const it = getScreeningItems();
+      it[kind].splice(Number(idx), 1);
+      saveScreeningItems(it);
+      logAudit('question.delete', `Padam soalan ${SCREEN_META[kind].short}`);
+      renderAll();
+    });
+    document.querySelectorAll('[data-flipq]').forEach(btn => btn.onclick = () => {
+      const [kind, idx] = btn.dataset.flipq.split('|');
+      const it = getScreeningItems();
+      const q = it[kind][Number(idx)];
       if (!q) return;
-      const [mn, mx] = (form.querySelector('[name=band]')?.value || '0-72').split('-').map(Number);
-      const domains = getDomains();
-      const d = domains.find(x => x.code === code);
-      if (d) { d.questions.push({ text: q, minM: mn, maxM: mx }); saveDomains(domains); logAudit('question.add', `Tambah soalan domain ${d.name}: "${q.slice(0, 50)}"`); render(); }
-    }));
-  }
-
-  const iconWrap = document.getElementById('icon-picks');
-  const colorWrap = document.getElementById('color-swatches');
-  if (iconWrap) {
-    iconWrap.innerHTML = DOMAIN_ICONS.map((k, i) => `<button type="button" class="icon-pick${i === 0 ? ' sel' : ''}" data-icon="${k}">${ICONS[k]}</button>`).join('');
-    iconWrap.addEventListener('click', (e) => {
-      const b = e.target.closest('[data-icon]'); if (!b) return;
-      iconWrap.querySelectorAll('.icon-pick').forEach(x => x.classList.remove('sel'));
-      b.classList.add('sel'); pickIcon = b.dataset.icon;
+      q.riskIf = q.riskIf === 'ya' ? 'tidak' : 'ya';
+      saveScreeningItems(it);
+      renderAll();
+    });
+    document.querySelectorAll('[data-addq]').forEach(form => form.onsubmit = (e) => {
+      e.preventDefault();
+      const kind = form.dataset.addq;
+      const input = form.querySelector('input[name=q]');
+      const text = (input.value || '').trim();
+      if (!text) return;
+      const riskIf = form.querySelector('[name=riskIf]')?.value === 'ya' ? 'ya' : 'tidak';
+      const it = getScreeningItems();
+      it[kind].push({ text, riskIf });
+      saveScreeningItems(it);
+      logAudit('question.add', `Tambah soalan ${SCREEN_META[kind].short}: "${text.slice(0, 50)}"`);
+      renderAll();
     });
   }
-  if (colorWrap) {
-    colorWrap.innerHTML = DOMAIN_COLORS.map((c, i) => `<button type="button" class="swatch${i === 0 ? ' sel' : ''}" data-color="${c}" style="background:${c}" aria-label="Warna ${c}"></button>`).join('');
-    colorWrap.addEventListener('click', (e) => {
-      const b = e.target.closest('[data-color]'); if (!b) return;
-      colorWrap.querySelectorAll('.swatch').forEach(x => x.classList.remove('sel'));
-      b.classList.add('sel'); pickColor = b.dataset.color;
-    });
-  }
-  const bandSel = document.getElementById('dom-band');
-  if (bandSel) bandSel.innerHTML = ageBandOptions();
 
-  // Penapis domain & kumpulan umur
-  document.getElementById('filter-domain')?.addEventListener('change', (e) => { fDomain = e.target.value; render(); });
-  document.getElementById('filter-band')?.addEventListener('change', (e) => { fBand = e.target.value; render(); });
-
-  document.getElementById('add-domain-form')?.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const name = val('dom-name');
-    const lines = (document.getElementById('dom-questions')?.value || '').split('\n').map(q => q.trim()).filter(Boolean);
-    if (!name) { alert('Sila masukkan nama domain.'); return; }
-    if (lines.length === 0) { alert('Sila masukkan sekurang-kurangnya satu soalan (satu baris = satu soalan).'); return; }
-    const [dmn, dmx] = (document.getElementById('dom-band')?.value || '0-72').split('-').map(Number);
-    const questions = lines.map(t => ({ text: t, minM: dmn, maxM: dmx }));
-    const domains = getDomains();
-    let code = name.toUpperCase().replace(/[^A-Z0-9]+/g, '_').replace(/^_|_$/g, '') || 'DOMAIN';
-    let unique = code, n = 2;
-    while (domains.some(d => d.code === unique)) unique = code + '_' + (n++);
-    domains.push({ code: unique, name, icon: pickIcon, color: pickColor, locked: false, questions });
-    saveDomains(domains);
-    logAudit('domain.create', `Cipta domain "${name}" (${questions.length} soalan)`);
-    e.target.reset();
-    iconWrap?.querySelectorAll('.icon-pick').forEach((x, i) => x.classList.toggle('sel', i === 0));
-    colorWrap?.querySelectorAll('.swatch').forEach((x, i) => x.classList.toggle('sel', i === 0));
-    pickIcon = DOMAIN_ICONS[0]; pickColor = DOMAIN_COLORS[0];
-    render();
-    alert('Domain baharu ditambah. Ia akan muncul dalam saringan seterusnya.');
-  });
-  render();
+  renderAll();
 }
 
 /* ---------- 15. PENTADBIR: STATISTIK PENGGUNAAN (Modul 6) ---------- */
@@ -1959,7 +1962,7 @@ function sessionReportHTML(heading, subtitle, s) {
   const ans = Object.values(s.domains).map(d => {
     const items = d.items || []; if (!items.length) return '';
     return `<div style="margin-top:10px; break-inside:avoid"><strong style="color:${d.color}">${d.name}</strong>
-      <ul style="list-style:none; padding:0; margin:6px 0 0; display:grid; gap:4px">${items.map((it, i) => `<li style="display:flex; justify-content:space-between; gap:8px; border:1px solid #ddd; padding:4px 8px; border-radius:6px; font-size:10pt"><span>${i + 1}. ${it.text}</span><span class="triage ${it.answer === 'ya' ? 'triage--ok' : 'triage--warn'}">${it.answer === 'ya' ? 'Ya' : 'Tidak'}</span></li>`).join('')}</ul></div>`;
+      <ul style="list-style:none; padding:0; margin:6px 0 0; display:grid; gap:4px">${items.map((it, i) => `<li style="display:flex; justify-content:space-between; gap:8px; border:1px solid #ddd; padding:4px 8px; border-radius:6px; font-size:10pt"><span>${i + 1}. ${it.text}</span><span class="triage ${answerFlagged(it) ? 'triage--warn' : 'triage--ok'}">${it.answer === 'ya' ? 'Ya' : 'Tidak'}</span></li>`).join('')}</ul></div>`;
   }).join('');
   return `${printLetterhead('Saringan Awal')}
     <h3 style="margin:0 0 4pt">${heading}</h3>
@@ -2162,38 +2165,37 @@ function drawDonut(canvas, segments) {
 function initStats() {
   const host = document.getElementById('stat-cards');
   if (!host) return;
-  const users = getUsers(), children = getChildren(), subs = getSubmissions(), domains = getDomains();
+  const users = getUsers(), children = getChildren(), subs = getSubmissions();
   const activeUsers = new Set(subs.map(s => s.userId).filter(Boolean)).size;
-  const avg = subs.length ? Math.round(subs.reduce((a, s) => a + s.totalAchieved / s.total, 0) / subs.length * 100) : 0;
-  const refCount = subs.filter(s => triageOf(s).cls === 'triage--ref').length;
+  const riskSubs = subs.filter(s => typeof s.autismRisk === 'number');
+  const avgRisk = riskSubs.length ? Math.round(riskSubs.reduce((a, s) => a + s.autismRisk, 0) / riskSubs.length) : 0;
+  const highCount = subs.filter(s => triageOf(s).cls === 'triage--ref').length;
 
   host.innerHTML = [
     ['Jumlah Pendaftaran', users.length, 'akaun ibu bapa'],
     ['Profil Anak', children.length, 'kanak-kanak didaftar'],
     ['Saringan Selesai', subs.length, 'sesi saringan'],
     ['Pengguna Aktif', activeUsers, 'membuat saringan'],
-    ['Purata Pencapaian', avg + '%', 'kemahiran dicapai'],
-    ['Kes Perlu Rujukan', refCount, 'saringan < 70%'],
+    ['Purata Risiko Autisme', avgRisk + '%', 'merentas M-CHAT & Sensori'],
+    ['Kes Risiko Tinggi', highCount, 'perlu rujukan doktor'],
   ].map(([label, num, sub]) => `
     <div class="card"><div class="mini-stat"><b class="tnum">${num}</b><span>${label}</span></div>
       <p class="muted" style="font-size:var(--fs-xs); margin:4px 0 0">${sub}</p></div>`).join('');
 
-  // Purata pencapaian setiap domain (merentas semua saringan)
+  // Purata risiko mengikut jenis saringan (M-CHAT vs Sensori)
   const barsEl = document.getElementById('stat-domains');
   if (barsEl) {
-    const agg = {};
-    subs.forEach(s => Object.entries(s.domains).forEach(([code, d]) => {
-      agg[code] = agg[code] || { name: d.name, color: d.color, ach: 0, tot: 0 };
-      agg[code].ach += d.achieved; agg[code].tot += d.total;
-    }));
-    const rows = Object.values(agg);
-    barsEl.innerHTML = rows.length ? rows.map(d => {
-      const pct = Math.round(d.ach / d.tot * 100);
-      return `<div class="dscore" style="--dc:${d.color}">
-        <div class="dscore__label"><span class="dot"></span>${d.name}</div>
-        <div class="progress-bar"><span style="width:${pct}%"></span></div>
-        <div class="dscore__pct tnum">${pct}%</div></div>`;
-    }).join('') : '<p class="muted">Tiada data saringan lagi.</p>';
+    const rows = ['mchat', 'sensori'].map(tp => {
+      const arr = subs.filter(s => s.type === tp);
+      const meta = SCREEN_META[tp];
+      const avg = arr.length ? Math.round(arr.reduce((a, s) => a + (s.autismRisk || 0), 0) / arr.length) : 0;
+      return { name: meta.name, color: meta.color, count: arr.length, avg };
+    }).filter(x => x.count > 0);
+    barsEl.innerHTML = rows.length ? rows.map(d => `
+      <div class="dscore" style="--dc:${d.color}">
+        <div class="dscore__label"><span class="dot"></span>${d.name} <span class="muted">(${d.count} sesi)</span></div>
+        <div class="progress-bar"><span style="width:${d.avg}%"></span></div>
+        <div class="dscore__pct tnum">${d.avg}%</div></div>`).join('') : '<p class="muted">Tiada data saringan lagi.</p>';
   }
 
   // ---- Carta trend & taburan triage (Canvas) ----
@@ -2258,7 +2260,7 @@ function buildReportRows() {
   return users.map(u => {
     const us = subs.filter(s => s.userId === u.id);
     const last = us[0];
-    const avg = us.length ? Math.round(us.reduce((a, s) => a + s.totalAchieved / s.total, 0) / us.length * 100) : 0;
+    const avg = avgScore(us);
     return {
       id: u.id, name: u.name, email: u.email, phone: u.phone || '-',
       children: childrenOf(u.id).length, screenings: us.length,
@@ -2530,7 +2532,7 @@ function sessionAnswersHTML(s) {
   const ans = Object.values(s.domains).map(d => {
     const items = d.items || []; if (!items.length) return '';
     return `<div style="margin-top:var(--sp-3)"><strong style="color:${d.color}">${d.name}</strong>
-      <ul style="list-style:none; padding:0; margin:6px 0 0; display:grid; gap:6px">${items.map((it, i) => `<li class="flex items-center gap-2" style="justify-content:space-between; background:#fff; border:1px solid var(--line); padding:.5em .7em; border-radius:8px; font-size:var(--fs-sm)"><span>${i + 1}. ${it.text}</span><span class="triage ${it.answer === 'ya' ? 'triage--ok' : 'triage--warn'}">${it.answer === 'ya' ? 'Ya' : 'Tidak'}</span></li>`).join('')}</ul></div>`;
+      <ul style="list-style:none; padding:0; margin:6px 0 0; display:grid; gap:6px">${items.map((it, i) => `<li class="flex items-center gap-2" style="justify-content:space-between; background:#fff; border:1px solid var(--line); padding:.5em .7em; border-radius:8px; font-size:var(--fs-sm)"><span>${i + 1}. ${it.text}</span><span class="triage ${answerFlagged(it) ? 'triage--warn' : 'triage--ok'}">${it.answer === 'ya' ? 'Ya' : 'Tidak'}</span></li>`).join('')}</ul></div>`;
   }).join('');
   return `<div class="domain-scores">${scores}</div>${ans || '<p class="muted" style="margin:var(--sp-2) 0 0">Tiada butiran jawapan direkodkan untuk sesi ini.</p>'}`;
 }
@@ -2538,7 +2540,7 @@ function sessionAnswersHTML(s) {
 // Laporan seorang ibu bapa (paparan skrin) — ringkasan + sejarah saringan
 // setiap anak. Dipapar dalam modal di tab Laporan Pengguna.
 function parentReportScreenHTML(u, kids, subs) {
-  const avg = subs.length ? Math.round(subs.reduce((a, s) => a + s.totalAchieved / s.total, 0) / subs.length * 100) : 0;
+  const avg = avgScore(subs);
   const childBlocks = kids.length ? kids.map(c => {
     const cs = subs.filter(s => s.childId === c.id);
     const m = ageInMonths(c.dob);
@@ -2547,7 +2549,7 @@ function parentReportScreenHTML(u, kids, subs) {
       return `<tr class="${t.row}">
         <td class="muted" style="white-space:nowrap">${fmtDate(s.submittedAt)}</td>
         <td>${ageText(s.ageMonths)}</td>
-        <td><strong class="tnum">${s.totalAchieved}/${s.total}</strong> <span class="muted">(${t.pct}%)</span></td>
+        <td>${scoreCellHTML(s, t)}</td>
         <td><span class="triage ${t.cls}"><span class="tdot"></span>${t.label}</span></td>
         <td class="col-action"><button class="btn btn--ghost" data-sess="${s.id}" style="padding:.3em .6em" title="Lihat jawapan saringan ini">${ICONS.eye} Jawapan</button></td>
       </tr>`;
@@ -2563,7 +2565,7 @@ function parentReportScreenHTML(u, kids, subs) {
     <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:var(--sp-3); margin-bottom:var(--sp-2)">
       <div><span class="muted" style="display:block; font-size:var(--fs-xs)">E-mel</span><strong>${u.email}</strong></div>
       <div><span class="muted" style="display:block; font-size:var(--fs-xs)">Telefon</span><strong>${u.phone || '-'}</strong></div>
-      <div><span class="muted" style="display:block; font-size:var(--fs-xs)">Purata Kemahiran</span><strong>${subs.length ? avg + '%' : '—'}</strong></div>
+      <div><span class="muted" style="display:block; font-size:var(--fs-xs)">Purata Skor</span><strong>${subs.length ? avg + '%' : '—'}</strong></div>
     </div>
     <div class="flex gap-2 wrap"><span class="chip">${kids.length} anak</span><span class="chip">${subs.length} saringan</span></div>
     ${childBlocks}`;
@@ -2835,7 +2837,7 @@ function initAdminAccounts() {
     const ns = { ...me, ...upd };
     sessionStorage.setItem('ejejak_admin', JSON.stringify(ns));
     const nameEl = document.getElementById('doctor-name');
-    if (nameEl) nameEl.textContent = `${ns.name} · ${ROLE_LABEL[role] || role}${ns.org ? ' (' + ns.org + ')' : ''}`;
+    if (nameEl) nameEl.textContent = staffChipLabel(ns.name, role, ns.org);
     alert('Profil dikemas kini.');
   });
 
@@ -3046,7 +3048,7 @@ function initHistory() {
     return `<tr class="${t.row}">
       <td class="muted" style="white-space:nowrap">${fmtDate(s.submittedAt)}</td>
       <td>${ageText(s.ageMonths)}<br><span class="muted" style="font-size:var(--fs-xs)">${s.ageGroup}</span></td>
-      <td><strong class="tnum">${s.totalAchieved}/${s.total}</strong> <span class="muted">(${t.pct}%)</span></td>
+      <td>${scoreCellHTML(s, t)}</td>
       <td><span class="triage ${t.cls}"><span class="tdot"></span>${t.label}</span></td>
       <td class="col-action"><button class="btn btn--ghost" data-hist="${s.id}" style="padding:.5em .8em">${ICONS.eye} Lihat</button></td>
     </tr>`;
@@ -3083,7 +3085,7 @@ function initHistory() {
     const ans = Object.values(s.domains).map(d => {
       const items = d.items || []; if (!items.length) return '';
       return `<div style="margin-top:var(--sp-3)"><strong style="color:${d.color}">${d.name}</strong>
-        <ul style="list-style:none; padding:0; margin:6px 0 0; display:grid; gap:6px">${items.map((it, i) => `<li class="flex items-center gap-2" style="justify-content:space-between; background:var(--brand-tint); padding:.5em .7em; border-radius:8px; font-size:var(--fs-sm)"><span>${i + 1}. ${it.text}</span><span class="triage ${it.answer === 'ya' ? 'triage--ok' : 'triage--warn'}">${it.answer === 'ya' ? 'Ya' : 'Tidak'}</span></li>`).join('')}</ul></div>`;
+        <ul style="list-style:none; padding:0; margin:6px 0 0; display:grid; gap:6px">${items.map((it, i) => `<li class="flex items-center gap-2" style="justify-content:space-between; background:var(--brand-tint); padding:.5em .7em; border-radius:8px; font-size:var(--fs-sm)"><span>${i + 1}. ${it.text}</span><span class="triage ${answerFlagged(it) ? 'triage--warn' : 'triage--ok'}">${it.answer === 'ya' ? 'Ya' : 'Tidak'}</span></li>`).join('')}</ul></div>`;
     }).join('');
     document.getElementById('h-body').innerHTML =
       `<div class="flex gap-3 wrap" style="margin-bottom:var(--sp-3)"><span class="chip">Markah ${s.totalAchieved}/${s.total} (${t.pct}%)</span><span class="triage ${t.cls}"><span class="tdot"></span>${t.label}</span></div>
@@ -3245,7 +3247,7 @@ function initProgram() {
       const isJoined = joined.has(p.id);
       return `<div class="card" style="display:flex; flex-direction:column; gap:var(--sp-2)">
         <strong style="font-family:var(--font-head); font-size:var(--fs-md)">${p.title}</strong>
-        <div class="muted" style="font-size:var(--fs-sm); display:flex; flex-direction:column; gap:4px">
+        <div class="muted prog-meta" style="font-size:var(--fs-sm); display:flex; flex-direction:column; gap:4px">
           <span>${ICONS.clock} ${programDateText(p.date)}</span>
           <span>${ICONS.pin} ${p.location || 'Lokasi akan diumumkan'}</span>
         </div>
@@ -3347,7 +3349,7 @@ function initVideosAdmin() {
    ialah IIFE yang menjalankan persediaannya sendiri & no-op jika elemen
    sasarannya tiada — jadi selamat dimuat pada mana-mana halaman. Semua
    dengan cache-busting ?v=20260806a. */
-const FEATURE_V = '20260806p';
+const FEATURE_V = '20260806q';
 function loadFeatureModules() {
   const injectCss = (href) => {
     const link = document.createElement('link');
@@ -3374,6 +3376,142 @@ function loadFeatureModules() {
   }
 }
 
+/* ---------- 18h. PENJANA LAPORAN FLEKSIBEL (superadmin & pentadbir) -
+   Admin pilih sumber data + penapis, jana untuk papar / CSV / cetak PDF. */
+function userCreatedISO(u) {
+  if (u.createdAt) return u.createdAt;
+  const m = /^U(\d{12,})$/.exec(u.id || '');
+  return m ? new Date(Number(m[1])).toISOString() : '';
+}
+function reportBuilderPrintHTML(rep) {
+  const thead = '<tr>' + rep.head.map(h => `<th style="text-align:left; border-bottom:2px solid #333; padding:4px 8px; font-size:10pt">${h}</th>`).join('') + '</tr>';
+  const tbody = rep.rows.length
+    ? rep.rows.map(r => '<tr>' + r.map(c => `<td style="border-bottom:1px solid #ccc; padding:4px 8px; font-size:9.5pt">${c}</td>`).join('') + '</tr>').join('')
+    : `<tr><td colspan="${rep.head.length}" style="padding:8px; color:#666">Tiada rekod.</td></tr>`;
+  return `${printLetterhead(rep.title)}
+    <h3 style="margin:0 0 4pt">${rep.title}</h3>
+    <p class="print-sub" style="margin:0 0 8pt">${rep.rows.length} rekod · dijana ${new Date().toLocaleDateString('ms-MY', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+    <table style="width:100%; border-collapse:collapse"><thead>${thead}</thead><tbody>${tbody}</tbody></table>
+    <p style="font-size:8pt; color:#555; margin-top:12pt; border-top:1px solid #ddd; padding-top:6pt">e-Jejak Anak · USM &amp; MAIK — laporan dijana untuk kegunaan dalaman.</p>`;
+}
+function initReportBuilder() {
+  const table = document.getElementById('rb-table');
+  if (!table) return;
+  if (!canManageAccounts(currentAdmin()?.role)) return; // pentadbir & superadmin
+
+  const DISTRICTS = ['Bachok', 'Gua Musang', 'Jeli', 'Kota Bharu', 'Kuala Krai', 'Machang', 'Pasir Mas', 'Pasir Puteh', 'Tanah Merah', 'Tumpat'];
+  const sourceSel = document.getElementById('rb-source');
+  const districtSel = document.getElementById('rb-district');
+  const countEl = document.getElementById('rb-count');
+  let lastReport = null;
+
+  if (districtSel) districtSel.innerHTML = '<option value="semua">Semua Daerah</option>' +
+    DISTRICTS.map(d => `<option value="${d}">${d}</option>`).join('');
+
+  const districtOf = (uid) => (getUsers().find(u => u.id === uid) || {}).district || '';
+  function dateInRange(iso, from, to) {
+    if (!iso) return !(from || to);
+    const d = String(iso).slice(0, 10);
+    if (from && d < from) return false;
+    if (to && d > to) return false;
+    return true;
+  }
+
+  function syncFields() {
+    const isSar = sourceSel.value === 'saringan';
+    document.querySelectorAll('[data-when-source="saringan"]').forEach(el => { el.style.display = isSar ? '' : 'none'; });
+  }
+
+  function build() {
+    const src = sourceSel.value;
+    const from = document.getElementById('rb-from').value;
+    const to = document.getElementById('rb-to').value;
+    const dist = districtSel.value;
+    const distOk = (d) => dist === 'semua' || d === dist;
+
+    if (src === 'pengguna') {
+      const rows = getUsers().filter(u => (u.role || 'parent') === 'parent').filter(u => {
+        if (!distOk(u.district || '')) return false;
+        if ((from || to) && !dateInRange(userCreatedISO(u), from, to)) return false;
+        return true;
+      }).map(u => [u.name, u.email, u.phone || '-', u.district || '-',
+        u.accountType === 'knowledge' ? 'e-Pembelajaran' : 'Saringan',
+        childrenOf(u.id).length, getSubmissions().filter(s => s.userId === u.id).length, userCreatedText(u)]);
+      return { title: 'Laporan Pengguna', head: ['Nama', 'E-mel', 'Telefon', 'Daerah', 'Jenis Akaun', 'Bil. Anak', 'Bil. Saringan', 'Daftar'], rows };
+    }
+
+    if (src === 'anak') {
+      const rows = getChildren().filter(c => distOk(districtOf(c.userId))).map(c => {
+        const parent = getUsers().find(u => u.id === c.userId) || {};
+        return [c.name, c.gender || '-', ageText(ageInMonths(c.dob)), c.tempatLahir || '-', parent.name || '-', parent.district || '-'];
+      });
+      return { title: 'Laporan Profil Anak', head: ['Nama Anak', 'Jantina', 'Umur', 'Tempat Lahir', 'Ibu / Bapa', 'Daerah'], rows };
+    }
+
+    if (src === 'kehadiran') {
+      const progById = {}; getPrograms().forEach(p => { progById[p.id] = p; });
+      const rows = getAttendance().filter(a => {
+        const p = progById[a.programId] || {};
+        if (!distOk(a.district || '')) return false;
+        if ((from || to) && !dateInRange(p.date, from, to)) return false;
+        return true;
+      }).map(a => {
+        const p = progById[a.programId] || {};
+        return [p.title || '-', p.date || '-', a.name || '-', a.district || '-', a.checkedIn ? 'Hadir' : 'Daftar'];
+      });
+      return { title: 'Laporan Program & Kehadiran', head: ['Program', 'Tarikh', 'Peserta', 'Daerah', 'Kehadiran'], rows };
+    }
+
+    // Saringan (default)
+    const type = document.getElementById('rb-type').value;
+    const band = document.getElementById('rb-band').value;
+    const status = document.getElementById('rb-status').value;
+    const rows = getSubmissions().filter(s => {
+      if (!dateInRange(s.submittedAt, from, to)) return false;
+      if (!distOk(districtOf(s.userId))) return false;
+      if (type !== 'semua' && s.type !== type) return false;
+      if (band !== 'semua' && (s.autismBand || autismBandFor(s.autismRisk || 0)) !== band) return false;
+      if (status !== 'semua' && s.status !== status) return false;
+      return true;
+    }).map(s => [s.childName, s.parentName || '-', districtOf(s.userId) || '-', fmtDate(s.submittedAt),
+      screenTypeLabel(s), (typeof s.autismRisk === 'number' ? s.autismRisk + '%' : '-'),
+      s.autismBand || '-', s.status === 'dihubungi' ? 'Dihubungi' : 'Baharu']);
+    return { title: 'Laporan Saringan', head: ['Anak', 'Ibu Bapa', 'Daerah', 'Tarikh', 'Jenis', 'Risiko', 'Band', 'Status'], rows };
+  }
+
+  function render(rep) {
+    lastReport = rep;
+    const thead = '<thead><tr>' + rep.head.map(h => `<th>${h}</th>`).join('') + '</tr></thead>';
+    const tbody = rep.rows.length
+      ? '<tbody>' + rep.rows.map(r => '<tr>' + r.map(c => `<td>${c}</td>`).join('') + '</tr>').join('') + '</tbody>'
+      : `<tbody><tr><td colspan="${rep.head.length}" style="text-align:center; padding:var(--sp-5); color:var(--muted)">Tiada rekod untuk penapis ini.</td></tr></tbody>`;
+    table.innerHTML = thead + tbody;
+    if (countEl) countEl.innerHTML = `<strong>${rep.title}</strong> — ${rep.rows.length} rekod dijana.`;
+  }
+
+  sourceSel?.addEventListener('change', syncFields);
+  document.getElementById('rb-generate')?.addEventListener('click', () => render(build()));
+  document.getElementById('rb-csv')?.addEventListener('click', () => {
+    const rep = lastReport || build();
+    const csv = [rep.head].concat(rep.rows)
+      .map(row => row.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\r\n');
+    const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = rep.title.replace(/\s+/g, '-').toLowerCase() + '.csv';
+    a.click();
+    URL.revokeObjectURL(a.href);
+    logAudit('report.export', `Muat turun CSV: ${rep.title} (${rep.rows.length} rekod)`);
+  });
+  document.getElementById('rb-pdf')?.addEventListener('click', () => {
+    const rep = lastReport || build();
+    printRegion(reportBuilderPrintHTML(rep));
+    logAudit('report.export', `Cetak/PDF: ${rep.title} (${rep.rows.length} rekod)`);
+  });
+
+  syncFields();
+}
+
 /* ---------- 19. INIT ----------------------------------------------- */
 document.addEventListener('DOMContentLoaded', () => {
   ensureSeed();
@@ -3384,6 +3522,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupRoleAccess();
   initCarousel();
   initTabs();
+  initSubTabs();
   initFaq();
   initAuthForms();
   initDashboard();
@@ -3394,6 +3533,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initDomainAdmin();
   initStats();
   initReports();
+  initReportBuilder();
   initArticlesAdmin();
   initArticlesPublic();
   initUsersAdmin();
