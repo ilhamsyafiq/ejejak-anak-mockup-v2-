@@ -65,19 +65,19 @@
       '.a11y-fab svg{width:28px;height:28px;}',
 
       /* Panel */
-      '.a11y-panel{position:fixed;left:20px;bottom:84px;z-index:1201;width:300px;max-width:calc(100vw - 40px);',
+      '.a11y-panel{position:fixed;left:20px;bottom:84px;z-index:1201;width:264px;max-width:calc(100vw - 40px);',
       'max-height:calc(100vh - 110px);overflow-y:auto;background:#fff;color:var(--ink,#16303A);',
       'border:1px solid var(--line,#E1E9EB);border-radius:var(--radius,14px);',
-      'box-shadow:var(--shadow-lg,0 18px 48px rgba(11,79,108,.2));padding:16px;',
+      'box-shadow:var(--shadow-lg,0 18px 48px rgba(11,79,108,.2));padding:12px 14px;',
       'font-family:var(--font-body,system-ui);font-size:var(--fs-sm,.9rem);display:none;}',
       '.a11y-panel[data-open="1"]{display:block;animation:a11yUp .18s ease;}',
       '@keyframes a11yUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}',
       '.a11y-panel h3{margin:0 0 2px;font-size:var(--fs-md,1.15rem);color:var(--brand-dark,#D81217);font-family:var(--font-head,system-ui);}',
-      '.a11y-panel .a11y-sub{margin:0 0 12px;color:var(--muted,#5B7178);font-size:var(--fs-xs,.78rem);}',
+      '.a11y-panel .a11y-sub{margin:0 0 8px;color:var(--muted,#5B7178);font-size:var(--fs-xs,.78rem);}',
 
       /* Baris (toggle & tindakan) — gaya sama */
-      '.a11y-toggle{display:flex;align-items:center;gap:10px;width:100%;margin-bottom:8px;',
-      'padding:9px 12px;border-radius:var(--radius-sm,9px);border:1px solid var(--line,#E1E9EB);',
+      '.a11y-toggle{display:flex;align-items:center;gap:10px;width:100%;margin-bottom:5px;',
+      'padding:7px 10px;border-radius:var(--radius-sm,9px);border:1px solid var(--line,#E1E9EB);',
       'background:var(--surface-2,#FBFDFD);color:var(--ink,#16303A);cursor:pointer;font:inherit;text-align:left;}',
       '.a11y-toggle:hover{border-color:var(--brand,#F51818);}',
       '.a11y-ico{flex:0 0 auto;width:22px;height:22px;display:grid;place-items:center;color:var(--brand,#F51818);}',

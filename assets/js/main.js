@@ -3349,7 +3349,7 @@ function initVideosAdmin() {
    ialah IIFE yang menjalankan persediaannya sendiri & no-op jika elemen
    sasarannya tiada — jadi selamat dimuat pada mana-mana halaman. Semua
    dengan cache-busting ?v=20260806a. */
-const FEATURE_V = '20260806q';
+const FEATURE_V = '20260806r';
 function loadFeatureModules() {
   const injectCss = (href) => {
     const link = document.createElement('link');

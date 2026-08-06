@@ -51,14 +51,14 @@
     .reg-head h1 { font-size: var(--fs-xl); margin: 0; line-height: 1.1; }
     .reg-section-label {
       font-family: var(--font-head); font-weight: 700; font-size: var(--fs-xs); letter-spacing: .06em;
-      text-transform: uppercase; color: var(--muted); margin: var(--sp-4) 0 var(--sp-2);
+      text-transform: uppercase; color: var(--muted); margin: var(--sp-3) 0 var(--sp-2);
     }
 
     /* Tile boleh pilih (jenis akaun + saluran OTP) */
     .pick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-2); }
     .pick-tile {
-      position: relative; display: flex; gap: var(--sp-2); align-items: flex-start;
-      padding: var(--sp-3); border: 1.5px solid var(--line); border-radius: var(--radius);
+      position: relative; display: flex; gap: var(--sp-2); align-items: center;
+      padding: var(--sp-2) var(--sp-3); border: 1.5px solid var(--line); border-radius: var(--radius);
       cursor: pointer; background: #fff; transition: border-color .15s, background .15s, box-shadow .15s, transform .05s;
     }
     .pick-tile:hover { border-color: var(--brand); background: var(--brand-tint); }
@@ -70,13 +70,13 @@
     }
     .pick-tile:has(input:focus-visible) { outline: 2px solid var(--brand); outline-offset: 2px; }
     .pick-tile__ico {
-      width: 36px; height: 36px; border-radius: 10px; flex: none; display: grid; place-items: center;
+      width: 30px; height: 30px; border-radius: 9px; flex: none; display: grid; place-items: center;
       background: var(--brand-soft, var(--brand-tint)); color: var(--brand); transition: background .15s, color .15s;
     }
-    .pick-tile__ico svg { width: 20px; height: 20px; }
+    .pick-tile__ico svg { width: 17px; height: 17px; }
     .pick-tile:has(input:checked) .pick-tile__ico { background: var(--brand); color: #fff; }
-    .pick-tile__meta strong { display: block; font-family: var(--font-head); line-height: 1.15; }
-    .pick-tile__meta span { font-size: var(--fs-sm); color: var(--muted); }
+    .pick-tile__meta strong { display: block; font-family: var(--font-head); line-height: 1.15; font-size: var(--fs-sm); }
+    .pick-tile__meta span { font-size: var(--fs-xs); color: var(--muted); line-height: 1.3; }
     .pick-tile__check {
       position: absolute; top: 8px; right: 8px; width: 18px; height: 18px; border-radius: 50%;
       display: grid; place-items: center; background: var(--brand); color: #fff; opacity: 0; transform: scale(.6);
@@ -148,7 +148,7 @@
               <span class="pick-tile__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01M15 12h.01M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19 6.3a9 9 0 0 1 1.8 3.9 2 2 0 0 1 0 3.6 9 9 0 0 1-17.6 0 2 2 0 0 1 0-3.6A9 9 0 0 1 12 3c2 0 3.5 1.1 3.5 2.5S14.5 8 13 8"/></svg></span>
               <span class="pick-tile__meta">
                 <strong>Saringan Anak</strong>
-                <span>Saringan perkembangan &amp; e-Pembelajaran</span>
+                <span>Saringan anak &amp; pembelajaran</span>
               </span>
               <span class="pick-tile__check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
             </label>
@@ -245,6 +245,6 @@
   </main>
 
   <div id="site-footer"></div>
-  <script src="assets/js/main.js?v=20260806x"></script>
+  <script src="assets/js/main.js?v=20260806y"></script>
 </body>
 </html>
