@@ -4,6 +4,7 @@ Thumbs.db
 *.log
 .vscode/
 .idea/
+.history/
 
 # Fail kunci sementara Office (Word/Excel)
 ~$*

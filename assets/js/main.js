@@ -65,42 +65,165 @@ function write(key, v) { localStorage.setItem(key, JSON.stringify(v)); }
    membolehkan "Checklist mengikut umur" (Modul 3). */
 const DEFAULT_DOMAINS = [
   { code: 'MOTOR_KASAR', name: 'Motor Kasar', icon: 'motorKasar', color: 'var(--dom-motor-kasar)', locked: true, questions: [
-    { text: 'Adakah anak anda boleh mengangkat kepala semasa meniarap?', minM: 1, maxM: 6 },
-    { text: 'Adakah anak anda boleh duduk tanpa sokongan?', minM: 6, maxM: 12 },
-    { text: 'Adakah anak anda boleh berjalan sendiri tanpa bantuan?', minM: 12, maxM: 30 },
-    { text: 'Adakah anak anda boleh naik tangga dengan berpaut?', minM: 18, maxM: 36 },
-    { text: 'Adakah anak anda boleh menendang bola ke hadapan?', minM: 18, maxM: 48 },
-    { text: 'Adakah anak anda boleh melompat dengan dua kaki serentak?', minM: 30, maxM: 72 },
-    { text: 'Adakah anak anda boleh berdiri atas sebelah kaki seketika?', minM: 36, maxM: 72 },
+    { text: 'Adakah anak anda boleh mengangkat kepala semasa meniarap?', minM: 0, maxM: 5 },
+    { text: 'Adakah anak anda melakukan "tummy time" (meniarap) dengan selesa?', minM: 0, maxM: 5 },
+    { text: 'Adakah anak anda menendang-nendang kaki secara aktif?', minM: 0, maxM: 5 },
+    { text: 'Adakah anak anda boleh berguling?', minM: 0, maxM: 5 },
+    { text: 'Adakah anak anda boleh duduk tanpa bantuan?', minM: 6, maxM: 11 },
+    { text: 'Adakah anak anda boleh merangkak?', minM: 6, maxM: 11 },
+    { text: 'Adakah anak anda boleh berdiri dengan sokongan?', minM: 6, maxM: 11 },
+    { text: 'Adakah anak anda boleh berdiri sendiri tanpa sokongan?', minM: 12, maxM: 23 },
+    { text: 'Adakah anak anda boleh berjalan sendiri?', minM: 12, maxM: 23 },
+    { text: 'Adakah anak anda boleh melontar bola?', minM: 12, maxM: 23 },
+    { text: 'Adakah anak anda boleh berlari?', minM: 24, maxM: 35 },
+    { text: 'Adakah anak anda boleh naik tangga dengan bantuan?', minM: 24, maxM: 35 },
+    { text: 'Adakah anak anda boleh menendang bola?', minM: 24, maxM: 35 },
+    { text: 'Adakah anak anda boleh melompat dengan dua kaki serentak?', minM: 36, maxM: 47 },
+    { text: 'Adakah anak anda boleh naik tangga berturutan (silih kaki)?', minM: 36, maxM: 47 },
+    { text: 'Adakah anak anda boleh menangkap bola?', minM: 36, maxM: 47 },
+    { text: 'Adakah anak anda boleh melompat jauh?', minM: 48, maxM: 59 },
+    { text: 'Adakah anak anda boleh berdiri atas sebelah kaki seketika?', minM: 48, maxM: 59 },
+    { text: 'Adakah anak anda boleh mengayuh basikal roda tiga?', minM: 48, maxM: 59 },
+    { text: 'Adakah anak anda boleh berlari dengan laju?', minM: 60, maxM: 72 },
+    { text: 'Adakah anak anda boleh melompat tali?', minM: 60, maxM: 72 },
+    { text: 'Adakah anak anda boleh mengimbangi badan dengan lebih baik?', minM: 60, maxM: 72 },
   ]},
   { code: 'MOTOR_HALUS', name: 'Motor Halus', icon: 'motorHalus', color: 'var(--dom-motor-halus)', locked: true, questions: [
-    { text: 'Adakah anak anda boleh menggenggam objek yang diberikan?', minM: 4, maxM: 12 },
-    { text: 'Adakah anak anda boleh menyusun 2–3 blok?', minM: 12, maxM: 30 },
-    { text: 'Adakah anak anda boleh memegang pensel dan mencoret?', minM: 12, maxM: 36 },
-    { text: 'Adakah anak anda boleh melukis bulatan?', minM: 30, maxM: 72 },
-    { text: 'Adakah anak anda boleh menggunting kertas dengan bantuan?', minM: 36, maxM: 72 },
+    { text: 'Adakah anak anda boleh menggenggam mainan?', minM: 0, maxM: 5 },
+    { text: 'Adakah anak anda membawa tangan ke mulut?', minM: 0, maxM: 5 },
+    { text: 'Adakah anak anda cuba mencapai objek?', minM: 0, maxM: 5 },
+    { text: 'Adakah anak anda boleh memindahkan mainan dari satu tangan ke tangan lain?', minM: 6, maxM: 11 },
+    { text: 'Adakah anak anda boleh mencubit menggunakan ibu jari dan jari?', minM: 6, maxM: 11 },
+    { text: 'Adakah anak anda boleh menepuk tangan?', minM: 6, maxM: 11 },
+    { text: 'Adakah anak anda boleh menyusun blok?', minM: 12, maxM: 23 },
+    { text: 'Adakah anak anda boleh menconteng?', minM: 12, maxM: 23 },
+    { text: 'Adakah anak anda boleh makan sendiri menggunakan sudu?', minM: 12, maxM: 23 },
+    { text: 'Adakah anak anda boleh menyusun 4-6 blok?', minM: 24, maxM: 35 },
+    { text: 'Adakah anak anda boleh menyelak helaian buku?', minM: 24, maxM: 35 },
+    { text: 'Adakah anak anda boleh membuka atau menutup bekas?', minM: 24, maxM: 35 },
+    { text: 'Adakah anak anda boleh melukis bentuk bulat?', minM: 36, maxM: 47 },
+    { text: 'Adakah anak anda boleh menggunting dengan bantuan?', minM: 36, maxM: 47 },
+    { text: 'Adakah anak anda boleh menulis garisan menegak?', minM: 36, maxM: 47 },
+    { text: 'Adakah anak anda boleh menulis bentuk asas (X, +)?', minM: 48, maxM: 59 },
+    { text: 'Adakah anak anda boleh menggunting mengikut garisan?', minM: 48, maxM: 59 },
+    { text: 'Adakah anak anda boleh menyalin bentuk?', minM: 48, maxM: 59 },
+    { text: 'Adakah anak anda boleh menulis huruf dan nombor?', minM: 60, maxM: 72 },
+    { text: 'Adakah anak anda boleh melukis bentuk kompleks?', minM: 60, maxM: 72 },
+    { text: 'Adakah anak anda boleh menggunting mengikut bentuk?', minM: 60, maxM: 72 },
   ]},
-  { code: 'BAHASA', name: 'Bahasa', icon: 'bahasa', color: 'var(--dom-bahasa)', locked: true, questions: [
-    { text: 'Adakah anak anda bertindak balas terhadap bunyi atau suara?', minM: 0, maxM: 9 },
-    { text: 'Adakah anak anda membebel (babbling) seperti "ba-ba"?', minM: 6, maxM: 12 },
-    { text: 'Adakah anak anda boleh menyebut sekurang-kurangnya 3 perkataan bermakna?', minM: 12, maxM: 24 },
-    { text: 'Adakah anak anda memahami arahan mudah seperti "mari sini"?', minM: 12, maxM: 36 },
-    { text: 'Adakah anak anda menunjuk objek apabila dinamakan?', minM: 12, maxM: 30 },
-    { text: 'Adakah anak anda boleh bercakap ayat 2–3 perkataan?', minM: 24, maxM: 48 },
-    { text: 'Adakah anak anda boleh menceritakan pengalaman ringkas?', minM: 36, maxM: 72 },
+  { code: 'BAHASA', name: 'Komunikasi & Bahasa', icon: 'bahasa', color: 'var(--dom-bahasa)', locked: true, questions: [
+    { text: 'Adakah anak anda merenung muka orang?', minM: 0, maxM: 5 },
+    { text: 'Adakah anak anda mengeluarkan bunyi (cooing)?', minM: 0, maxM: 5 },
+    { text: 'Adakah anak anda tersenyum apabila mendengar suara?', minM: 0, maxM: 5 },
+    { text: 'Adakah anak anda membebel seperti "ma-ma" atau "ba-ba"?', minM: 6, maxM: 11 },
+    { text: 'Adakah anak anda faham arahan ringkas?', minM: 6, maxM: 11 },
+    { text: 'Adakah anak anda menunjuk ke sesuatu?', minM: 6, maxM: 11 },
+    { text: 'Adakah anak anda boleh menyebut 5-20 perkataan?', minM: 12, maxM: 23 },
+    { text: 'Adakah anak anda boleh menggabungkan 2 patah perkataan?', minM: 12, maxM: 23 },
+    { text: 'Adakah anak anda boleh mengikut arahan mudah?', minM: 12, maxM: 23 },
+    { text: 'Adakah anak anda boleh menyebut 50-200 perkataan?', minM: 24, maxM: 35 },
+    { text: 'Adakah anak anda boleh membina ayat 2-3 patah kata?', minM: 24, maxM: 35 },
+    { text: 'Adakah anak anda bertanya "apa" dan "mana"?', minM: 24, maxM: 35 },
+    { text: 'Adakah anak anda boleh membina ayat penuh 4-5 patah kata?', minM: 36, maxM: 47 },
+    { text: 'Adakah anak anda boleh menceritakan pengalaman mudah?', minM: 36, maxM: 47 },
+    { text: 'Adakah anak anda faham konsep masa ringkas (cth. sekarang/nanti)?', minM: 36, maxM: 47 },
+    { text: 'Adakah anak anda mempunyai perbendaharaan kata yang semakin meningkat?', minM: 48, maxM: 59 },
+    { text: 'Adakah anak anda menggunakan ayat yang lebih kompleks?', minM: 48, maxM: 59 },
+    { text: 'Adakah anak anda faham cerita mudah?', minM: 48, maxM: 59 },
+    { text: 'Adakah anak anda boleh bercerita dengan terperinci?', minM: 60, maxM: 72 },
+    { text: 'Adakah anak anda faham arahan yang lebih kompleks?', minM: 60, maxM: 72 },
+    { text: 'Adakah anak anda bersedia untuk belajar membaca?', minM: 60, maxM: 72 },
   ]},
-  { code: 'SOSIAL', name: 'Sosial', icon: 'sosial', color: 'var(--dom-sosial)', locked: true, questions: [
-    { text: 'Adakah anak anda tersenyum kepada orang yang dikenali?', minM: 1, maxM: 9 },
-    { text: 'Adakah anak anda menunjukkan minat bermain dengan orang lain?', minM: 12, maxM: 48 },
-    { text: 'Adakah anak anda melambai "bye-bye"?', minM: 9, maxM: 24 },
-    { text: 'Adakah anak anda boleh bermain secara bergilir dengan rakan?', minM: 30, maxM: 72 },
+  { code: 'KOGNITIF', name: 'Kognitif (Pemikiran)', icon: 'kognitif', color: 'var(--dom-kognitif)', locked: true, questions: [
+    { text: 'Adakah anak anda terkejut apabila mendengar bunyi?', minM: 0, maxM: 5 },
+    { text: 'Adakah anak anda merenung objek?', minM: 0, maxM: 5 },
+    { text: 'Adakah anak anda mengenali wajah orang rapat?', minM: 0, maxM: 5 },
+    { text: 'Adakah anak anda boleh mencari objek yang disembunyikan?', minM: 6, maxM: 11 },
+    { text: 'Adakah anak anda mengenal bentuk ringkas?', minM: 6, maxM: 11 },
+    { text: 'Adakah anak anda mengingati rutin harian?', minM: 6, maxM: 11 },
+    { text: 'Adakah anak anda boleh memadankan bentuk?', minM: 12, maxM: 23 },
+    { text: 'Adakah anak anda boleh menyusun benda?', minM: 12, maxM: 23 },
+    { text: 'Adakah anak anda mengenal nama benda?', minM: 12, maxM: 23 },
+    { text: 'Adakah anak anda boleh mengkategorikan benda?', minM: 24, maxM: 35 },
+    { text: 'Adakah anak anda boleh menyelesaikan puzzle mudah?', minM: 24, maxM: 35 },
+    { text: 'Adakah anak anda mula bermain berlakon (pretend play)?', minM: 24, maxM: 35 },
+    { text: 'Adakah anak anda faham konsep sebab & akibat?', minM: 36, maxM: 47 },
+    { text: 'Adakah anak anda boleh mengingati urutan ringkas?', minM: 36, maxM: 47 },
+    { text: 'Adakah anak anda boleh mengira 1 hingga 5?', minM: 36, maxM: 47 },
+    { text: 'Adakah anak anda boleh mengira 1 hingga 10?', minM: 48, maxM: 59 },
+    { text: 'Adakah anak anda faham konsep besar/kecil?', minM: 48, maxM: 59 },
+    { text: 'Adakah anak anda boleh menyelesaikan puzzle kompleks?', minM: 48, maxM: 59 },
+    { text: 'Adakah anak anda boleh mengira 1 hingga 20?', minM: 60, maxM: 72 },
+    { text: 'Adakah anak anda faham konsep masa & wang?', minM: 60, maxM: 72 },
+    { text: 'Adakah anak anda boleh menyelesaikan masalah mudah?', minM: 60, maxM: 72 },
   ]},
-  { code: 'KOGNITIF', name: 'Kognitif', icon: 'kognitif', color: 'var(--dom-kognitif)', locked: true, questions: [
-    { text: 'Adakah anak anda memerhati objek yang bergerak?', minM: 0, maxM: 6 },
-    { text: 'Adakah anak anda boleh mencari objek yang disembunyikan?', minM: 9, maxM: 24 },
-    { text: 'Adakah anak anda meniru perbuatan mudah seperti bertepuk tangan?', minM: 12, maxM: 30 },
-    { text: 'Adakah anak anda boleh mengenal 2–3 warna?', minM: 30, maxM: 60 },
-    { text: 'Adakah anak anda boleh mengira 1 hingga 5?', minM: 42, maxM: 72 },
+  { code: 'SOSIAL', name: 'Sosial & Emosi', icon: 'sosial', color: 'var(--dom-sosial)', locked: true, questions: [
+    { text: 'Adakah anak anda tenang apabila mendengar suara ibu bapa?', minM: 0, maxM: 5 },
+    { text: 'Adakah anak anda senyum & ketawa?', minM: 0, maxM: 5 },
+    { text: 'Adakah anak anda menangis apabila tidak selesa?', minM: 0, maxM: 5 },
+    { text: 'Adakah anak anda menunjukkan rasa takut terhadap orang asing?', minM: 6, maxM: 11 },
+    { text: 'Adakah anak anda bergantung pada penjaga?', minM: 6, maxM: 11 },
+    { text: 'Adakah anak anda menunjukkan perasaan mudah?', minM: 6, maxM: 11 },
+    { text: 'Adakah anak anda bermain di sebelah kawan (parallel play)?', minM: 12, maxM: 23 },
+    { text: 'Adakah anak anda meniru perbuatan orang lain?', minM: 12, maxM: 23 },
+    { text: 'Adakah anak anda menunjukkan emosi kuat (marah, sedih, gembira)?', minM: 12, maxM: 23 },
+    { text: 'Adakah anak anda bermain bersama rakan sebaya?', minM: 24, maxM: 35 },
+    { text: 'Adakah anak anda boleh berkongsi mainan?', minM: 24, maxM: 35 },
+    { text: 'Adakah anak anda mula memahami perasaan orang lain?', minM: 24, maxM: 35 },
+    { text: 'Adakah anak anda boleh bergilir semasa bermain?', minM: 36, maxM: 47 },
+    { text: 'Adakah anak anda boleh mengikut peraturan mudah?', minM: 36, maxM: 47 },
+    { text: 'Adakah anak anda boleh meluahkan perasaan dengan kata?', minM: 36, maxM: 47 },
+    { text: 'Adakah anak anda boleh membina persahabatan?', minM: 48, maxM: 59 },
+    { text: 'Adakah anak anda boleh mengurus emosi dengan bantuan?', minM: 48, maxM: 59 },
+    { text: 'Adakah anak anda boleh melakukan tanggungjawab ringkas?', minM: 48, maxM: 59 },
+    { text: 'Adakah anak anda menunjukkan empati yang tinggi?', minM: 60, maxM: 72 },
+    { text: 'Adakah anak anda boleh mengurus emosi sendiri?', minM: 60, maxM: 72 },
+    { text: 'Adakah anak anda boleh bekerjasama dalam kumpulan?', minM: 60, maxM: 72 },
+  ]},
+  { code: 'SENSORI', name: 'Sensori & Persepsi', icon: 'sensori', color: 'var(--dom-sensori)', locked: true, questions: [
+    { text: 'Adakah anak anda menumpukan perhatian pada objek dekat?', minM: 0, maxM: 5 },
+    { text: 'Adakah anak anda memberi respons kepada bunyi?', minM: 0, maxM: 5 },
+    { text: 'Adakah anak anda meneroka melalui sentuhan?', minM: 0, maxM: 5 },
+    { text: 'Adakah anak anda memberi respons apabila namanya dipanggil?', minM: 6, maxM: 11 },
+    { text: 'Adakah anak anda meneroka pelbagai tekstur?', minM: 6, maxM: 11 },
+    { text: 'Adakah anak anda boleh menumpu pada objek jauh & dekat?', minM: 6, maxM: 11 },
+    { text: 'Adakah anak anda mengenal warna asas?', minM: 12, maxM: 23 },
+    { text: 'Adakah anak anda mempunyai koordinasi mata-tangan yang semakin baik?', minM: 12, maxM: 23 },
+    { text: 'Adakah anak anda suka aktiviti sensori?', minM: 12, maxM: 23 },
+    { text: 'Adakah anak anda boleh mengasingkan bentuk & warna?', minM: 24, maxM: 35 },
+    { text: 'Adakah anak anda boleh mengikut corak ringkas?', minM: 24, maxM: 35 },
+    { text: 'Adakah anak anda mempunyai kemahiran sensori yang semakin berkembang?', minM: 24, maxM: 35 },
+    { text: 'Adakah anak anda boleh menyalin bentuk asas?', minM: 36, maxM: 47 },
+    { text: 'Adakah anak anda mengenal arah (atas, bawah)?', minM: 36, maxM: 47 },
+    { text: 'Adakah anak anda memberi respons lebih baik melalui deria?', minM: 36, maxM: 47 },
+    { text: 'Adakah anak anda boleh membezakan bunyi kuat & perlahan?', minM: 48, maxM: 59 },
+    { text: 'Adakah anak anda boleh mengikut corak kompleks?', minM: 48, maxM: 59 },
+    { text: 'Adakah anak anda boleh mengawal pergerakan dengan lebih baik?', minM: 48, maxM: 59 },
+    { text: 'Adakah anak anda mempunyai integrasi sensori yang semakin matang?', minM: 60, maxM: 72 },
+    { text: 'Adakah anak anda boleh fokus untuk tempoh lebih lama?', minM: 60, maxM: 72 },
+    { text: 'Adakah anak anda bersedia untuk pembelajaran formal?', minM: 60, maxM: 72 },
+  ]},
+  { code: 'PENGURUSAN', name: 'Pengurusan Diri', icon: 'baby', color: 'var(--dom-pengurusan)', locked: true, questions: [
+    { text: 'Adakah anak anda memberi isyarat apabila lapar atau tidak selesa?', minM: 0, maxM: 5 },
+    { text: 'Adakah anak anda boleh memegang botol dengan bantuan?', minM: 0, maxM: 5 },
+    { text: 'Adakah anak anda boleh makan "finger food" sendiri?', minM: 6, maxM: 11 },
+    { text: 'Adakah anak anda boleh memegang cawan dengan bantuan?', minM: 6, maxM: 11 },
+    { text: 'Adakah anak anda cuba memegang sudu?', minM: 6, maxM: 11 },
+    { text: 'Adakah anak anda boleh makan sendiri menggunakan sudu?', minM: 12, maxM: 23 },
+    { text: 'Adakah anak anda boleh minum menggunakan cawan?', minM: 12, maxM: 23 },
+    { text: 'Adakah anak anda membantu semasa membuka pakaian mudah?', minM: 12, maxM: 23 },
+    { text: 'Adakah anak anda makan dan minum dengan lebih berdikari?', minM: 24, maxM: 35 },
+    { text: 'Adakah anak anda boleh mencuci & mengeringkan tangan dengan bantuan?', minM: 24, maxM: 35 },
+    { text: 'Adakah anak anda menunjukkan tanda ingin ke tandas?', minM: 24, maxM: 35 },
+    { text: 'Adakah anak anda boleh menggunakan tandas dengan bantuan minimum?', minM: 36, maxM: 47 },
+    { text: 'Adakah anak anda boleh mencuci tangan & memakai pakaian mudah?', minM: 36, maxM: 47 },
+    { text: 'Adakah anak anda mengemas barang selepas bermain?', minM: 36, maxM: 47 },
+    { text: 'Adakah anak anda boleh mengurus tandas sendiri?', minM: 48, maxM: 59 },
+    { text: 'Adakah anak anda boleh memakai pakaian dan kasut sendiri?', minM: 48, maxM: 59 },
+    { text: 'Adakah anak anda boleh memberus gigi dengan pengawasan?', minM: 48, maxM: 59 },
+    { text: 'Adakah anak anda berdikari dalam kebanyakan aktiviti penjagaan diri?', minM: 60, maxM: 72 },
+    { text: 'Adakah anak anda boleh menjaga kebersihan diri?', minM: 60, maxM: 72 },
+    { text: 'Adakah anak anda boleh mengikuti rutin tanpa banyak arahan?', minM: 60, maxM: 72 },
   ]},
 ];
 
@@ -111,9 +234,13 @@ const saveChildren = (v) => write('ejejak_children', v);
 const childrenOf = (uid) => getChildren().filter(c => c.userId === uid);
 const getSubmissions = () => read('ejejak_submissions', []);
 const saveSubmissions = (v) => write('ejejak_submissions', v);
+const DOMAINS_VER = 3;   // v3: 7 domain OTIKA (carta perkembangan 0-6 tahun, ikut umur)
 function getDomains() {
   let d = read('ejejak_domains', null);
-  if (!d) { d = DEFAULT_DOMAINS; write('ejejak_domains', d); return d; }
+  // Pasang / naik taraf ke set domain terkini (sekali) — pemasangan lama diganti.
+  if (!d || read('ejejak_domains_ver', 0) < DOMAINS_VER) {
+    d = DEFAULT_DOMAINS; write('ejejak_domains', d); write('ejejak_domains_ver', DOMAINS_VER); return d;
+  }
   // Migrasi: soalan lama (string) → objek { text, minM, maxM }
   let changed = false;
   d.forEach(dom => {
@@ -136,7 +263,7 @@ function ageBandOptions(sel) {
 
 /* Artikel pendidikan (Modul 5) — diurus oleh Pentadbir (Modul 6) */
 const DEFAULT_ARTICLES = [
-  { id: 'A1', category: 'artikel', title: 'Milestone perkembangan 0–12 bulan', body: 'Panduan ringkas pencapaian yang biasa dicapai bayi pada tahun pertama merentasi lima domain perkembangan — motor kasar, motor halus, bahasa, sosial dan kognitif.', published: true },
+  { id: 'A1', category: 'artikel', title: 'Milestone perkembangan 0–12 bulan', body: 'Panduan ringkas pencapaian yang biasa dicapai bayi pada tahun pertama merentasi tujuh domain perkembangan — motor kasar, motor halus, komunikasi & bahasa, kognitif, sosial & emosi, sensori & persepsi dan pengurusan diri.', published: true },
   { id: 'A2', category: 'artikel', title: 'Kepentingan intervensi awal', body: 'Mengapa mengesan kelewatan perkembangan seawal mungkin memberi kesan besar kepada masa depan anak. Intervensi awal meningkatkan peluang tumbesaran optimum.', published: true },
   { id: 'A3', category: 'artikel', title: 'Memahami perkembangan sosial-emosi', body: 'Bagaimana kanak-kanak belajar berinteraksi, berkongsi dan mengurus emosi mereka dari peringkat bayi hingga prasekolah.', published: true },
   { id: 'A4', category: 'tips', title: '5 cara merangsang pertuturan anak', body: 'Aktiviti harian ringkas seperti bercerita, menyanyi dan menamakan objek untuk menggalakkan perkembangan bahasa si kecil.', published: true },
@@ -178,6 +305,8 @@ const TAB_ROLES = {
   'tab-akaun': ['superadmin', 'admin', 'doctor'],
 };
 const canManageAccounts = (role) => role === 'superadmin' || role === 'admin';
+// Urus kandungan (artikel & video) — pentadbir, superadmin & DOKTOR.
+const canManageContent = (role) => role === 'superadmin' || role === 'admin' || role === 'doctor';
 // Nota: `role` (kuasa) & `org` (USM/MAIK) adalah BEBAS — USM boleh ada pentadbir,
 // MAIK boleh ada doktor. Set contoh sengaja bercampur untuk tunjuk perkara ini.
 const DEFAULT_ADMINS = [
@@ -328,13 +457,16 @@ const DEFAULT_PROGRAMS = [
   { id: 'PG2', title: 'Bengkel Keibubapaan & Autisme', date: '2026-09-20', location: 'USM Kampus Kesihatan, Kubang Kerian', desc: 'Bengkel untuk ibu bapa mengenali tanda awal autisme dan teknik sokongan di rumah.', districts: 'semua' },
   { id: 'PG3', title: 'Klinik Terapi Pertuturan Bergerak', date: '2026-10-04', location: 'Klinik Kesihatan Gua Musang', desc: 'Khidmat saringan & terapi pertuturan bergerak ke kawasan luar bandar Kelantan.', districts: ['Gua Musang', 'Kuala Krai', 'Jeli'] },
 ];
+// Video contoh boleh MAIN terus (sampel awam stabil) — pentadbir boleh ganti
+// dengan `src` (fail/URL video) atau `youtube` (ID YouTube) di panel "Urus Video".
+const VID_CDN = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/';
 const DEFAULT_VIDEOS = [
-  { id: 'V1', title: 'Perkembangan Bayi 0–12 Bulan', youtube: 'VIDEO_BAYI01', desc: 'Panduan tanda perkembangan normal bayi mengikut usia.' },
-  { id: 'V2', title: 'Rangsang Pertuturan Anak', youtube: 'VIDEO_TUTUR02', desc: 'Cara mudah menggalakkan anak bercakap di rumah.' },
-  { id: 'V3', title: 'Kenali Tanda Awal Autisme', youtube: 'VIDEO_AUTIS03', desc: 'Tanda amaran awal yang perlu ibu bapa perhatikan.' },
-  { id: 'V4', title: 'Aktiviti Motor Kasar & Halus', youtube: 'VIDEO_MOTOR04', desc: 'Aktiviti membina kemahiran motor anak secara berperingkat.' },
-  { id: 'V5', title: 'Sensory Play di Rumah', youtube: 'VIDEO_SENSORI05', desc: 'Idea permainan sensori untuk merangsang deria anak.' },
-  { id: 'V6', title: 'Kemahiran Keibubapaan Positif', youtube: 'VIDEO_IBUBAPA06', desc: 'Tip mendidik anak dengan pendekatan penyayang.' },
+  { id: 'V1', title: 'Perkembangan Bayi 0–12 Bulan', src: VID_CDN + 'ForBiggerBlazes.mp4',     poster: VID_CDN + 'images/ForBiggerBlazes.jpg',     desc: 'Panduan tanda perkembangan normal bayi mengikut usia.' },
+  { id: 'V2', title: 'Rangsang Pertuturan Anak',      src: VID_CDN + 'ForBiggerEscapes.mp4',    poster: VID_CDN + 'images/ForBiggerEscapes.jpg',    desc: 'Cara mudah menggalakkan anak bercakap di rumah.' },
+  { id: 'V3', title: 'Kenali Tanda Awal Autisme',     src: VID_CDN + 'ForBiggerFun.mp4',        poster: VID_CDN + 'images/ForBiggerFun.jpg',        desc: 'Tanda amaran awal yang perlu ibu bapa perhatikan.' },
+  { id: 'V4', title: 'Aktiviti Motor Kasar & Halus',  src: VID_CDN + 'ForBiggerJoyrides.mp4',   poster: VID_CDN + 'images/ForBiggerJoyrides.jpg',   desc: 'Aktiviti membina kemahiran motor anak secara berperingkat.' },
+  { id: 'V5', title: 'Sensory Play di Rumah',         src: VID_CDN + 'ForBiggerMeltdowns.mp4',  poster: VID_CDN + 'images/ForBiggerMeltdowns.jpg',  desc: 'Idea permainan sensori untuk merangsang deria anak.' },
+  { id: 'V6', title: 'Kemahiran Keibubapaan Positif', src: VID_CDN + 'ElephantsDream.mp4',      poster: VID_CDN + 'images/ElephantsDream.jpg',      desc: 'Tip mendidik anak dengan pendekatan penyayang.' },
 ];
 const getPrograms = () => read('ejejak_programs', DEFAULT_PROGRAMS);
 const savePrograms = (v) => write('ejejak_programs', v);
@@ -356,7 +488,13 @@ function ensureSeed() {
   getDomains(); // seed domain jika perlu
   // Benih program & video (idempoten — tidak tertakluk kepada seed_v5).
   if (read('ejejak_programs', null) === null) write('ejejak_programs', DEFAULT_PROGRAMS);
-  if (read('ejejak_videos', null) === null) write('ejejak_videos', DEFAULT_VIDEOS);
+  const storedVids = read('ejejak_videos', null);
+  if (storedVids === null) write('ejejak_videos', DEFAULT_VIDEOS);
+  // Migrasi: pemasangan lama guna ID YouTube palsu (VIDEO_*) yang tak boleh main.
+  // Ganti dengan set contoh boleh-main jika belum diubah suai pentadbir.
+  else if (Array.isArray(storedVids) && storedVids.length && storedVids.every(v => !v.src && /^VIDEO_/.test(v.youtube || ''))) {
+    write('ejejak_videos', DEFAULT_VIDEOS);
+  }
   // Benih akaun staf (versi) — push set 4-peranan bercampur USM/MAIK.
   if (read('ejejak_admins_seed', 0) < 2) { saveAdmins(DEFAULT_ADMINS); write('ejejak_admins_seed', 2); }
   // Benih log audit contoh (demo tab Log Aktiviti).
@@ -369,21 +507,21 @@ function ensureSeed() {
       { id: 'LSEED1', at: '2026-07-24T08:30:00', actorId: 'SA1', actorName: 'Webimpian (Superadmin)', actorRole: 'superadmin', actorOrg: 'Webimpian', action: 'login', detail: 'Log masuk panel' },
     ]);
   }
-  if (read('ejejak_seed_v6', false)) return;
+  if (read('ejejak_seed_v7', false)) return;   // v7: tambah negeri/alamat/poskod (backfill sekali untuk pemasangan sedia ada)
 
   if (getUsers().length === 0) {
     // Pengguna benih dengan medan baharu: accountType, verified, district, father, mother.
     saveUsers([
       { id: 'U1', name: 'Siti Nurhaliza', email: 'ibu@contoh.com',   phone: '0123456789', password: 'demo1234', role: 'parent',
-        accountType: 'screening', verified: true, district: 'Kota Bharu',
+        accountType: 'screening', verified: true, negeri: 'Kelantan', district: 'Kota Bharu', poskod: '15200', address: 'No. 12, Jalan Mahmud, Taman Sejahtera',
         father: { name: 'Rahman bin Ali',    ic: '800101-03-5511', phone: '0198887766', job: 'Kerani Kerajaan',  income: '2800' },
         mother: { name: 'Siti Nurhaliza',    ic: '830505-03-6622', phone: '0123456789', job: 'Suri rumah',       income: '0' } },
       { id: 'U2', name: 'Farah Aziz',     email: 'farah@contoh.com', phone: '0176543210', password: 'demo1234', role: 'parent',
-        accountType: 'screening', verified: true, district: 'Pasir Mas',
+        accountType: 'screening', verified: true, negeri: 'Kelantan', district: 'Pasir Mas', poskod: '17000', address: 'Lot 340, Kampung Baru, Jalan Rantau Panjang',
         father: { name: 'Aziz bin Hassan',   ic: '820202-03-5533', phone: '0175551122', job: 'Peniaga',          income: '3500' },
         mother: { name: 'Farah binti Kamal',  ic: '850707-03-6644', phone: '0176543210', job: 'Guru',             income: '4200' } },
       { id: 'U3', name: 'Amirul Hakim',   email: 'amir@contoh.com',  phone: '0112223344', password: 'demo1234', role: 'parent',
-        accountType: 'screening', verified: true, district: 'Tumpat',
+        accountType: 'screening', verified: true, negeri: 'Kelantan', district: 'Tumpat', poskod: '16080', address: 'No. 5, Taman Desa Mutiara, Jalan Pantai',
         father: { name: 'Amirul Hakim',       ic: '810303-03-5544', phone: '0112223344', job: 'Pemandu',          income: '2200' },
         mother: { name: 'Noraini binti Yaakob', ic: '840808-03-6655', phone: '0119998877', job: 'Suri rumah',      income: '0' } },
       // Akaun e-Pembelajaran sahaja (tanpa anak / tanpa saringan).
@@ -403,13 +541,13 @@ function ensureSeed() {
     // backfill medan baharu tanpa memadam apa-apa data sedia ada.
     const users = getUsers();
     const backfill = {
-      U1: { district: 'Kota Bharu',
+      U1: { negeri: 'Kelantan', district: 'Kota Bharu', poskod: '15200', address: 'No. 12, Jalan Mahmud, Taman Sejahtera',
         father: { name: 'Rahman bin Ali', ic: '800101-03-5511', phone: '0198887766', job: 'Kerani Kerajaan', income: '2800' },
         mother: { name: 'Siti Nurhaliza', ic: '830505-03-6622', phone: '0123456789', job: 'Suri rumah', income: '0' } },
-      U2: { district: 'Pasir Mas',
+      U2: { negeri: 'Kelantan', district: 'Pasir Mas', poskod: '17000', address: 'Lot 340, Kampung Baru, Jalan Rantau Panjang',
         father: { name: 'Aziz bin Hassan', ic: '820202-03-5533', phone: '0175551122', job: 'Peniaga', income: '3500' },
         mother: { name: 'Farah binti Kamal', ic: '850707-03-6644', phone: '0176543210', job: 'Guru', income: '4200' } },
-      U3: { district: 'Tumpat',
+      U3: { negeri: 'Kelantan', district: 'Tumpat', poskod: '16080', address: 'No. 5, Taman Desa Mutiara, Jalan Pantai',
         father: { name: 'Amirul Hakim', ic: '810303-03-5544', phone: '0112223344', job: 'Pemandu', income: '2200' },
         mother: { name: 'Noraini binti Yaakob', ic: '840808-03-6655', phone: '0119998877', job: 'Suri rumah', income: '0' } },
     };
@@ -420,10 +558,15 @@ function ensureSeed() {
       const bf = backfill[u.id];
       if (bf) {
         if (!u.district) u.district = bf.district;
+        if (!u.negeri) u.negeri = bf.negeri;
+        if (!u.address) u.address = bf.address;
+        if (!u.poskod) u.poskod = bf.poskod;
         if (!u.father) u.father = bf.father;
         if (!u.mother) u.mother = bf.mother;
       } else {
         if (u.district === undefined) u.district = '';
+        // Rekod sedia ada tanpa negeri tetapi ada daerah → anggap Kelantan (fokus semasa).
+        if (u.negeri === undefined) u.negeri = u.district ? 'Kelantan' : '';
       }
     });
     // Tambah 1–2 akaun e-Pembelajaran demo jika belum wujud.
@@ -505,7 +648,101 @@ function ensureSeed() {
     };
   });
   saveSubmissions([...seededSubs, ...realSubs]); // benih (terbaharu dahulu) + rekod sebenar
-  write('ejejak_seed_v6', true);
+  write('ejejak_seed_v7', true);
+}
+
+/* ---------- 4b. GEOGRAFI (Negeri → Daerah) ------------------------
+   Sumber TUNGGAL untuk daftar negeri & daerah. Struktur ini sedia
+   merangkumi seluruh Malaysia — untuk menambah liputan, cukup tambah
+   satu entri negeri baharu dengan senarai daerahnya. Buat masa ini
+   fokus KELANTAN sahaja. Semua dropdown daerah (Profil, tapisan admin,
+   penjana laporan) mengambil data dari sini supaya sekali tambah,
+   semua tempat dikemas kini. */
+// Semua negeri & WP Malaysia (dropdown negeri lengkap).
+const GEO_STATES = ['Johor', 'Kedah', 'Kelantan', 'Melaka', 'Negeri Sembilan', 'Pahang', 'Perak', 'Perlis', 'Pulau Pinang', 'Sabah', 'Sarawak', 'Selangor', 'Terengganu', 'W.P. Kuala Lumpur', 'W.P. Labuan', 'W.P. Putrajaya'];
+// Daerah PRA-TAKRIF hanya untuk negeri fokus. Negeri tanpa entri → pengguna
+// taip daerah sendiri (teks bebas). Tambah negeri lain di sini bila sedia.
+const GEO_DISTRICTS = {
+  'Kelantan': ['Bachok', 'Gua Musang', 'Jeli', 'Kota Bharu', 'Kuala Krai', 'Machang', 'Pasir Mas', 'Pasir Puteh', 'Tanah Merah', 'Tumpat'],
+  // 'Terengganu': ['Kuala Terengganu', 'Kemaman', ...],
+};
+// Daerah pra-takrif bagi satu negeri (kosong = negeri guna input teks bebas).
+function districtsOf(negeri) { return GEO_DISTRICTS[negeri] || []; }
+// Semua daerah pra-takrif merentas negeri (untuk tapisan rata penjana laporan).
+function allDistricts() { return Object.keys(GEO_DISTRICTS).flatMap(s => GEO_DISTRICTS[s]); }
+// Isi <select> daerah untuk negeri tertentu; kekalkan pilihan semasa jika sah.
+function fillDistrictSelect(sel, negeri, current, placeholder) {
+  if (!sel) return;
+  const list = districtsOf(negeri);
+  sel.innerHTML = `<option value="">${placeholder || '— Pilih daerah —'}</option>` +
+    list.map(d => `<option value="${d}"${d === current ? ' selected' : ''}>${d}</option>`).join('');
+}
+
+// Maklumat keluarga dianggap LENGKAP bila alamat + kawasan + sekurang-kurangnya
+// seorang ibu/bapa (nama) diisi. Digunakan untuk gerbang akses fungsi sistem.
+// AKSES sistem: alamat lengkap + sekurang-kurangnya SEORANG ibu/bapa.
+function familyComplete(u) {
+  if (!u) return false;
+  const hasAddr = !!(u.negeri && u.district && u.address && u.poskod);
+  const hasParent = !!((u.father && u.father.name) || (u.mother && u.mother.name));
+  return hasAddr && hasParent;
+}
+// LENGKAP SEPENUHNYA: kedua-dua ibu & bapa diisi. (Bukan syarat akses — hanya
+// untuk papar notis galakan lengkapkan maklumat selebihnya.)
+function familyFullyComplete(u) {
+  if (!familyComplete(u)) return false;
+  return !!(u.father && u.father.name && u.mother && u.mother.name);
+}
+// Profil pengguna awam (e-Pembelajaran) dianggap lengkap bila maklumat diri
+// asas + latar belakang OKU diisi (jika ada anak OKU, jawapan ilmu juga wajib).
+function publicComplete(u) {
+  if (!u) return false;
+  const base = !!(u.name && u.phone && u.negeri && u.pekerjaan && u.dob && u.hasOkuChild);
+  const okuOk = u.hasOkuChild === 'ya' ? !!u.okuKnowledge : true;
+  return base && okuOk;
+}
+// Kelengkapan profil mengikut jenis akaun.
+function profileComplete(u) {
+  return (u && u.accountType === 'knowledge') ? publicComplete(u) : familyComplete(u);
+}
+
+/* Dropdown tersuai — buka KE BAWAH & papar `visibleRows` baris (selebihnya
+   scroll). `mount` = elemen bekas; `options` = [{value,label}]. Mengembalikan
+   objek dengan getter/setter `.value`. */
+function customDropdown(mount, { placeholder = 'Pilih', options = [], value = '', visibleRows = 10, onChange } = {}) {
+  if (!mount) return { value: '' };
+  let cur = value || '';
+  mount.classList.add('dd');
+  mount.innerHTML =
+    `<button type="button" class="dd__btn" aria-haspopup="listbox" aria-expanded="false">
+       <span class="dd__label"></span>
+       <svg class="dd__caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+     </button>
+     <ul class="dd__panel" role="listbox" style="--dd-rows:${visibleRows}"></ul>`;
+  const btn = mount.querySelector('.dd__btn');
+  const label = mount.querySelector('.dd__label');
+  const panel = mount.querySelector('.dd__panel');
+  const render = () => {
+    const sel = options.find(o => String(o.value) === String(cur));
+    label.textContent = sel ? sel.label : placeholder;
+    label.classList.toggle('dd__label--ph', !sel);
+    panel.innerHTML = options.map(o =>
+      `<li role="option" data-v="${o.value}" class="${String(o.value) === String(cur) ? 'sel' : ''}" aria-selected="${String(o.value) === String(cur)}">${o.label}</li>`).join('');
+  };
+  const close = () => { mount.classList.remove('open'); btn.setAttribute('aria-expanded', 'false'); };
+  const open = () => {
+    document.querySelectorAll('.dd.open').forEach(d => { if (d !== mount) d.classList.remove('open'); });
+    mount.classList.add('open'); btn.setAttribute('aria-expanded', 'true');
+    const s = panel.querySelector('li.sel'); if (s) s.scrollIntoView({ block: 'nearest' });
+  };
+  btn.addEventListener('click', (e) => { e.stopPropagation(); mount.classList.contains('open') ? close() : open(); });
+  panel.addEventListener('click', (e) => {
+    const li = e.target.closest('li[data-v]'); if (!li) return;
+    cur = li.getAttribute('data-v'); render(); close(); if (onChange) onChange(cur);
+  });
+  document.addEventListener('click', (e) => { if (!mount.contains(e.target)) close(); });
+  render();
+  return { get value() { return cur; }, set value(v) { cur = v || ''; render(); } };
 }
 
 /* ---------- 5. HEADER / FOOTER (satu sumber) ----------------------- */
@@ -518,8 +755,8 @@ const SITE = {
   menu: [
     { label: 'Beranda', href: 'index.html', key: 'beranda' },
     { label: 'Tentang Kami', href: 'tentangkami.html', key: 'tentang' },
-    { label: '5 Domain', key: 'domain', children: [
-      { label: '5 Domain Perkembangan', href: 'index.html#domain' },
+    { label: '7 Domain', key: 'domain', children: [
+      { label: '7 Domain Perkembangan', href: 'index.html#domain' },
       { label: 'Cara Guna', href: 'index.html#cara' },
     ]},
     { label: 'Pusat Pendidikan', key: 'pendidikan', children: [
@@ -556,7 +793,7 @@ function buildHeader(active) {
         { label: 'Dashboard', href: 'dashboard.html', key: 'dashboard' },
         { label: 'Program', href: 'program.html', key: 'program' },
         { label: 'e-Pembelajaran', href: 'pendidikan.html', key: 'pendidikan' },
-        { label: 'Keluarga', href: 'profil.html', key: 'profil' },
+        { label: 'Profil Saya', href: 'profil.html', key: 'profil' },
       ]
     : [
         { label: 'Dashboard', href: 'dashboard.html', key: 'dashboard' },
@@ -584,9 +821,23 @@ function buildHeader(active) {
 
   const cta = user
     ? `<a class="btn btn--ghost" href="akaun.html" title="Akaun Saya — tukar kata laluan">${ICONS.user} ${user.name.split(' ')[0]}</a>
-       <a class="btn" href="#" id="logoutBtn">${ICONS.logout} Log Keluar</a>`
+       <a class="btn js-logout" href="#" id="logoutBtn">${ICONS.logout} Log Keluar</a>`
     : `<a class="btn btn--ghost" href="login.html">Log Masuk</a>
        <a class="btn" href="daftar.html">Daftar Percuma</a>`;
+
+  // Pautan akaun untuk laci mobile (drawer). Di mobile, butang CTA sebaris
+  // disembunyikan (elak menolak hamburger keluar skrin) dan tindakan akaun
+  // dikumpul di ATAS menu laci supaya mudah dicapai (bukan tertimbus di
+  // hujung senarai). Satu <li> berkumpul; hanya nampak ≤760px (lihat CSS).
+  const authDrawer = user
+    ? `<li class="menu-auth">
+         <a href="akaun.html">${ICONS.user} ${user.name.split(' ')[0]} — Akaun Saya</a>
+         <a href="#" class="js-logout">${ICONS.logout} Log Keluar</a>
+       </li>`
+    : `<li class="menu-auth">
+         <a href="login.html">${ICONS.user} Log Masuk</a>
+         <a class="menu-auth__primary" href="daftar.html">Daftar Percuma</a>
+       </li>`;
 
   return `
   <div class="topbar">
@@ -597,7 +848,7 @@ function buildHeader(active) {
         <span>${ICONS.clock} Akses 24 jam · Percuma</span>
       </div>
       <div style="display:flex; align-items:center; gap:var(--sp-3)">
-        <a href="admin-login.html" style="display:inline-flex; align-items:center; gap:6px; font-family:var(--font-head); font-weight:600">${ICONS.stethoscope} Log Masuk Doktor</a>
+        ${user ? '' : `<a href="admin-login.html" style="display:inline-flex; align-items:center; gap:6px; font-family:var(--font-head); font-weight:600">${ICONS.stethoscope} Log Masuk Doktor</a>`}
         <div class="topbar__social">
           <a href="#" aria-label="Facebook">${ICONS.fb}</a>
           <a href="#" aria-label="Instagram">${ICONS.ig}</a>
@@ -609,7 +860,7 @@ function buildHeader(active) {
   <nav class="nav" aria-label="Navigasi utama">
     <div class="container">
       ${brand}
-      <ul class="menu" id="mainmenu">${menuItems}</ul>
+      <ul class="menu" id="mainmenu">${menuItems}${authDrawer}</ul>
       <div class="nav__cta">
         ${cta}
         <button class="nav-toggle" id="navToggle" aria-label="Buka menu" aria-expanded="false" aria-controls="mainmenu">${ICONS.menu}</button>
@@ -634,7 +885,7 @@ function buildFooter() {
               <span class="brand__tag">${SITE.tagline}</span>
             </span>
           </a>
-          <p>Sistem saringan awal perkembangan kanak-kanak berasaskan web. Membantu ibu bapa mengesan tahap perkembangan anak merentasi lima domain utama.</p>
+          <p>Sistem saringan awal perkembangan kanak-kanak berasaskan web. Membantu ibu bapa mengesan tahap perkembangan anak merentasi tujuh domain utama.</p>
           <div class="footer__social">
             <a href="#" aria-label="Facebook">${ICONS.fb}</a>
             <a href="#" aria-label="Instagram">${ICONS.ig}</a>
@@ -647,7 +898,7 @@ function buildFooter() {
             <ul>
               <li><a href="tentangkami.html">Tentang Kami</a></li>
               <li><a href="saringan.html">Mula Saringan</a></li>
-              <li><a href="index.html#domain">5 Domain</a></li>
+              <li><a href="index.html#domain">7 Domain</a></li>
               <li><a href="dashboard.html">Dashboard</a></li>
               <li><a href="mba.html">Rakan NGO / MBA</a></li>
               <li><a href="admin-login.html">Panel Doktor / Pentadbir</a></li>
@@ -710,12 +961,14 @@ function mountChrome() {
       }
     });
   });
-  document.getElementById('logoutBtn')?.addEventListener('click', (e) => {
+  // Log keluar: sokong butang sebaris (#logoutBtn) DAN pautan laci mobile
+  // (.js-logout) — kedua-dua guna pengendali sama.
+  document.querySelectorAll('.js-logout').forEach(btn => btn.addEventListener('click', (e) => {
     e.preventDefault();
     if (currentImpersonation()) { stopImpersonation(); return; } // kembali ke panel, bukan log keluar penuh
     sessionStorage.removeItem('ejejak_user');
     window.location.href = 'index.html';
-  });
+  }));
 
   // Footer accordion: buka penuh di desktop, tutup (boleh ketuk) di mobile.
   // Hanya bertindak bila melintasi breakpoint 760px supaya toggle pengguna
@@ -740,6 +993,43 @@ function updateAuthUI() {
   document.querySelectorAll('[data-when="guest"]').forEach(el => { el.style.display = logged ? 'none' : ''; });
 }
 
+/* Toast ringkas (mesej sementara di bawah skrin). */
+function showToast(msg) {
+  let t = document.getElementById('app-toast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'app-toast';
+    t.setAttribute('role', 'status');
+    t.style.cssText = 'position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(8px);z-index:3000;background:var(--warn,#E08A3C);color:#fff;padding:.8em 1.15em;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.22);font-family:var(--font-head,sans-serif);font-weight:600;font-size:.92rem;line-height:1.35;max-width:min(92vw,460px);display:flex;gap:.55em;align-items:center;opacity:0;transition:opacity .2s ease, transform .2s ease;pointer-events:none';
+    t.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg><span></span>';
+    document.body.appendChild(t);
+  }
+  t.querySelector('span').textContent = msg;
+  requestAnimationFrame(() => { t.style.opacity = '1'; t.style.transform = 'translateX(-50%) translateY(0)'; });
+  clearTimeout(t._hide); t._hide = setTimeout(() => { t.style.opacity = '0'; t.style.transform = 'translateX(-50%) translateY(8px)'; }, 3200);
+}
+
+/* Semasa profil belum lengkap, pengguna dikunci pada halaman Profil. Bila mereka
+   klik mana-mana pautan navigasi ke halaman lain, halang & papar mesej. */
+function enforceProfileLock() {
+  // Semak kelengkapan pada SETIAP klik (bukan sekali semasa muat) supaya sebaik
+  // pengguna simpan & lengkap, navigasi terus dibenarkan — tanpa perlu refresh.
+  document.addEventListener('click', (e) => {
+    const u = currentUser();
+    if (!u || currentAdmin() || currentImpersonation()) return;
+    const a = e.target.closest && e.target.closest('a[href]');
+    if (!a) return;
+    const href = a.getAttribute('href') || '';
+    if (!/\.html(\?|#|$)/i.test(href)) return;         // abaikan jangkar/#, butang JS, pautan luar
+    const page = href.split('/').pop().split(/[?#]/)[0].toLowerCase();
+    if (page === 'profil.html') return;                // benarkan kekal/kembali ke Profil
+    const rec = getUsers().find(x => x.id === u.id) || u;
+    if (profileComplete(rec)) return;                  // sudah lengkap → benarkan navigasi
+    e.preventDefault();
+    showToast('Sila lengkapkan profil anda terlebih dahulu sebelum ke bahagian lain.');
+  }, true);
+}
+
 /* ---------- 6. KAWALAN AKSES --------------------------------------- */
 function guard() {
   const need = document.body.dataset.auth;
@@ -753,6 +1043,20 @@ function guard() {
   if (need === 'admin' && !currentAdmin()) {
     window.location.replace('admin-login.html');
     return false;
+  }
+  // GERBANG KELENGKAPAN PROFIL (global): pengguna log masuk yang belum lengkapkan
+  // profil dikunci pada halaman Profil — tidak boleh ke navigasi lain sehingga
+  // selesai. Saringan → Maklumat Keluarga; e-Pembelajaran → Profil Saya.
+  // Dikecualikan: sesi penyamaran admin (currentImpersonation) & halaman Profil.
+  const u = currentUser();
+  if (u && !currentAdmin() && !currentImpersonation()) {
+    const rec = getUsers().find(x => x.id === u.id) || u;
+    const here = (location.pathname.split('/').pop() || '').toLowerCase();
+    const onProfile = here === 'profil.html';
+    if (!profileComplete(rec) && !onProfile) {
+      window.location.replace('profil.html?incomplete=1');
+      return false;
+    }
   }
   return true;
 }
@@ -776,6 +1080,18 @@ function setupRoleAccess() {
   const nameEl = document.getElementById('doctor-name');
   if (nameEl) nameEl.textContent = staffChipLabel(me.name, role, me.org);
 
+  // Jenama panel ikut peranan: doktor → "Panel Doktor", pentadbir → "Panel
+  // Pentadbir", superadmin → "Panel Superadmin".
+  const panelName = 'Panel ' + (ROLE_LABEL[role] || 'Doktor');
+  document.title = panelName + ' — e-Jejak Anak';   // tajuk tab pelayar ikut peranan
+  const h1 = document.querySelector('.page-head h1'); if (h1) h1.textContent = panelName;
+  const bc = document.querySelector('.page-head .breadcrumb span:last-child'); if (bc) bc.textContent = panelName;
+  const tag = document.querySelector('.nav .brand__tag'); if (tag) tag.textContent = panelName;
+  const sub = document.querySelector('.page-head p');
+  if (sub) sub.textContent = canManageAccounts(role)
+    ? 'Urus pengguna, kandungan, program & jana laporan.'
+    : 'Semak keputusan saringan, urus soalan, artikel & video, pantau statistik.';
+
   // Tapis tab mengikut peranan.
   const tabs = [...wrap.querySelectorAll('.tab')];
   let firstVisible = null, hasActive = false;
@@ -792,6 +1108,23 @@ function setupRoleAccess() {
     firstVisible.classList.add('is-active');
     document.getElementById(firstVisible.dataset.target)?.classList.add('is-active');
   }
+
+  // Tapis SUBTAB ikut peranan (cth. NGO/MBA = pentadbir sahaja; doktor tidak).
+  wrap.querySelectorAll('.subtab[data-roles]').forEach(st => {
+    const roles = (st.dataset.roles || '').split(',').map(s => s.trim()).filter(Boolean);
+    const ok = roles.length === 0 || roles.includes(role);
+    const panel = document.getElementById(st.dataset.subtarget);
+    st.style.display = ok ? '' : 'none';
+    if (!ok) { st.classList.remove('is-active'); panel?.classList.remove('is-active'); }
+  });
+  // Pastikan setiap kumpulan subtab ada satu subtab aktif yang kelihatan.
+  wrap.querySelectorAll('[data-subtabs]').forEach(group => {
+    const subs = [...group.querySelectorAll('.subtab')].filter(s => s.style.display !== 'none');
+    if (subs.length && !subs.some(s => s.classList.contains('is-active'))) {
+      subs[0].classList.add('is-active');
+      document.getElementById(subs[0].dataset.subtarget)?.classList.add('is-active');
+    }
+  });
 
   // Sub-panel urus akaun: superadmin & admin sahaja (doktor nampak profil sahaja).
   if (!canManageAccounts(role)) {
@@ -1097,6 +1430,14 @@ function initDashboard() {
   const user = currentUser();
   if (!user) return;
   document.querySelectorAll('[data-user-name]').forEach(el => el.textContent = user.name.split(' ')[0]);
+  // Header aluan profesional: inisial, ucapan ikut waktu, tarikh hari ini.
+  const now = new Date();
+  const hr = now.getHours();
+  const greet = hr < 12 ? 'Selamat pagi' : hr < 15 ? 'Selamat tengah hari' : hr < 19 ? 'Selamat petang' : 'Selamat malam';
+  document.querySelectorAll('[data-greeting]').forEach(el => el.textContent = greet);
+  document.querySelectorAll('[data-user-initial]').forEach(el => el.textContent = (user.name.trim().charAt(0) || 'A').toUpperCase());
+  let dateStr; try { dateStr = now.toLocaleDateString('ms-MY', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }); } catch (_) { dateStr = now.toLocaleDateString(); }
+  document.querySelectorAll('[data-welcome-date]').forEach(el => el.textContent = dateStr);
 
   const rec = getUsers().find(x => x.id === user.id) || user;
   const isKnowledge = rec.accountType === 'knowledge';
@@ -1109,10 +1450,22 @@ function initDashboard() {
   const avg = avgScore(subs);
   set('st-avg', avg + '%');
 
-  // Akaun e-Pembelajaran: sembunyikan elemen khusus saringan, papar banner.
+  // Akaun e-Pembelajaran: sembunyikan elemen khusus saringan, papar banner +
+  // kandungan pembelajaran (pautan pantas + video pilihan) supaya tak kosong.
   if (isKnowledge) {
     document.getElementById('dash-knowledge')?.style.setProperty('display', 'flex');
     document.querySelectorAll('[data-screening-only]').forEach(el => el.style.setProperty('display', 'none'));
+    renderLearningDashboard(hub);
+  }
+
+  // Notis galakan: maklumat sudah mencukupi untuk akses, tetapi belum lengkap
+  // sepenuhnya (cth. hanya seorang ibu/bapa). Bukan halangan — hanya peringatan.
+  if (!isKnowledge && familyComplete(rec) && !familyFullyComplete(rec)) {
+    const banner = document.createElement('div');
+    banner.className = 'notice';
+    banner.style.cssText = 'margin-bottom:var(--sp-5); align-items:center; gap:var(--sp-3)';
+    banner.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span>Maklumat keluarga anda mencukupi untuk menggunakan sistem. Untuk rekod yang lebih lengkap, sila lengkapkan maklumat ibu/bapa seorang lagi &amp; butiran lain di <a href="profil.html"><strong>Maklumat Keluarga</strong></a>.</span>`;
+    hub.insertBefore(banner, hub.firstElementChild);
   }
 
   // Sejarah saringan terkini (5) — merentas semua anak.
@@ -1324,7 +1677,7 @@ function initScreening() {
   const modeTabs = document.getElementById('screen-mode');
   function selectedChild() { return kids.find(c => c.id === childSelect.value) || kids[0]; }
 
-  let mode = 'mchat';   // 'mchat' | 'sensori' (saringan perkembangan telah dibuang)
+  let mode = 'perkembangan';   // 'perkembangan' (7 domain ikut umur) | 'sensori' | 'mchat' (disorok)
   let total = 0;
 
   // Domain + soalan yang SEPADAN dengan umur anak (Checklist mengikut umur)
@@ -1366,7 +1719,7 @@ function initScreening() {
     return block;
   }
 
-  // ---- MOD: Perkembangan (5 domain, mengikut umur) — kelakuan asal ----
+  // ---- MOD: Perkembangan (7 domain, mengikut umur) ----
   function buildDevelopment() {
     const c = selectedChild();
     const m = ageInMonths(c.dob);
@@ -1432,7 +1785,8 @@ function initScreening() {
   }
 
   function build() {
-    buildYnScreen(mode);   // hanya M-CHAT & Sensori (saringan perkembangan dibuang)
+    if (mode === 'perkembangan') buildDevelopment();   // 7 domain OTIKA ikut umur
+    else buildYnScreen(mode);                           // Sensori (M-CHAT disorok)
   }
 
   // Maklumat ibu bapa (dari akaun — selari dengan data doktor)
@@ -1512,7 +1866,7 @@ function initScreening() {
       return;
     }
 
-    // ---- MOD: Perkembangan (5 domain) ----
+    // ---- MOD: Perkembangan (7 domain) ----
     const fd = checklistFor(m);
     const result = { childName: c.name, type: 'perkembangan', domains: {}, totalAchieved: 0, totalNot: 0, total };
     fd.forEach(d => {
@@ -1847,6 +2201,81 @@ function initAdmin() {
 /* ---------- 14. PENTADBIR: URUS DOMAIN & SOALAN (Modul 6) ---------- */
 // Urus item soalan saringan M-CHAT & Sensori (menggantikan pengurusan domain
 // perkembangan yang telah dibuang). Item disimpan di ejejak_screen_items.
+/* Pengurus soalan 7 domain (Saringan Perkembangan) — doktor tambah/padam soalan
+   mengikut kumpulan umur. Soalan disimpan dalam ejejak_domains. */
+const AGE_BANDS = [
+  { label: '0–6 bulan', minM: 0, maxM: 5 },
+  { label: '6–12 bulan', minM: 6, maxM: 11 },
+  { label: '1–2 tahun', minM: 12, maxM: 23 },
+  { label: '2–3 tahun', minM: 24, maxM: 35 },
+  { label: '3–4 tahun', minM: 36, maxM: 47 },
+  { label: '4–5 tahun', minM: 48, maxM: 59 },
+  { label: '5–6 tahun', minM: 60, maxM: 72 },
+];
+function bandNameFor(q) {
+  const b = AGE_BANDS.find(x => x.minM === q.minM && x.maxM === q.maxM);
+  return b ? b.label : bandLabel(q);
+}
+function initDomainQuestionsAdmin() {
+  const host = document.getElementById('domain-admin');
+  if (!host) return;
+  if ((currentAdmin()?.role || 'doctor') !== 'doctor') {
+    host.innerHTML = `<div class="notice">${ICONS.info}<span>Hanya doktor boleh mengurus soalan domain.</span></div>`;
+    return;
+  }
+  function render() {
+    const doms = getDomains();
+    const bandOpts = AGE_BANDS.map((b, i) => `<option value="${i}">${b.label}</option>`).join('');
+    host.innerHTML = doms.map(d => {
+      const qs = d.questions || [];
+      const li = qs.length ? qs.map((q, i) => `
+        <li class="flex items-center gap-2" style="justify-content:space-between; font-size:var(--fs-sm); background:var(--brand-tint); padding:.5em .7em; border-radius:8px">
+          <span style="min-width:0"><b style="color:var(--muted)">${i + 1}.</b> ${q.text} <span class="chip" style="font-size:.62rem; padding:.15em .5em">${bandNameFor(q)}</span></span>
+          <button class="btn btn--ghost" data-deldq="${d.code}|${i}" title="Padam soalan" style="flex:none; padding:.2em .45em">${ICONS.trash}</button>
+        </li>`).join('') : `<li class="muted" style="font-size:var(--fs-sm)">Tiada soalan lagi.</li>`;
+      return `<div class="card" style="--dc:${d.color}; border-left:4px solid ${d.color}">
+        <div class="flex items-center gap-2" style="margin-bottom:var(--sp-2)">
+          <span class="domain-card__ico" style="width:36px;height:36px;margin:0;background:color-mix(in srgb,${d.color} 14%,#fff);color:${d.color}">${ICONS[d.icon] || ICONS.star}</span>
+          <strong style="font-family:var(--font-head)">${d.name}</strong>
+          <span class="muted" style="font-size:var(--fs-xs)">(${qs.length})</span>
+        </div>
+        <ul style="list-style:none; padding:0; margin:0; display:grid; gap:6px; max-height:280px; overflow:auto">${li}</ul>
+        <form data-adddq="${d.code}" class="mt-3" style="display:grid; gap:6px">
+          <input class="input" name="q" placeholder="Tambah soalan baharu…" required>
+          <div class="flex gap-2">
+            <select class="select" name="band" style="flex:1">${bandOpts}</select>
+            <button class="btn" type="submit" style="flex:none">${ICONS.plus} Tambah</button>
+          </div>
+        </form>
+      </div>`;
+    }).join('');
+
+    host.querySelectorAll('[data-deldq]').forEach(btn => btn.onclick = () => {
+      const [code, idx] = btn.dataset.deldq.split('|');
+      if (!confirm('Padam soalan ini daripada domain?')) return;
+      const doms = getDomains();
+      const d = doms.find(x => x.code === code); if (!d) return;
+      d.questions.splice(Number(idx), 1);
+      saveDomains(doms);
+      logAudit('question.delete', `Padam soalan domain ${d.name}`);
+      render();
+    });
+    host.querySelectorAll('[data-adddq]').forEach(f => f.onsubmit = (e) => {
+      e.preventDefault();
+      const code = f.dataset.adddq;
+      const text = f.q.value.trim(); if (!text) return;
+      const band = AGE_BANDS[Number(f.band.value)] || AGE_BANDS[0];
+      const doms = getDomains();
+      const d = doms.find(x => x.code === code); if (!d) return;
+      (d.questions = d.questions || []).push({ text, minM: band.minM, maxM: band.maxM });
+      saveDomains(doms);
+      logAudit('question.add', `Tambah soalan domain ${d.name} (${band.label})`);
+      render();
+    });
+  }
+  render();
+}
+
 function initDomainAdmin() {
   const host = document.getElementById('screen-mchat');
   if (!host) return;
@@ -2291,6 +2720,9 @@ function initUsersAdmin() {
   const searchEl = document.getElementById('user-search');
   const filterEl = document.getElementById('user-filter');
   const districtFilterEl = document.getElementById('user-district-filter');
+  // Isi pilihan daerah dari GEO (kekal "Semua Daerah" di atas).
+  if (districtFilterEl) districtFilterEl.innerHTML = '<option value="semua">Semua Daerah</option>' +
+    allDistricts().map(d => `<option value="${d}">${d}</option>`).join('');
   const viewModal = document.getElementById('user-view-modal');
   const editModal = document.getElementById('user-edit-modal');
   let q = '', lvl = 'semua', dist = 'semua';
@@ -2686,7 +3118,7 @@ function initReports() {
 function initArticlesAdmin() {
   const listEl = document.getElementById('article-list');
   if (!listEl) return;
-  if (!canManageAccounts(currentAdmin()?.role)) return; // artikel: pentadbir sahaja
+  if (!canManageContent(currentAdmin()?.role)) return; // artikel: pentadbir, superadmin & doktor
   const form = document.getElementById('article-form');
   let editId = null;
   let filter = 'semua';
@@ -3103,21 +3535,98 @@ function initHistory() {
    yang disimpan ke rekod pengguna. */
 function initProfile() {
   const famForm = document.getElementById('family-form');
-  if (!famForm) return;
+  const pubForm = document.getElementById('public-form');
+  if (!famForm && !pubForm) return;    // bukan halaman profil
   const user = currentUser();
   if (!user) return;
 
   const set = (id, v) => { const el = document.getElementById(id); if (el) el.value = v || ''; };
   const rec = getUsers().find(x => x.id === user.id) || user;
 
-  // Isi borang daripada rekod semasa.
-  set('fam-district', rec.district);
+  // Akaun e-Pembelajaran (pengguna awam): profil diri ringkas — TIADA maklumat
+  // keluarga. Tunjuk kad awam, sembunyi kad keluarga, dan berhenti di sini.
+  if (rec.accountType === 'knowledge') {
+    document.getElementById('family-card')?.style.setProperty('display', 'none');
+    document.getElementById('public-card')?.style.setProperty('display', '');
+    const head = document.querySelector('.page-head');
+    if (head) {
+      const h1 = head.querySelector('h1'); if (h1) h1.textContent = 'Profil Saya';
+      const bc = head.querySelector('.breadcrumb span:last-child'); if (bc) bc.textContent = 'Profil Saya';
+      const p = head.querySelector('p'); if (p) p.textContent = 'Kemas kini maklumat diri anda.';
+    }
+    initPublicProfile(user, rec, set);
+    return;
+  }
+  // Akaun saringan: pastikan kad awam tersembunyi.
+  document.getElementById('public-card')?.style.setProperty('display', 'none');
+  if (!famForm) return;
+
+  // Amaran bila dialih ke sini kerana profil belum lengkap (?incomplete=1).
+  const famWasIncomplete = !!new URLSearchParams(location.search).get('incomplete');
+  if (famWasIncomplete) {
+    const warn = document.getElementById('fam-warn');
+    if (warn) { warn.style.display = ''; warn.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+  }
+
+  // Alamat rumah: Negeri (semua negeri) → Daerah. Kelantan guna dropdown daerah
+  // rasmi; negeri lain, pengguna taip daerah sendiri (input teks bebas).
+  const negeriSel = document.getElementById('fam-negeri');
+  const distSel = document.getElementById('fam-district');
+  const distText = document.getElementById('fam-district-text');
+  const syncDistrict = (negeri, current) => {
+    const hasList = districtsOf(negeri).length > 0;
+    if (distSel) { distSel.style.display = hasList ? '' : 'none'; distSel.disabled = !hasList; }
+    if (distText) {
+      distText.style.display = hasList ? 'none' : '';
+      distText.disabled = hasList || !negeri;
+      distText.placeholder = negeri ? 'Masukkan daerah anda' : 'Pilih negeri dahulu';
+      if (!hasList) distText.value = current || '';
+    }
+    if (hasList) fillDistrictSelect(distSel, negeri, current);
+  };
+  if (negeriSel) {
+    negeriSel.innerHTML = '<option value="">— Pilih negeri —</option>' +
+      GEO_STATES.map(s => `<option value="${s}"${s === rec.negeri ? ' selected' : ''}>${s}</option>`).join('');
+    syncDistrict(rec.negeri || '', rec.district);
+    negeriSel.addEventListener('change', () => syncDistrict(negeriSel.value, ''));
+  }
+  set('fam-address', rec.address);
+  set('fam-poskod', rec.poskod);
+
   const fill = (who, p) => {
     p = p || {};
     set(`fam-${who}-name`, p.name); set(`fam-${who}-ic`, p.ic); set(`fam-${who}-phone`, p.phone);
     set(`fam-${who}-job`, p.job); set(`fam-${who}-income`, p.income);
   };
   fill('father', rec.father); fill('mother', rec.mother);
+
+  // Kunci No. Kad Pengenalan selepas ia disimpan buat kali pertama — medan
+  // identiti, jarang berubah. Medan lain kekal boleh diubah bila-bila.
+  const lockIC = (who) => {
+    const el = document.getElementById(`fam-${who}-ic`);
+    if (!el || !el.value.trim()) return;
+    el.readOnly = true;
+    el.style.background = 'var(--line-2)';
+    el.style.cursor = 'not-allowed';
+    el.title = 'No. Kad Pengenalan dikunci selepas disimpan. Hubungi pentadbir untuk pindaan.';
+    if (!el.nextElementSibling || !el.nextElementSibling.classList?.contains('hint')) {
+      const hint = document.createElement('span');
+      hint.className = 'hint';
+      hint.textContent = '🔒 Dikunci selepas simpan pertama';
+      el.parentElement.appendChild(hint);
+    }
+  };
+  lockIC('father'); lockIC('mother');
+
+  // Tarikh kemas kini terakhir.
+  const showUpdated = (iso) => {
+    const el = document.getElementById('fam-updated');
+    if (!el || !iso) return;
+    let s; try { s = new Date(iso).toLocaleString('ms-MY', { dateStyle: 'long', timeStyle: 'short' }); } catch (_) { s = new Date(iso).toLocaleString(); }
+    el.textContent = 'Kemas kini terakhir: ' + s;
+    el.style.display = '';
+  };
+  showUpdated(rec.familyUpdatedAt);
 
   famForm.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -3128,12 +3637,144 @@ function initProfile() {
     const users = getUsers();
     const u = users.find(x => x.id === user.id);
     if (!u) { setMsg('fam-msg', 'Akaun tidak dijumpai. Sila log masuk semula.'); return; }
-    u.district = val('fam-district');
+    const negeri = val('fam-negeri');
+    u.negeri = negeri;
+    // Daerah: dari dropdown (negeri berdaftar spt Kelantan) atau input teks (negeri lain).
+    u.district = (districtsOf(negeri).length ? val('fam-district') : val('fam-district-text')).trim();
+    u.address = val('fam-address');
+    u.poskod = val('fam-poskod');
     u.father = readParent('father');
     u.mother = readParent('mother');
+    u.familyUpdatedAt = new Date().toISOString();
     saveUsers(users);
-    setMsg('fam-msg', 'Maklumat keluarga berjaya disimpan.');
+
+    lockIC('father'); lockIC('mother');   // kunci IC yang baru diisi
+    showUpdated(u.familyUpdatedAt);
+
+    // Segarkan salinan sesi supaya gerbang kelengkapan profil nampak data terkini.
+    const s = currentUser(); if (s) { Object.assign(s, { negeri: u.negeri, district: u.district, address: u.address, poskod: u.poskod, father: u.father, mother: u.mother }); sessionStorage.setItem('ejejak_user', JSON.stringify(s)); }
+
+    const warn = document.getElementById('fam-warn'); if (warn) warn.style.display = 'none';
+    const done = familyComplete(u);
+    let msg;
+    if (!done) msg = 'Maklumat disimpan, tetapi masih belum lengkap — sila isi alamat, negeri, daerah, poskod dan sekurang-kurangnya seorang ibu/bapa.';
+    else if (!familyFullyComplete(u)) msg = 'Berjaya disimpan. Anda kini boleh menggunakan sistem sepenuhnya. Untuk rekod lengkap, sila isi juga maklumat ibu/bapa seorang lagi.';
+    else msg = 'Maklumat keluarga berjaya disimpan. Anda kini boleh membuat saringan & menambah anak.';
+    setMsg('fam-msg', msg);
     const box = document.getElementById('fam-msg'); if (box) box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    // Selepas lengkap (jika tadi dikunci ke sini), lepaskan ke Dashboard.
+    if (done && famWasIncomplete) setTimeout(() => window.location.href = 'dashboard.html', 1200);
+  });
+}
+
+/* ---------- 18d-1b. PENGGUNA AWAM (e-Pembelajaran): PROFIL DIRI ----
+   Akaun 'knowledge' tiada anak/saringan → tiada maklumat keluarga. Simpan
+   maklumat diri: nama, e-mel (baca-sahaja), telefon, negeri, pekerjaan,
+   tarikh lahir + latar belakang OKU (dengan soalan susulan popup). */
+function initPublicProfile(user, rec, set) {
+  const form = document.getElementById('public-form');
+  if (!form) return;
+
+  // Amaran bila dikunci ke sini kerana profil belum lengkap (?incomplete=1).
+  const wasIncomplete = !!new URLSearchParams(location.search).get('incomplete');
+  if (wasIncomplete) {
+    const warn = document.getElementById('pub-warn');
+    if (warn) { warn.style.display = ''; warn.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+  }
+
+  // Isi medan sedia ada.
+  set('pub-name', rec.name);
+  set('pub-email', rec.email);
+  set('pub-phone', rec.phone);
+  set('pub-job', rec.pekerjaan);
+
+  // Tarikh lahir: tiga dropdown tersuai (Hari · Bulan · Tahun) — buka ke bawah,
+  // papar ~10 baris kemudian scroll. Disimpan dalam format ISO (YYYY-MM-DD).
+  const BULAN = ['Januari', 'Februari', 'Mac', 'April', 'Mei', 'Jun', 'Julai', 'Ogos', 'September', 'Oktober', 'November', 'Disember'];
+  const pad2 = (n) => String(n).padStart(2, '0');
+  const [dyY, dyM, dyD] = (rec.dob && /^\d{4}-\d{2}-\d{2}$/.test(rec.dob)) ? rec.dob.split('-') : ['', '', ''];
+  const thisYear = new Date().getFullYear();
+  const dayOpts = Array.from({ length: 31 }, (_, i) => ({ value: pad2(i + 1), label: String(i + 1) }));
+  const monOpts = BULAN.map((b, i) => ({ value: pad2(i + 1), label: b }));
+  const yrOpts = []; for (let y = thisYear; y >= 1940; y--) yrOpts.push({ value: String(y), label: String(y) });
+  const ddDay = customDropdown(document.getElementById('dd-day'), { placeholder: 'Hari', options: dayOpts, value: dyD, visibleRows: 10 });
+  const ddMon = customDropdown(document.getElementById('dd-month'), { placeholder: 'Bulan', options: monOpts, value: dyM, visibleRows: 10 });
+  const ddYear = customDropdown(document.getElementById('dd-year'), { placeholder: 'Tahun', options: yrOpts, value: dyY, visibleRows: 10 });
+  const readDob = () => {
+    const d = ddDay.value, m = ddMon.value, y = ddYear.value;
+    return (d && m && y) ? `${y}-${m}-${d}` : '';
+  };
+
+  // Negeri: dropdown semua negeri.
+  const negeriSel = document.getElementById('pub-negeri');
+  if (negeriSel) negeriSel.innerHTML = '<option value="">— Pilih negeri —</option>' +
+    GEO_STATES.map(s => `<option value="${s}"${s === rec.negeri ? ' selected' : ''}>${s}</option>`).join('');
+
+  // Latar belakang OKU + soalan susulan (popup).
+  let okuKnowledge = rec.okuKnowledge || '';   // 'ya' | 'tidak' | ''
+  const knowHint = document.getElementById('pub-oku-know');
+  const showKnow = () => {
+    if (!knowHint) return;
+    if (okuKnowledge) { knowHint.textContent = 'Ilmu pengurusan anak OKU: ' + (okuKnowledge === 'ya' ? 'Ya' : 'Tidak'); knowHint.style.display = ''; }
+    else { knowHint.style.display = 'none'; }
+  };
+  const modal = document.getElementById('oku-modal');
+  const openModal = () => modal && modal.classList.add('open');
+  const closeModal = () => modal && modal.classList.remove('open');
+  const setKnow = (v) => { okuKnowledge = v; showKnow(); closeModal(); };
+
+  // Pra-set radio OKU dari rekod.
+  if (rec.hasOkuChild) {
+    const r = document.getElementById(rec.hasOkuChild === 'ya' ? 'pub-oku-ya' : 'pub-oku-tidak');
+    if (r) r.checked = true;
+  }
+  showKnow();
+
+  // "Ya" → buka popup soalan susulan; "Tidak" → kosongkan jawapan ilmu.
+  document.getElementById('pub-oku-ya')?.addEventListener('change', () => { openModal(); });
+  document.getElementById('pub-oku-tidak')?.addEventListener('change', () => { okuKnowledge = ''; showKnow(); });
+  document.getElementById('oku-know-ya')?.addEventListener('click', () => setKnow('ya'));
+  document.getElementById('oku-know-tidak')?.addEventListener('click', () => setKnow('tidak'));
+  document.getElementById('oku-modal-close')?.addEventListener('click', closeModal);
+  modal?.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+
+  // Tarikh kemas kini terakhir.
+  const showUpdated = (iso) => {
+    const el = document.getElementById('pub-updated');
+    if (!el || !iso) return;
+    let s; try { s = new Date(iso).toLocaleString('ms-MY', { dateStyle: 'long', timeStyle: 'short' }); } catch (_) { s = new Date(iso).toLocaleString(); }
+    el.textContent = 'Kemas kini terakhir: ' + s; el.style.display = '';
+  };
+  showUpdated(rec.familyUpdatedAt);
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const users = getUsers();
+    const u = users.find(x => x.id === user.id);
+    if (!u) { setMsg('pub-msg', 'Akaun tidak dijumpai. Sila log masuk semula.'); return; }
+    u.name = val('pub-name').trim() || u.name;
+    u.phone = val('pub-phone').trim();
+    u.negeri = val('pub-negeri');
+    u.pekerjaan = val('pub-job').trim();
+    u.dob = readDob();
+    u.hasOkuChild = (document.querySelector('input[name="pub-oku"]:checked') || {}).value || '';
+    u.okuKnowledge = u.hasOkuChild === 'ya' ? okuKnowledge : '';   // hanya relevan bila "Ya"
+    u.familyUpdatedAt = new Date().toISOString();
+    saveUsers(users);
+
+    // Segarkan salinan sesi (nama/telefon dipapar di header & tempat lain).
+    const s = currentUser(); if (s) { Object.assign(s, { name: u.name, phone: u.phone }); sessionStorage.setItem('ejejak_user', JSON.stringify(s)); }
+    document.querySelectorAll('[data-user-name]').forEach(el => el.textContent = u.name.split(' ')[0]);
+
+    showUpdated(u.familyUpdatedAt);
+    const warn = document.getElementById('pub-warn'); if (warn) warn.style.display = 'none';
+    const done = publicComplete(u);
+    setMsg('pub-msg', done
+      ? 'Profil berjaya disimpan. Anda kini boleh menggunakan sistem.'
+      : 'Profil disimpan, tetapi masih belum lengkap — sila isi nama, telefon, negeri, pekerjaan, tarikh lahir dan soalan OKU.');
+    const box = document.getElementById('pub-msg'); if (box) box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    // Selepas lengkap (jika tadi dikunci ke sini), lepaskan ke Dashboard.
+    if (done && wasIncomplete) setTimeout(() => window.location.href = 'dashboard.html', 1200);
   });
 }
 
@@ -3271,15 +3912,74 @@ function initProgram() {
   render();
 }
 
+/* Kandungan Dashboard untuk akaun e-Pembelajaran (pautan pantas + video pilihan). */
+function renderLearningDashboard(hub) {
+  if (!hub) return;
+  const vids = getVideos().slice(0, 3);
+  const I = {
+    play: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 20 12 6 21 6 3"/></svg>',
+    book: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
+    bulb: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg>',
+    cal: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>',
+  };
+  const linkCard = (href, ico, title, desc) =>
+    `<a class="quick-card" href="${href}"><span class="qc-ico">${ico}</span><div><h3>${title}</h3><p>${desc}</p></div></a>`;
+  const wrap = document.createElement('div');
+  wrap.innerHTML = `
+    <h2 style="margin-bottom:var(--sp-3)">Teruskan Pembelajaran</h2>
+    <div class="grid grid-4" style="margin-bottom:var(--sp-5)">
+      ${linkCard('pendidikan.html#video-pembelajaran', I.play, 'Video Pembelajaran', 'Tonton video ringkas perkembangan anak')}
+      ${linkCard('pendidikan.html', I.book, 'Artikel Perkembangan', 'Baca artikel tumbesaran & kesihatan anak')}
+      ${linkCard('pendidikan.html#tips', I.bulb, 'Tips Keibubapaan', 'Petua praktikal harian untuk ibu bapa')}
+      ${linkCard('program.html', I.cal, 'Program & Aktiviti', 'Program komuniti berhampiran anda')}
+    </div>
+    ${vids.length ? `
+      <div class="flex items-center justify-between wrap gap-3" style="margin-bottom:var(--sp-3)">
+        <h2 style="margin:0">Video Pilihan</h2>
+        <a class="btn btn--ghost" href="pendidikan.html#video-pembelajaran">Lihat semua video</a>
+      </div>
+      <div class="grid grid-3">${vids.map(videoEmbedHTML).join('')}</div>` : ''}`;
+  hub.appendChild(wrap);
+}
+
 /* ---------- 18g. VIDEO PEMBELAJARAN (paparan awam + urus pentadbir) */
 function videoEmbedHTML(v) {
-  return `<div class="card">
-    <div class="video-embed"><iframe src="https://www.youtube.com/embed/${encodeURIComponent(v.youtube || '')}" title="${(v.title || '').replace(/"/g, '&quot;')}" loading="lazy" allowfullscreen></iframe></div>
-    <div style="padding:var(--sp-3)">
+  const title = (v.title || 'Video').replace(/"/g, '&quot;');
+  // `src` → fail video terus (HTML5). Selainnya `embed` (iframe: YouTube /
+  // Google Drive / Vimeo). `youtube` (lama) disokong untuk keserasian.
+  let media;
+  if (v.src) {
+    media = `<video src="${v.src}"${v.poster ? ` poster="${v.poster}"` : ''} controls playsinline preload="metadata"></video>`;
+  } else {
+    const embedUrl = v.embed || (v.youtube ? 'https://www.youtube.com/embed/' + encodeURIComponent(v.youtube) : '');
+    media = `<iframe src="${embedUrl}" title="${title}" loading="lazy" allow="autoplay; fullscreen; encrypted-media" allowfullscreen></iframe>`;
+  }
+  return `<div class="video-card">
+    <div class="video-embed">
+      ${media}
+      <button type="button" class="video-fs" title="Tonton skrin penuh" aria-label="Tonton skrin penuh">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
+      </button>
+    </div>
+    <div class="video-card__body">
       <strong>${v.title || 'Video'}</strong>
-      <p class="muted" style="font-size:var(--fs-sm); margin-top:4px">${v.desc || ''}</p>
+      ${v.desc ? `<p class="muted">${v.desc}</p>` : ''}
     </div>
   </div>`;
+}
+// Butang skrin penuh pada mana-mana kad video (delegasi — sekali untuk semua).
+function initVideoFullscreen() {
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest && e.target.closest('.video-fs');
+    if (!btn) return;
+    e.preventDefault();
+    if (document.fullscreenElement) { document.exitFullscreen(); return; }
+    const wrap = btn.closest('.video-embed'); if (!wrap) return;
+    const req = wrap.requestFullscreen || wrap.webkitRequestFullscreen || wrap.msRequestFullscreen;
+    if (req) { req.call(wrap); return; }
+    const vid = wrap.querySelector('video');   // iOS: fullscreen terus pada elemen video
+    if (vid && vid.webkitEnterFullscreen) vid.webkitEnterFullscreen();
+  });
 }
 function initVideosPublic() {
   const grid = document.getElementById('video-grid');
@@ -3288,19 +3988,69 @@ function initVideosPublic() {
   grid.innerHTML = vids.length ? vids.map(videoEmbedHTML).join('')
     : `<p class="muted" style="grid-column:1/-1">Tiada video buat masa ini.</p>`;
 }
+// Ambil ID YouTube daripada ID mentah ATAU URL penuh (watch/embed/shorts/youtu.be).
+function parseYouTubeId(s) {
+  s = (s || '').trim();
+  const m = s.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{6,})/i);
+  return m ? m[1] : s;
+}
+/* Borang video PINTAR — kesan jenis pautan secara automatik dan pulangkan
+   { kind, src } (fail terus) atau { kind, embed } (iframe). */
+function parseVideoSource(input) {
+  const s = (input || '').trim();
+  if (!s) return null;
+  let m;
+  if ((m = s.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/|live\/)|youtu\.be\/)([\w-]{6,})/i)))
+    return { kind: 'YouTube', embed: 'https://www.youtube.com/embed/' + m[1] };
+  if (/drive\.google\.com/i.test(s) && (m = s.match(/\/d\/([\w-]+)/) || s.match(/[?&]id=([\w-]+)/)))
+    return { kind: 'Google Drive', embed: 'https://drive.google.com/file/d/' + m[1] + '/preview' };
+  if ((m = s.match(/vimeo\.com\/(?:video\/)?(\d+)/i)))
+    return { kind: 'Vimeo', embed: 'https://player.vimeo.com/video/' + m[1] };
+  if (/\.(mp4|webm|ogg|ogv|mov|m4v)(\?.*)?$/i.test(s))
+    return { kind: 'Fail video terus', src: s };
+  if (/^https?:\/\//i.test(s))
+    return { kind: 'URL (cuba sebagai fail terus)', src: s };
+  return null;
+}
+// Label ringkas jenis sumber video (untuk senarai admin).
+function videoSourceLabel(v) {
+  if (v.src) return 'Fail video';
+  const e = v.embed || '';
+  if (/youtube\.com/i.test(e) || v.youtube) return 'YouTube';
+  if (/drive\.google/i.test(e)) return 'Google Drive';
+  if (/vimeo/i.test(e)) return 'Vimeo';
+  return 'Embed';
+}
 function initVideosAdmin() {
   const listEl = document.getElementById('video-admin-list');
   if (!listEl) return;
-  if (!canManageAccounts(currentAdmin()?.role)) return; // superadmin & pentadbir
+  if (!canManageContent(currentAdmin()?.role)) return; // superadmin, pentadbir & doktor
   const form = document.getElementById('video-form');
   let editId = null;
+
+  // Pautan asal untuk sunting (embed & youtube boleh di-parse semula).
+  const linkOf = (v) => v.src || v.embed || (v.youtube ? 'https://youtu.be/' + v.youtube : '');
+
+  // Maklum balas hidup: kesan jenis pautan semasa admin menaip.
+  const linkInput = document.getElementById('vid-link');
+  const detectEl = document.getElementById('vid-detect');
+  const updateDetect = () => {
+    if (!detectEl) return;
+    const val0 = (linkInput?.value || '').trim();
+    if (!val0) { detectEl.textContent = ''; return; }
+    const p = parseVideoSource(val0);
+    detectEl.textContent = p ? `✓ Dikesan: ${p.kind}` : '⚠ Pautan tidak dikenali — pastikan pautan video sah.';
+    detectEl.style.color = p ? 'var(--ok)' : 'var(--danger)';
+  };
+  linkInput?.addEventListener('input', updateDetect);
+
   function render() {
     const vids = getVideos();
     listEl.innerHTML = vids.length ? vids.map(v => `
       <div class="card flex items-center gap-3" style="justify-content:space-between">
         <div style="min-width:0">
           <strong style="display:block; font-family:var(--font-head)">${v.title}</strong>
-          <span class="muted" style="font-size:var(--fs-xs)">ID YouTube: ${v.youtube || '—'}</span>
+          <span class="muted" style="font-size:var(--fs-xs)"><span class="chip" style="font-size:.6rem; padding:.1em .5em">${videoSourceLabel(v)}</span> ${linkOf(v)}</span>
         </div>
         <div class="flex gap-2" style="flex:none">
           <button class="btn btn--ghost" data-vedit="${v.id}" title="Sunting" style="padding:.35em .6em">${ICONS.edit}</button>
@@ -3311,35 +4061,41 @@ function initVideosAdmin() {
       const v = getVideos().find(x => x.id === b.dataset.vedit); if (!v) return;
       editId = v.id;
       document.getElementById('vid-title').value = v.title || '';
-      document.getElementById('vid-youtube').value = v.youtube || '';
       document.getElementById('vid-desc').value = v.desc || '';
+      if (linkInput) linkInput.value = linkOf(v);
+      document.getElementById('vid-poster').value = v.poster || '';
+      updateDetect();
       document.getElementById('video-form-title').textContent = 'Sunting Video';
       form.scrollIntoView({ behavior: 'smooth' });
     }));
     listEl.querySelectorAll('[data-vdel]').forEach(b => b.addEventListener('click', () => {
       if (!confirm('Padam video ini?')) return;
       saveVideos(getVideos().filter(x => x.id !== b.dataset.vdel));
-      if (editId === b.dataset.vdel) { editId = null; form.reset(); document.getElementById('video-form-title').textContent = 'Tambah Video'; }
+      if (editId === b.dataset.vdel) { editId = null; form.reset(); updateDetect(); document.getElementById('video-form-title').textContent = 'Tambah Video'; }
       render();
     }));
   }
   form?.addEventListener('submit', (e) => {
     e.preventDefault();
-    const title = val('vid-title'), youtube = val('vid-youtube'), desc = val('vid-desc');
-    if (!title || !youtube) { alert('Sila lengkapkan tajuk dan ID YouTube.'); return; }
+    const title = val('vid-title'), desc = val('vid-desc'), poster = val('vid-poster').trim();
+    const parsed = parseVideoSource(val('vid-link'));
+    if (!title) { alert('Sila masukkan tajuk video.'); return; }
+    if (!parsed) { alert('Sila masukkan pautan video yang sah — fail .mp4, YouTube, Google Drive atau Vimeo.'); return; }
+    // Poster hanya relevan untuk fail terus. Kosongkan medan sumber yang tak diguna.
+    const data = { title, desc, poster: parsed.src ? poster : '', src: parsed.src || '', embed: parsed.embed || '', youtube: '' };
     const vids = getVideos();
     if (editId) {
-      const v = vids.find(x => x.id === editId); if (v) Object.assign(v, { title, youtube, desc });
+      const v = vids.find(x => x.id === editId); if (v) Object.assign(v, data);
       editId = null; document.getElementById('video-form-title').textContent = 'Tambah Video';
     } else {
-      vids.unshift({ id: 'V' + Date.now(), title, youtube, desc });
+      vids.unshift({ id: 'V' + Date.now(), ...data });
     }
     saveVideos(vids);
-    e.target.reset();
+    e.target.reset(); updateDetect();
     render();
   });
   document.getElementById('video-reset')?.addEventListener('click', () => {
-    editId = null; form.reset(); document.getElementById('video-form-title').textContent = 'Tambah Video';
+    editId = null; form.reset(); updateDetect(); document.getElementById('video-form-title').textContent = 'Tambah Video';
   });
   render();
 }
@@ -3399,7 +4155,7 @@ function initReportBuilder() {
   if (!table) return;
   if (!canManageAccounts(currentAdmin()?.role)) return; // pentadbir & superadmin
 
-  const DISTRICTS = ['Bachok', 'Gua Musang', 'Jeli', 'Kota Bharu', 'Kuala Krai', 'Machang', 'Pasir Mas', 'Pasir Puteh', 'Tanah Merah', 'Tumpat'];
+  const DISTRICTS = allDistricts();   // dari GEO_DISTRICTS — merentas semua negeri dalam data
   const sourceSel = document.getElementById('rb-source');
   const districtSel = document.getElementById('rb-district');
   const countEl = document.getElementById('rb-count');
@@ -3518,6 +4274,8 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!guard()) return;      // kawalan akses (parent / admin)
   mountChrome();
   updateAuthUI();
+  enforceProfileLock();
+  initVideoFullscreen();
   renderImpersonationBanner();
   setupRoleAccess();
   initCarousel();
@@ -3530,6 +4288,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initScreening();
   initResult();
   initAdmin();
+  initDomainQuestionsAdmin();
   initDomainAdmin();
   initStats();
   initReports();

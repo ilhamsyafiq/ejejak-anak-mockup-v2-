@@ -35,6 +35,25 @@
     </div>
   </div>
 
+  <!-- Video Pembelajaran — DI ATAS artikel & lain-lain -->
+  <section class="section" id="video-pembelajaran" style="padding-bottom:0">
+    <div class="container">
+      <h2 style="margin-bottom:var(--sp-1)">Video Pembelajaran</h2>
+      <p style="color:var(--muted);margin-bottom:var(--sp-3)">
+        Koleksi video ringkas — tonton terus di sini, dengan pilihan skrin penuh.
+      </p>
+      <!-- Guest: video hanya untuk pengguna berdaftar -->
+      <div class="notice notice--warn" data-when="guest" style="margin-bottom:var(--sp-4)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <span>Video pembelajaran hanya untuk pengguna berdaftar. <a href="login.html?next=pendidikan.html">Log masuk</a> atau <a href="daftar.html">daftar percuma</a> untuk menonton.</span>
+      </div>
+      <!-- Pengguna berdaftar sahaja -->
+      <div data-when="user" style="display:none">
+        <div class="grid grid-3" id="video-grid"></div>
+      </div>
+    </div>
+  </section>
+
   <main class="section" id="edu-root">
     <div class="container" data-tabs>
       <!-- Tab -->
@@ -53,39 +72,6 @@
 
     </div>
   </main>
-
-  <!-- Video Pembelajaran -->
-  <section class="section" id="video-pembelajaran" style="padding-top:0">
-    <div class="container">
-      <h2 style="margin-bottom:var(--sp-1)">Video Pembelajaran</h2>
-      <p style="color:var(--muted,#5b6472);margin-bottom:var(--sp-2)">
-        Koleksi video ringkas untuk membantu ibu bapa memahami perkembangan dan keperluan anak.
-      </p>
-      <!-- Guest: video hanya untuk pengguna berdaftar -->
-      <div class="notice notice--warn" data-when="guest" style="margin-bottom:var(--sp-4)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-        <span>Video pembelajaran hanya untuk pengguna berdaftar. <a href="login.html?next=pendidikan.html">Log masuk</a> atau <a href="daftar.html">daftar percuma</a> untuk menonton.</span>
-      </div>
-
-      <!-- Pengguna berdaftar sahaja -->
-      <div data-when="user" style="display:none">
-      <div class="notice" style="margin-bottom:var(--sp-4);font-size:var(--fs-sm)">
-        Video contoh — boleh diganti oleh pentadbir. (demo/simulasi)
-      </div>
-
-      <!-- Grid video responsif — dijana oleh main.js (initVideosPublic) dari ejejak_videos,
-           yang boleh diurus pentadbir di panel (tab "Urus Video"). -->
-      <div class="grid grid-3" id="video-grid"></div>
-      </div><!-- /data-when=user -->
-    </div>
-  </section>
-
-  <!-- Fallback minimum: widgets.css menyediakan gaya .video-embed penuh untuk halaman awam.
-       Ini kekal aktif jika widgets.css belum dimuat, memastikan iframe responsif 16:9. -->
-  <style>
-    .video-embed{position:relative;padding-top:56.25%;height:0;overflow:hidden;border-radius:var(--radius,14px) var(--radius,14px) 0 0;background:#000}
-    .video-embed iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-  </style>
 
   <div id="site-footer"></div>
   <script src="assets/js/main.js?v=20260806y"></script>

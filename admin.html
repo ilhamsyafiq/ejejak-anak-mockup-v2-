@@ -48,7 +48,7 @@
         <button class="tab is-active" data-target="tab-saringan" data-roles="doctor">Keputusan Saringan</button>
         <button class="tab" data-target="tab-statistik" data-roles="superadmin,admin,doctor">Statistik</button>
         <button class="tab" data-target="tab-soalan" data-roles="doctor">Urus Soalan</button>
-        <button class="tab" data-target="tab-kandungan" data-roles="superadmin,admin">Urus Kandungan</button>
+        <button class="tab" data-target="tab-kandungan" data-roles="superadmin,admin,doctor">Urus Kandungan</button>
         <button class="tab" data-target="tab-pengguna" data-roles="superadmin,admin">Urus Pengguna</button>
         <button class="tab" data-target="tab-programkehadiran" data-roles="superadmin,admin">Program &amp; Kehadiran</button>
         <button class="tab" data-target="tab-penjana" data-roles="superadmin,admin">Laporan</button>
@@ -131,14 +131,22 @@
       <!-- ===== TAB 3: URUS SOALAN & DOMAIN (Modul 6: Tambah soalan) ===== -->
       <section class="tab-panel" id="tab-soalan">
         <div class="section-head" style="margin-bottom:var(--sp-4)">
-          <h2>Urus Soalan Saringan</h2>
-          <p class="lead" style="font-size:var(--fs-md)">Tambah / padam soalan bagi <strong>M-CHAT</strong> (tanda awal autisme) &amp; <strong>Profil Deria</strong> (sensori). Perubahan terus muncul dalam saringan ibu bapa. Setiap soalan mempunyai <strong>isyarat risiko</strong> — jawapan yang menandakan kebimbangan (klik untuk tukar).</p>
+          <h2>Urus Soalan &amp; Domain</h2>
+          <p class="lead" style="font-size:var(--fs-md)">Tambah / padam soalan <strong>Saringan Perkembangan</strong> bagi setiap domain, mengikut kumpulan umur. Perubahan terus muncul dalam saringan ibu bapa (soalan dipaparkan mengikut umur anak).</p>
         </div>
 
-        <div class="grid grid-2" style="gap:var(--sp-5); align-items:start">
-          <div class="card" id="screen-mchat"></div>
-          <div class="card" id="screen-sensori"></div>
-        </div>
+        <!-- Pengurus soalan 7 domain (Saringan Perkembangan) -->
+        <div class="grid" id="domain-admin" style="grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:var(--sp-4); align-items:start"></div>
+
+        <!-- Saringan lain (M-CHAT disorok buat sementara / Profil Deria) -->
+        <details style="margin-top:var(--sp-6)">
+          <summary style="cursor:pointer; font-family:var(--font-head); font-weight:700; font-size:var(--fs-md); margin-bottom:var(--sp-3)">Saringan lain — M-CHAT (disorok) &amp; Profil Deria</summary>
+          <p class="muted" style="font-size:var(--fs-sm); margin-bottom:var(--sp-3)">M-CHAT kini <strong>disorok daripada ibu bapa</strong> sementara menunggu pengesahan. Anda masih boleh mengurus soalannya di sini. Setiap soalan mempunyai <strong>isyarat risiko</strong> (klik untuk tukar).</p>
+          <div class="grid grid-2" style="gap:var(--sp-5); align-items:start">
+            <div class="card" id="screen-mchat"></div>
+            <div class="card" id="screen-sensori"></div>
+          </div>
+        </details>
       </section>
 
       <!-- ===== TAB: URUS PENGGUNA (ibu bapa) ===== -->
@@ -172,18 +180,9 @@
           </div>
           <div class="field" style="margin:0; min-width:170px">
             <label for="user-district-filter">Daerah</label>
+            <!-- Pilihan daerah diisi oleh main.js dari GEO_DISTRICTS (initUsers) -->
             <select class="select" id="user-district-filter">
               <option value="semua">Semua Daerah</option>
-              <option value="Kota Bharu">Kota Bharu</option>
-              <option value="Pasir Mas">Pasir Mas</option>
-              <option value="Tumpat">Tumpat</option>
-              <option value="Pasir Puteh">Pasir Puteh</option>
-              <option value="Bachok">Bachok</option>
-              <option value="Machang">Machang</option>
-              <option value="Tanah Merah">Tanah Merah</option>
-              <option value="Kuala Krai">Kuala Krai</option>
-              <option value="Gua Musang">Gua Musang</option>
-              <option value="Jeli">Jeli</option>
             </select>
           </div>
           <button class="btn btn--ghost" id="user-reload" type="button"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/></svg> Muat Semula</button>
@@ -324,11 +323,11 @@
       </section>
 
       <!-- ===== TAB: URUS KANDUNGAN (gabung Artikel + Video + NGO/MBA) ===== -->
-      <section class="tab-panel" id="tab-kandungan" data-roles="superadmin,admin">
+      <section class="tab-panel" id="tab-kandungan" data-roles="superadmin,admin,doctor">
         <div class="subtabs" data-subtabs>
           <button class="subtab is-active" data-subtarget="sub-artikel">Artikel &amp; FAQ</button>
           <button class="subtab" data-subtarget="sub-video">Video</button>
-          <button class="subtab" data-subtarget="sub-mba">NGO / MBA</button>
+          <button class="subtab" data-subtarget="sub-mba" data-roles="superadmin,admin">NGO / MBA</button>
         </div>
         <div class="subpanel" id="sub-mba">
         <div class="section-head" style="margin-bottom:var(--sp-4)">
@@ -392,7 +391,16 @@
             <h3 id="video-form-title">Tambah Video</h3>
             <form id="video-form">
               <div class="field"><label for="vid-title">Tajuk Video</label><input class="input" id="vid-title" placeholder="cth. Rangsang Pertuturan Anak" required></div>
-              <div class="field"><label for="vid-youtube">ID YouTube</label><input class="input" id="vid-youtube" placeholder="cth. dQw4w9WgXcQ" required><span class="muted" style="font-size:var(--fs-xs)">Daripada URL: youtube.com/watch?v=<strong>ID</strong></span></div>
+              <div class="field">
+                <label for="vid-link">Pautan Video</label>
+                <input class="input" id="vid-link" placeholder="Tampal pautan: fail .mp4, YouTube, atau Google Drive">
+                <span class="hint">Sistem <strong>kesan jenis pautan automatik</strong> — fail terus (.mp4/.webm), YouTube, Google Drive atau Vimeo. Untuk Google Drive, pastikan dikongsi <strong>"Sesiapa yang ada pautan"</strong>.</span>
+                <span class="hint" id="vid-detect" style="font-weight:700"></span>
+              </div>
+              <div class="field">
+                <label for="vid-poster">Imej Poster <span class="muted" style="font-weight:400">(pilihan — untuk fail video terus)</span></label>
+                <input class="input" id="vid-poster" placeholder="cth. https://contoh.com/poster.jpg">
+              </div>
               <div class="field"><label for="vid-desc">Penerangan Ringkas</label><textarea class="input" id="vid-desc" rows="3"></textarea></div>
               <div class="flex gap-2">
                 <button class="btn" type="submit">Simpan</button>
@@ -453,7 +461,7 @@
             <div class="field" style="margin:0">
               <label for="rb-source">Sumber Data</label>
               <select class="select" id="rb-source">
-                <option value="saringan">Saringan (M-CHAT / Sensori)</option>
+                <option value="saringan">Saringan (Perkembangan / Sensori)</option>
                 <option value="pengguna">Pengguna (Ibu Bapa)</option>
                 <option value="anak">Profil Anak</option>
                 <option value="kehadiran">Program &amp; Kehadiran</option>
@@ -463,7 +471,7 @@
             <div class="field" style="margin:0"><label for="rb-to">Hingga Tarikh</label><input class="input" type="date" id="rb-to"></div>
             <div class="field" style="margin:0"><label for="rb-district">Daerah</label><select class="select" id="rb-district"></select></div>
             <div class="field" style="margin:0" data-when-source="saringan"><label for="rb-type">Jenis Saringan</label>
-              <select class="select" id="rb-type"><option value="semua">Semua</option><option value="mchat">M-CHAT</option><option value="sensori">Sensori</option></select></div>
+              <select class="select" id="rb-type"><option value="semua">Semua</option><option value="perkembangan">Perkembangan</option><option value="sensori">Sensori</option><option value="mchat">M-CHAT</option></select></div>
             <div class="field" style="margin:0" data-when-source="saringan"><label for="rb-band">Band Risiko</label>
               <select class="select" id="rb-band"><option value="semua">Semua</option><option value="rendah">Rendah</option><option value="sederhana">Sederhana</option><option value="tinggi">Tinggi</option></select></div>
             <div class="field" style="margin:0" data-when-source="saringan"><label for="rb-status">Status</label>

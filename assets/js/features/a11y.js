@@ -112,7 +112,11 @@
 
       /* Panduan bacaan */
       '.a11y-guide{position:fixed;left:0;right:0;height:44px;pointer-events:none;z-index:1190;display:none;',
-      'background:rgba(22,48,58,.12);border-top:2px solid rgba(213,18,23,.85);border-bottom:2px solid rgba(213,18,23,.85);}'
+      'background:rgba(22,48,58,.12);border-top:2px solid rgba(213,18,23,.85);border-bottom:2px solid rgba(213,18,23,.85);}',
+
+      /* Mobile: kecilkan sedikit butang terapung supaya kurang menutup kandungan */
+      '@media (max-width:760px){.a11y-fab{width:46px;height:46px;left:14px;bottom:14px;}',
+      '.a11y-fab svg{width:24px;height:24px;}.a11y-panel{left:14px;bottom:68px;}}'
     ].join('');
 
     var st = document.createElement('style');

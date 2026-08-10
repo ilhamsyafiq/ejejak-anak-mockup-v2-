@@ -17,32 +17,17 @@
     <div class="container">
       <nav class="breadcrumb"><a href="dashboard.html">Dashboard</a> / <span>Maklumat Keluarga</span></nav>
       <h1>Maklumat Keluarga</h1>
-      <p>Lengkapkan daerah serta butiran ibu &amp; bapa. Maklumat ini membantu doktor menghubungi anda dan digunakan dalam laporan.</p>
+      <p>Lengkapkan alamat rumah serta butiran ibu &amp; bapa. Maklumat ini membantu doktor menghubungi anda dan digunakan dalam laporan.</p>
     </div>
   </header>
 
   <main class="section">
     <div class="container" style="max-width:720px">
-      <div class="card">
+      <!-- Akaun SARINGAN ANAK: Maklumat Keluarga (ibu/bapa + alamat) -->
+      <div class="card" id="family-card">
         <form id="family-form">
+          <div class="notice notice--warn" id="fam-warn" style="display:none; margin-bottom:var(--sp-3)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg><span>Lengkapkan maklumat keluarga di bawah untuk mula menggunakan saringan &amp; menambah anak.</span></div>
           <div class="notice notice--ok" id="fam-msg" style="display:none; margin-bottom:var(--sp-3)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span></span></div>
-
-          <div class="field">
-            <label for="fam-district">Daerah (Kelantan)</label>
-            <select class="select" id="fam-district">
-              <option value="">— Pilih daerah —</option>
-              <option value="Kota Bharu">Kota Bharu</option>
-              <option value="Pasir Mas">Pasir Mas</option>
-              <option value="Tumpat">Tumpat</option>
-              <option value="Pasir Puteh">Pasir Puteh</option>
-              <option value="Bachok">Bachok</option>
-              <option value="Machang">Machang</option>
-              <option value="Tanah Merah">Tanah Merah</option>
-              <option value="Kuala Krai">Kuala Krai</option>
-              <option value="Gua Musang">Gua Musang</option>
-              <option value="Jeli">Jeli</option>
-            </select>
-          </div>
 
           <!-- Maklumat Bapa -->
           <div class="notice" style="margin:var(--sp-3) 0 var(--sp-2)"><strong>Maklumat Bapa</strong></div>
@@ -68,11 +53,118 @@
             <div class="field"><label for="fam-mother-income">Pendapatan Bulanan (RM)</label><input class="input" type="number" min="0" id="fam-mother-income" placeholder="cth. 0"></div>
           </div>
 
+          <!-- Alamat rumah — daerah diguna sebagai kawasan liputan (tapisan, program).
+               Kelantan → daerah dropdown; negeri lain → daerah diisi sendiri (teks). -->
+          <div class="notice" style="margin:var(--sp-3) 0 var(--sp-2)"><strong>Alamat Rumah</strong></div>
+          <div class="field">
+            <label for="fam-address">Alamat penuh</label>
+            <textarea class="input" id="fam-address" rows="2" placeholder="cth. No. 12, Jalan Mahmud, Taman Sejahtera"></textarea>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="fam-poskod">Poskod</label>
+              <input class="input" type="text" id="fam-poskod" inputmode="numeric" maxlength="5" pattern="[0-9]{5}" placeholder="cth. 15200">
+            </div>
+            <div class="field">
+              <label for="fam-negeri">Negeri</label>
+              <select class="select" id="fam-negeri">
+                <option value="">— Pilih negeri —</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="fam-district">Daerah</label>
+            <!-- Kelantan: senarai daerah rasmi -->
+            <select class="select" id="fam-district" disabled>
+              <option value="">— Pilih negeri dahulu —</option>
+            </select>
+            <!-- Negeri lain: pengguna taip daerah sendiri (disembunyikan sehingga negeri dipilih) -->
+            <input class="input" type="text" id="fam-district-text" placeholder="Masukkan daerah anda" style="display:none" disabled>
+            <span class="hint">Daerah digunakan sebagai kawasan liputan untuk saringan &amp; jemputan program.</span>
+          </div>
+
           <button class="btn btn--block" type="submit"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Simpan Maklumat Keluarga</button>
+          <p id="fam-updated" class="muted" style="display:none; font-size:var(--fs-xs); text-align:center; margin:var(--sp-2) 0 0"></p>
+        </form>
+      </div>
+
+      <!-- Akaun e-PEMBELAJARAN (pengguna awam): Profil diri ringkas — tiada maklumat keluarga -->
+      <div class="card" id="public-card" style="display:none">
+        <form id="public-form">
+          <div class="notice notice--warn" id="pub-warn" style="display:none; margin-bottom:var(--sp-3)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg><span>Lengkapkan profil anda di bawah untuk mula menggunakan sistem.</span></div>
+          <div class="notice notice--ok" id="pub-msg" style="display:none; margin-bottom:var(--sp-3)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span></span></div>
+
+          <div class="notice" style="margin:0 0 var(--sp-2)"><strong>Maklumat Diri</strong></div>
+          <div class="field">
+            <label for="pub-name">Nama Penuh</label>
+            <input class="input" type="text" id="pub-name" placeholder="Nama penuh anda">
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="pub-email">Alamat E-mel</label>
+              <input class="input" type="email" id="pub-email" readonly style="background:var(--line-2); cursor:not-allowed" title="E-mel ialah pengenalan akaun — tidak boleh diubah di sini.">
+            </div>
+            <div class="field">
+              <label for="pub-phone">No. Telefon</label>
+              <input class="input" type="tel" id="pub-phone" placeholder="cth. 0123456789">
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="pub-negeri">Negeri</label>
+              <select class="select" id="pub-negeri"><option value="">— Pilih negeri —</option></select>
+            </div>
+            <div class="field">
+              <label for="pub-job">Pekerjaan</label>
+              <input class="input" type="text" id="pub-job" placeholder="cth. Guru, Suri rumah, Peniaga">
+            </div>
+          </div>
+          <div class="field">
+            <label id="pub-dob-label">Tarikh Lahir</label>
+            <div style="display:grid; grid-template-columns:1fr 1.5fr 1.1fr; gap:var(--sp-2)">
+              <div class="dd" id="dd-day"></div>
+              <div class="dd" id="dd-month"></div>
+              <div class="dd" id="dd-year"></div>
+            </div>
+          </div>
+
+          <!-- Soalan OKU -->
+          <div class="notice" style="margin:var(--sp-3) 0 var(--sp-2)"><strong>Latar Belakang OKU</strong></div>
+          <div class="field">
+            <label>Adakah anda mempunyai anak OKU?</label>
+            <div class="yn" id="pub-oku" role="radiogroup" aria-label="Adakah anda mempunyai anak OKU?">
+              <input type="radio" name="pub-oku" id="pub-oku-ya" value="ya"><label for="pub-oku-ya">Ya</label>
+              <input type="radio" name="pub-oku" id="pub-oku-tidak" value="tidak"><label for="pub-oku-tidak">Tidak</label>
+            </div>
+            <span class="hint" id="pub-oku-know" style="display:none"></span>
+          </div>
+
+          <button class="btn btn--block" type="submit"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Simpan Profil</button>
+          <p id="pub-updated" class="muted" style="display:none; font-size:var(--fs-xs); text-align:center; margin:var(--sp-2) 0 0"></p>
         </form>
       </div>
     </div>
   </main>
+
+  <!-- Popup: soalan susulan bila "Ya" (mempunyai anak OKU) dipilih -->
+  <div class="modal-overlay" id="oku-modal">
+    <div class="modal" style="max-width:460px" role="dialog" aria-modal="true" aria-labelledby="oku-modal-title">
+      <div class="modal__head">
+        <div>
+          <h3 id="oku-modal-title">Pengurusan Anak OKU</h3>
+          <p>Bantu kami memahami keperluan anda.</p>
+        </div>
+        <button class="modal__close" type="button" id="oku-modal-close" aria-label="Tutup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+      </div>
+      <div class="modal__body">
+        <p style="margin-top:0">Adakah anda mempunyai <strong>ilmu pengetahuan tentang pengurusan anak OKU</strong>?</p>
+        <div class="flex gap-2" style="margin-top:var(--sp-3)">
+          <button class="btn btn--block" type="button" id="oku-know-ya">Ya</button>
+          <button class="btn btn--ghost btn--block" type="button" id="oku-know-tidak">Tidak</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div id="site-footer"></div>
   <script src="assets/js/main.js?v=20260806y"></script>

@@ -4,20 +4,20 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Saringan Anak — e-Jejak Anak</title>
-  <meta name="description" content="Saringan tanda awal autisme (M-CHAT) dan profil deria (sensori) untuk anak anda.">
+  <meta name="description" content="Saringan perkembangan kanak-kanak merentasi 7 domain mengikut umur, serta profil deria (sensori).">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css?v=20260806j">
 </head>
-<body data-page="saringan" data-auth="parent">
+<body data-page="saringan" data-auth="parent" data-require-profile="1" data-profile-msg="Sila lengkapkan Maklumat Keluarga dahulu sebelum membuat saringan.">
   <div id="site-header"></div>
 
   <header class="page-head">
     <div class="container">
       <nav class="breadcrumb"><a href="index.html">Beranda</a> / <a href="dashboard.html">Dashboard</a> / <span>Saringan</span></nav>
       <h1>Saringan Anak</h1>
-      <p>Pilih saringan — M-CHAT (tanda awal autisme) atau Profil Deria (sensori). Jawab setiap item dengan jujur berdasarkan pemerhatian anda terhadap anak.</p>
+      <p>Saringan Perkembangan menyemak tonggak anak merentasi 7 domain mengikut umur. Jawab setiap item dengan jujur berdasarkan pemerhatian anda terhadap anak.</p>
     </div>
   </header>
 
@@ -85,11 +85,13 @@
             <!-- Pemilih mod saringan (segmented control) — main.js kendalikan logik -->
             <div class="card" style="margin-bottom:var(--sp-4); padding:var(--sp-3)">
               <div class="tabs" id="screen-mode" role="tablist" aria-label="Mod saringan" style="margin-bottom:var(--sp-3)">
-                <button type="button" class="tab is-active" data-mode="mchat" aria-selected="true">M-CHAT</button>
+                <button type="button" class="tab is-active" data-mode="perkembangan" aria-selected="true">Saringan Perkembangan</button>
                 <button type="button" class="tab" data-mode="sensori" aria-selected="false">Sensori</button>
+                <!-- M-CHAT disorok sementara menunggu pengesahan pihak berkaitan -->
+                <button type="button" class="tab" data-mode="mchat" aria-selected="false" hidden style="display:none">M-CHAT</button>
               </div>
               <div class="muted" style="font-size:var(--fs-sm); line-height:1.6">
-                <div><strong>Saringan Autisme (M-CHAT)</strong> — senarai semak tanda awal autisme untuk kanak-kanak kecil <em>(demo/simulasi)</em>.</div>
+                <div><strong>Saringan Perkembangan</strong> — senarai semak tonggak perkembangan merentasi 7 domain (motor, bahasa, kognitif, sosial, sensori, pengurusan diri), disesuaikan mengikut umur anak <em>(demo/simulasi)</em>.</div>
                 <div style="margin-top:4px"><strong>Profil Deria (Sensori)</strong> — menilai tindak balas deria anak (bunyi, sentuhan, gerakan) <em>(demo/simulasi)</em>.</div>
               </div>
             </div>
