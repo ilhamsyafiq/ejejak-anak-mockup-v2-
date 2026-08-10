@@ -53,6 +53,22 @@
             <div class="field"><label for="fam-mother-income">Pendapatan Bulanan (RM)</label><input class="input" type="number" min="0" id="fam-mother-income" placeholder="cth. 0"></div>
           </div>
 
+          <!-- Maklumat Isi Rumah — jumlah pendapatan (bapa + ibu), tanggungan & anak OKU -->
+          <div class="notice" style="margin:var(--sp-3) 0 var(--sp-2)"><strong>Maklumat Isi Rumah</strong></div>
+          <div class="notice notice--ok" id="fam-income-total" style="display:none; margin-bottom:var(--sp-3)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><span></span></div>
+          <div class="field-row">
+            <div class="field">
+              <label for="fam-dependents">Bilangan Tanggungan</label>
+              <input class="input" type="number" min="0" id="fam-dependents" placeholder="cth. 4">
+              <span class="hint">Bilangan seisi keluarga yang belum bekerja.</span>
+            </div>
+            <div class="field">
+              <label>Anak Berkeperluan Khas</label>
+              <div class="input" id="fam-oku-derived" style="background:var(--brand-tint)">—</div>
+              <span class="hint">Dikira automatik daripada profil anak yang ditanda berkeperluan khas.</span>
+            </div>
+          </div>
+
           <!-- Alamat rumah — daerah diguna sebagai kawasan liputan (tapisan, program).
                Kelantan → daerah dropdown; negeri lain → daerah diisi sendiri (teks). -->
           <div class="notice" style="margin:var(--sp-3) 0 var(--sp-2)"><strong>Alamat Rumah</strong></div>

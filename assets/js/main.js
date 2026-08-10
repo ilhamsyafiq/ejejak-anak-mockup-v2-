@@ -507,21 +507,21 @@ function ensureSeed() {
       { id: 'LSEED1', at: '2026-07-24T08:30:00', actorId: 'SA1', actorName: 'Webimpian (Superadmin)', actorRole: 'superadmin', actorOrg: 'Webimpian', action: 'login', detail: 'Log masuk panel' },
     ]);
   }
-  if (read('ejejak_seed_v7', false)) return;   // v7: tambah negeri/alamat/poskod (backfill sekali untuk pemasangan sedia ada)
+  if (read('ejejak_seed_v9', false)) return;   // v9: tanda semua anak benih berkeperluan khas
 
   if (getUsers().length === 0) {
     // Pengguna benih dengan medan baharu: accountType, verified, district, father, mother.
     saveUsers([
       { id: 'U1', name: 'Siti Nurhaliza', email: 'ibu@contoh.com',   phone: '0123456789', password: 'demo1234', role: 'parent',
-        accountType: 'screening', verified: true, negeri: 'Kelantan', district: 'Kota Bharu', poskod: '15200', address: 'No. 12, Jalan Mahmud, Taman Sejahtera',
+        accountType: 'screening', verified: true, negeri: 'Kelantan', district: 'Kota Bharu', poskod: '15200', address: 'No. 12, Jalan Mahmud, Taman Sejahtera', dependents: '4',
         father: { name: 'Rahman bin Ali',    ic: '800101-03-5511', phone: '0198887766', job: 'Kerani Kerajaan',  income: '2800' },
         mother: { name: 'Siti Nurhaliza',    ic: '830505-03-6622', phone: '0123456789', job: 'Suri rumah',       income: '0' } },
       { id: 'U2', name: 'Farah Aziz',     email: 'farah@contoh.com', phone: '0176543210', password: 'demo1234', role: 'parent',
-        accountType: 'screening', verified: true, negeri: 'Kelantan', district: 'Pasir Mas', poskod: '17000', address: 'Lot 340, Kampung Baru, Jalan Rantau Panjang',
+        accountType: 'screening', verified: true, negeri: 'Kelantan', district: 'Pasir Mas', poskod: '17000', address: 'Lot 340, Kampung Baru, Jalan Rantau Panjang', dependents: '2',
         father: { name: 'Aziz bin Hassan',   ic: '820202-03-5533', phone: '0175551122', job: 'Peniaga',          income: '3500' },
         mother: { name: 'Farah binti Kamal',  ic: '850707-03-6644', phone: '0176543210', job: 'Guru',             income: '4200' } },
       { id: 'U3', name: 'Amirul Hakim',   email: 'amir@contoh.com',  phone: '0112223344', password: 'demo1234', role: 'parent',
-        accountType: 'screening', verified: true, negeri: 'Kelantan', district: 'Tumpat', poskod: '16080', address: 'No. 5, Taman Desa Mutiara, Jalan Pantai',
+        accountType: 'screening', verified: true, negeri: 'Kelantan', district: 'Tumpat', poskod: '16080', address: 'No. 5, Taman Desa Mutiara, Jalan Pantai', dependents: '5',
         father: { name: 'Amirul Hakim',       ic: '810303-03-5544', phone: '0112223344', job: 'Pemandu',          income: '2200' },
         mother: { name: 'Noraini binti Yaakob', ic: '840808-03-6655', phone: '0119998877', job: 'Suri rumah',      income: '0' } },
       // Akaun e-Pembelajaran sahaja (tanpa anak / tanpa saringan).
@@ -531,23 +531,23 @@ function ensureSeed() {
         accountType: 'knowledge', verified: true, district: '' },
     ]);
     saveChildren([
-      { id: 'C1', userId: 'U1', name: 'Aisyah binti Rahman', dob: '2025-01-15', gender: 'perempuan', tempatLahir: 'Hospital USM, Kubang Kerian' },
-      { id: 'C2', userId: 'U1', name: 'Haziq bin Rahman',    dob: '2022-12-20', gender: 'lelaki',    tempatLahir: 'Hospital Raja Perempuan Zainab II, Kota Bharu' },
-      { id: 'C3', userId: 'U2', name: 'Nurin Damia',         dob: '2025-09-05', gender: 'perempuan', tempatLahir: 'Hospital Pasir Mas' },
-      { id: 'C4', userId: 'U3', name: 'Danish Iman',         dob: '2023-12-01', gender: 'lelaki',    tempatLahir: 'Klinik Kesihatan Tumpat' },
+      { id: 'C1', userId: 'U1', name: 'Aisyah binti Rahman', dob: '2025-01-15', gender: 'perempuan', tempatLahir: 'Hospital USM, Kubang Kerian', oku: true },
+      { id: 'C2', userId: 'U1', name: 'Haziq bin Rahman',    dob: '2022-12-20', gender: 'lelaki',    tempatLahir: 'Hospital Raja Perempuan Zainab II, Kota Bharu', oku: true },
+      { id: 'C3', userId: 'U2', name: 'Nurin Damia',         dob: '2025-09-05', gender: 'perempuan', tempatLahir: 'Hospital Pasir Mas', oku: true },
+      { id: 'C4', userId: 'U3', name: 'Danish Iman',         dob: '2023-12-01', gender: 'lelaki',    tempatLahir: 'Klinik Kesihatan Tumpat', oku: true },
     ]);
   } else {
     // Data pengguna sedia ada (mungkin benih lama atau pengguna sebenar) —
     // backfill medan baharu tanpa memadam apa-apa data sedia ada.
     const users = getUsers();
     const backfill = {
-      U1: { negeri: 'Kelantan', district: 'Kota Bharu', poskod: '15200', address: 'No. 12, Jalan Mahmud, Taman Sejahtera',
+      U1: { negeri: 'Kelantan', district: 'Kota Bharu', poskod: '15200', address: 'No. 12, Jalan Mahmud, Taman Sejahtera', dependents: '4',
         father: { name: 'Rahman bin Ali', ic: '800101-03-5511', phone: '0198887766', job: 'Kerani Kerajaan', income: '2800' },
         mother: { name: 'Siti Nurhaliza', ic: '830505-03-6622', phone: '0123456789', job: 'Suri rumah', income: '0' } },
-      U2: { negeri: 'Kelantan', district: 'Pasir Mas', poskod: '17000', address: 'Lot 340, Kampung Baru, Jalan Rantau Panjang',
+      U2: { negeri: 'Kelantan', district: 'Pasir Mas', poskod: '17000', address: 'Lot 340, Kampung Baru, Jalan Rantau Panjang', dependents: '2',
         father: { name: 'Aziz bin Hassan', ic: '820202-03-5533', phone: '0175551122', job: 'Peniaga', income: '3500' },
         mother: { name: 'Farah binti Kamal', ic: '850707-03-6644', phone: '0176543210', job: 'Guru', income: '4200' } },
-      U3: { negeri: 'Kelantan', district: 'Tumpat', poskod: '16080', address: 'No. 5, Taman Desa Mutiara, Jalan Pantai',
+      U3: { negeri: 'Kelantan', district: 'Tumpat', poskod: '16080', address: 'No. 5, Taman Desa Mutiara, Jalan Pantai', dependents: '5',
         father: { name: 'Amirul Hakim', ic: '810303-03-5544', phone: '0112223344', job: 'Pemandu', income: '2200' },
         mother: { name: 'Noraini binti Yaakob', ic: '840808-03-6655', phone: '0119998877', job: 'Suri rumah', income: '0' } },
     };
@@ -561,6 +561,7 @@ function ensureSeed() {
         if (!u.negeri) u.negeri = bf.negeri;
         if (!u.address) u.address = bf.address;
         if (!u.poskod) u.poskod = bf.poskod;
+        if (u.dependents === undefined) u.dependents = bf.dependents;
         if (!u.father) u.father = bf.father;
         if (!u.mother) u.mother = bf.mother;
       } else {
@@ -587,6 +588,8 @@ function ensureSeed() {
     };
     let cChanged = false;
     children.forEach(c => { if (cbf[c.id] && !c.tempatLahir) { c.tempatLahir = cbf[c.id]; cChanged = true; } });
+    // Data benih: semua anak sedia ada ditanda berkeperluan khas (pengguna sistem = ibu bapa anak OKU).
+    children.forEach(c => { if (['C1','C2','C3','C4'].includes(c.id) && c.oku === undefined) { c.oku = true; cChanged = true; } });
     if (cChanged) saveChildren(children);
   }
   // Benih sesi saringan demo — kini M-CHAT & Sensori sahaja (saringan
@@ -648,7 +651,7 @@ function ensureSeed() {
     };
   });
   saveSubmissions([...seededSubs, ...realSubs]); // benih (terbaharu dahulu) + rekod sebenar
-  write('ejejak_seed_v7', true);
+  write('ejejak_seed_v9', true);
 }
 
 /* ---------- 4b. GEOGRAFI (Negeri → Daerah) ------------------------
@@ -704,6 +707,46 @@ function publicComplete(u) {
 // Kelengkapan profil mengikut jenis akaun.
 function profileComplete(u) {
   return (u && u.accountType === 'knowledge') ? publicComplete(u) : familyComplete(u);
+}
+
+/* Garis pendapatan rujukan Malaysia — untuk kesan keluarga yang memerlukan
+   bantuan (pengagihan). Pendapatan isi rumah = jumlah pendapatan bapa + ibu. */
+const PGK_TEGAR = 1198;    // Miskin tegar (anggaran)
+const PGK_MISKIN = 2589;   // Pendapatan Garis Kemiskinan (PGK) kebangsaan 2022
+const B40_CEIL = 4850;     // Siling anggaran kumpulan B40
+function householdIncome(u) {
+  const f = parseFloat((u && u.father && u.father.income) || 0) || 0;
+  const m = parseFloat((u && u.mother && u.mother.income) || 0) || 0;
+  return f + m;
+}
+function hasIncomeData(u) {
+  const f = u && u.father && u.father.income, m = u && u.mother && u.mother.income;
+  return (f !== undefined && f !== '' && f !== null) || (m !== undefined && m !== '' && m !== null);
+}
+function fmtRM(n) { return 'RM' + (Number(n) || 0).toLocaleString('en-US'); }
+// Bilangan anak berkeperluan khas (OKU) — dikira dari profil anak yang ditandakan.
+function okuChildCount(userId) { return childrenOf(userId).filter(c => c.oku).length; }
+// Label kumpulan pendapatan (chip) — kosong jika tiada data atau di atas B40.
+function povertyChip(u) {
+  if (!hasIncomeData(u)) return '';
+  const hh = householdIncome(u);
+  if (hh < PGK_TEGAR) return '<span class="chip" style="background:var(--danger-soft); color:#99311e">Miskin Tegar</span>';
+  if (hh < PGK_MISKIN) return '<span class="chip chip--warn">Bawah PGK</span>';
+  if (hh < B40_CEIL) return '<span class="chip chip--accent">B40</span>';
+  return '';
+}
+// Padankan pengguna dengan penapis pendapatan.
+function incomeMatch(u, filter) {
+  if (filter === 'semua') return true;
+  const has = hasIncomeData(u);
+  if (filter === 'nodata') return !has;
+  if (!has) return false;
+  const hh = householdIncome(u);
+  if (filter === 'tegar') return hh < PGK_TEGAR;
+  if (filter === 'miskin') return hh < PGK_MISKIN;
+  if (filter === 'b40') return hh < B40_CEIL;
+  if (filter === 'atas') return hh >= B40_CEIL;
+  return true;
 }
 
 /* Dropdown tersuai — buka KE BAWAH & papar `visibleRows` baris (selebihnya
@@ -1516,6 +1559,7 @@ function initAnak() {
           <div class="child-card__meta">
             <strong>${c.name}</strong><br>
             <span class="muted" style="font-size:var(--fs-sm)">${c.gender} · ${ageText(m)} · ${ageGroupLabel(m)}</span>
+            ${c.oku ? `<br><span class="chip chip--accent" style="font-size:.62rem; padding:.15em .55em; margin-top:3px">Berkeperluan Khas</span>` : ''}
             ${c.tempatLahir ? `<br><span class="muted" style="font-size:var(--fs-xs); display:inline-flex; align-items:center; gap:4px"><svg viewBox="0 0 24 24" width="13" height="13" style="flex:none" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>${c.tempatLahir}</span>` : ''}
           </div>
         </div>
@@ -1557,9 +1601,10 @@ function initAnak() {
   document.getElementById('add-child-form')?.addEventListener('submit', (e) => {
     e.preventDefault();
     const name = val('cn'), dob = val('dob'), gender = val('gender'), tempatLahir = val('c-tempat');
+    const oku = !!document.getElementById('c-oku')?.checked;
     if (!name || !dob || !gender) { alert('Sila lengkapkan nama, tarikh lahir dan jantina.'); return; }
     const kids = getChildren();
-    kids.push({ id: 'C' + Date.now(), userId: user.id, name, dob, gender, tempatLahir });
+    kids.push({ id: 'C' + Date.now(), userId: user.id, name, dob, gender, tempatLahir, oku });
     saveChildren(kids);
     e.target.reset();
     render();
@@ -2720,12 +2765,13 @@ function initUsersAdmin() {
   const searchEl = document.getElementById('user-search');
   const filterEl = document.getElementById('user-filter');
   const districtFilterEl = document.getElementById('user-district-filter');
+  const incomeFilterEl = document.getElementById('user-income-filter');
   // Isi pilihan daerah dari GEO (kekal "Semua Daerah" di atas).
   if (districtFilterEl) districtFilterEl.innerHTML = '<option value="semua">Semua Daerah</option>' +
     allDistricts().map(d => `<option value="${d}">${d}</option>`).join('');
   const viewModal = document.getElementById('user-view-modal');
   const editModal = document.getElementById('user-edit-modal');
-  let q = '', lvl = 'semua', dist = 'semua';
+  let q = '', lvl = 'semua', dist = 'semua', income = 'semua';
 
   // Senarai doktor dalam skop (untuk kad statistik).
   function scopedDoctors() {
@@ -2744,7 +2790,7 @@ function initUsersAdmin() {
   }
   // Senarai akaun bersatu: ibu bapa + staf.
   function accounts() {
-    const parents = getUsers().map(u => ({ kind: 'parent', role: 'parent', id: u.id, name: u.name, email: u.email, phone: u.phone, org: null, createdAt: u.createdAt, district: u.district || '' }));
+    const parents = getUsers().map(u => ({ kind: 'parent', role: 'parent', id: u.id, name: u.name, email: u.email, phone: u.phone, org: null, createdAt: u.createdAt, district: u.district || '', accountType: u.accountType, rec: u }));
     const staff = scopedStaff().map(a => ({ kind: 'staff', role: a.role, id: a.id, name: a.name, email: a.email, phone: a.phone, org: a.org, jawatan: a.jawatan }));
     return [...parents, ...staff];
   }
@@ -2764,6 +2810,8 @@ function initUsersAdmin() {
     if (lvl !== 'semua') list = list.filter(a => a.role === lvl);
     // Tapis daerah: hanya terpakai kepada ibu bapa (staf tiada daerah → disembunyikan bila tapisan aktif).
     if (dist !== 'semua') list = list.filter(a => a.kind === 'parent' && a.district === dist);
+    // Tapis pendapatan isi rumah (ibu bapa sahaja) — untuk kesan keluarga bawah paras miskin.
+    if (income !== 'semua') list = list.filter(a => a.kind === 'parent' && incomeMatch(a.rec, income));
     if (q) list = list.filter(a => `${a.name} ${a.email} ${a.phone || ''} ${a.org || ''} ${a.district || ''}`.toLowerCase().includes(q));
     const cnt = document.getElementById('user-count');
     if (cnt) cnt.textContent = `${list.length} pengguna`;
@@ -2785,6 +2833,9 @@ function initUsersAdmin() {
         <td style="white-space:nowrap">${a.phone || '-'}</td>
         <td class="tnum">${kids}</td>
         <td class="tnum">${scr}</td>
+        <td style="white-space:nowrap">${(isParent && hasIncomeData(a.rec))
+          ? `<span class="tnum">${fmtRM(householdIncome(a.rec))}</span>${povertyChip(a.rec) ? '<br>' + povertyChip(a.rec) : ''}`
+          : '<span class="muted">—</span>'}</td>
         <td class="col-action">
           <div class="flex gap-2" style="justify-content:flex-end; flex-wrap:wrap">
             <button class="btn btn--ghost" data-act="edit" data-kind="${a.kind}" data-id="${a.id}" style="padding:.35em .55em" title="Sunting butiran">${ICONS.edit}</button>
@@ -2795,7 +2846,7 @@ function initUsersAdmin() {
           </div>
         </td>
       </tr>`;
-    }).join('') : `<tr><td colspan="8" style="text-align:center; padding:var(--sp-4); color:var(--muted)">Tiada pengguna dijumpai.</td></tr>`;
+    }).join('') : `<tr><td colspan="9" style="text-align:center; padding:var(--sp-4); color:var(--muted)">Tiada pengguna dijumpai.</td></tr>`;
   }
 
   // ---- Tindakan (didelegasikan) ----
@@ -2856,23 +2907,59 @@ function initUsersAdmin() {
       const u = getUsers().find(x => x.id === id); if (!u) return;
       const kids = childrenOf(u.id);
       const subs = getSubmissions().filter(s => s.userId === u.id);
+      const isKnowledge = u.accountType === 'knowledge';
+      const cell = (label, val) => `<div><span class="muted" style="display:block; font-size:var(--fs-xs)">${label}</span><strong>${val || '-'}</strong></div>`;
+      const parentBlock = (who, p) => {
+        p = p || {};
+        if (!p.name) return '';
+        return `<div class="card" style="padding:var(--sp-3); margin-top:var(--sp-2)">
+          <strong style="font-family:var(--font-head)">${who}: ${p.name}</strong>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-2); margin-top:6px; font-size:var(--fs-sm)">
+            ${cell('No. KP', p.ic)}${cell('Telefon', p.phone)}${cell('Pekerjaan', p.job)}${cell('Pendapatan', p.income ? fmtRM(p.income) : '-')}
+          </div></div>`;
+      };
+      const addr = [u.address, u.poskod, u.district, u.negeri].filter(Boolean).join(', ');
+      const hh = householdIncome(u);
+      const povRow = hasIncomeData(u)
+        ? `<div style="margin-top:var(--sp-3); display:flex; align-items:center; gap:var(--sp-2); flex-wrap:wrap">
+             <span class="muted" style="font-size:var(--fs-xs)">Pendapatan isi rumah:</span>
+             <strong class="tnum">${fmtRM(hh)}</strong> ${povertyChip(u)}
+           </div>` : '';
+
       document.getElementById('uv-title').textContent = u.name;
       document.getElementById('uv-body').innerHTML = `
-        <div style="margin-bottom:var(--sp-3)"><span class="chip">Ibu Bapa</span></div>
+        <div style="margin-bottom:var(--sp-3)"><span class="chip">${isKnowledge ? 'e-Pembelajaran' : 'Ibu Bapa · Saringan'}</span></div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-3)">
-          <div><span class="muted" style="display:block; font-size:var(--fs-xs)">E-mel</span><strong>${u.email}</strong></div>
-          <div><span class="muted" style="display:block; font-size:var(--fs-xs)">Telefon</span><strong>${u.phone || '-'}</strong></div>
-          <div><span class="muted" style="display:block; font-size:var(--fs-xs)">Didaftar</span><strong>${userCreatedText(u)}</strong></div>
-          <div><span class="muted" style="display:block; font-size:var(--fs-xs)">Bil. Saringan</span><strong>${subs.length}</strong></div>
+          ${cell('E-mel', u.email)}
+          ${cell('Telefon', u.phone)}
+          ${cell('Negeri', u.negeri)}
+          ${cell('Daerah', u.district)}
+          ${isKnowledge ? cell('Pekerjaan', u.pekerjaan) : ''}
+          ${isKnowledge ? cell('Tarikh Lahir', u.dob ? fmtDate(u.dob) : '-') : ''}
+          ${cell('Didaftar', userCreatedText(u))}
+          ${isKnowledge ? '' : `<div><span class="muted" style="display:block; font-size:var(--fs-xs)">Bil. Saringan</span><strong>${subs.length}</strong></div>`}
         </div>
-        <h4 style="margin:var(--sp-4) 0 var(--sp-2)">Profil Anak (${kids.length})</h4>
-        ${kids.length ? `<ul style="list-style:none; padding:0; margin:0">${kids.map(c => {
-          const mm = ageInMonths(c.dob);
-          const cs = subs.filter(s => s.childId === c.id).length;
-          return `<li class="flex items-center gap-2" style="justify-content:space-between; background:var(--brand-tint); padding:.5em .7em; border-radius:8px; margin-bottom:6px">
-            <span><strong>${c.name}</strong> · <span class="muted">${c.gender} · ${ageText(mm)}</span></span>
-            <span class="chip">${cs} saringan</span></li>`;
-        }).join('')}</ul>` : `<p class="muted">Tiada profil anak.</p>`}`;
+        ${addr ? `<div style="margin-top:var(--sp-3)"><span class="muted" style="display:block; font-size:var(--fs-xs)">Alamat</span><strong>${addr}</strong></div>` : ''}
+        ${isKnowledge
+          ? `<div style="display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-3); margin-top:var(--sp-3)">
+               ${cell('Ada anak OKU?', u.hasOkuChild ? (u.hasOkuChild === 'ya' ? 'Ya' : 'Tidak') : '-')}
+               ${u.hasOkuChild === 'ya' ? cell('Ilmu pengurusan OKU?', u.okuKnowledge ? (u.okuKnowledge === 'ya' ? 'Ya' : 'Tidak') : '-') : ''}
+             </div>`
+          : `${povRow}
+             <div style="display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-3); margin-top:var(--sp-3)">
+               ${cell('Bilangan Tanggungan', u.dependents || '0')}
+               ${cell('Anak Berkeperluan Khas', okuChildCount(u.id))}
+             </div>
+             <h4 style="margin:var(--sp-4) 0 var(--sp-2)">Butiran Keluarga</h4>
+             ${(u.father && u.father.name) || (u.mother && u.mother.name) ? `${parentBlock('Bapa', u.father)}${parentBlock('Ibu', u.mother)}` : '<p class="muted">Butiran ibu/bapa belum diisi.</p>'}
+             <h4 style="margin:var(--sp-4) 0 var(--sp-2)">Profil Anak (${kids.length})</h4>
+             ${kids.length ? `<ul style="list-style:none; padding:0; margin:0">${kids.map(c => {
+               const mm = ageInMonths(c.dob);
+               const cs = subs.filter(s => s.childId === c.id).length;
+               return `<li class="flex items-center gap-2" style="justify-content:space-between; background:var(--brand-tint); padding:.5em .7em; border-radius:8px; margin-bottom:6px">
+                 <span><strong>${c.name}</strong> · <span class="muted">${c.gender} · ${ageText(mm)}</span></span>
+                 <span class="chip">${cs} saringan</span></li>`;
+             }).join('')}</ul>` : `<p class="muted">Tiada profil anak.</p>`}`}`;
     } else {
       const d = getAdmins().find(x => x.id === id); if (!d) return;
       const label = ROLE_LABEL[d.role] || 'staf';
@@ -2949,6 +3036,7 @@ function initUsersAdmin() {
   searchEl?.addEventListener('input', () => { q = searchEl.value.trim().toLowerCase(); render(); });
   filterEl?.addEventListener('change', () => { lvl = filterEl.value; render(); });
   districtFilterEl?.addEventListener('change', () => { dist = districtFilterEl.value; render(); });
+  incomeFilterEl?.addEventListener('change', () => { income = incomeFilterEl.value; render(); });
   document.getElementById('user-reload')?.addEventListener('click', render);
   refreshUsersTable = render; // modal borang staf boleh segar semula jadual selepas simpan
   render();
@@ -3592,6 +3680,29 @@ function initProfile() {
   }
   set('fam-address', rec.address);
   set('fam-poskod', rec.poskod);
+  set('fam-dependents', rec.dependents);
+  // Anak berkeperluan khas (OKU) — dikira dari profil anak, bukan input manual.
+  const okuN = okuChildCount(user.id);
+  const okuBox = document.getElementById('fam-oku-derived');
+  if (okuBox) okuBox.textContent = okuN > 0 ? `${okuN} orang` : 'Tiada';
+
+  // Papar jumlah pendapatan isi rumah (bapa + ibu) secara langsung.
+  const updateIncomeTotal = () => {
+    const f = parseFloat(val('fam-father-income')) || 0;
+    const m = parseFloat(val('fam-mother-income')) || 0;
+    const box = document.getElementById('fam-income-total');
+    if (!box) return;
+    if (!val('fam-father-income') && !val('fam-mother-income')) { box.style.display = 'none'; return; }
+    const total = f + m;
+    let tag = '';
+    if (total < 1198) tag = ' — bawah Miskin Tegar';
+    else if (total < 2589) tag = ' — bawah Garis Kemiskinan (PGK)';
+    else if (total < 4850) tag = ' — kumpulan B40';
+    box.querySelector('span').textContent = `Jumlah pendapatan isi rumah: RM${total.toLocaleString('en-US')}${tag}`;
+    box.style.display = '';
+  };
+  document.getElementById('fam-father-income')?.addEventListener('input', updateIncomeTotal);
+  document.getElementById('fam-mother-income')?.addEventListener('input', updateIncomeTotal);
 
   const fill = (who, p) => {
     p = p || {};
@@ -3599,6 +3710,7 @@ function initProfile() {
     set(`fam-${who}-job`, p.job); set(`fam-${who}-income`, p.income);
   };
   fill('father', rec.father); fill('mother', rec.mother);
+  updateIncomeTotal();
 
   // Kunci No. Kad Pengenalan selepas ia disimpan buat kali pertama — medan
   // identiti, jarang berubah. Medan lain kekal boleh diubah bila-bila.
@@ -3643,6 +3755,7 @@ function initProfile() {
     u.district = (districtsOf(negeri).length ? val('fam-district') : val('fam-district-text')).trim();
     u.address = val('fam-address');
     u.poskod = val('fam-poskod');
+    u.dependents = val('fam-dependents');   // OKU dikira dari profil anak (bukan disimpan di sini)
     u.father = readParent('father');
     u.mother = readParent('mother');
     u.familyUpdatedAt = new Date().toISOString();
@@ -4174,8 +4287,10 @@ function initReportBuilder() {
   }
 
   function syncFields() {
-    const isSar = sourceSel.value === 'saringan';
-    document.querySelectorAll('[data-when-source="saringan"]').forEach(el => { el.style.display = isSar ? '' : 'none'; });
+    const src = sourceSel.value;
+    document.querySelectorAll('[data-when-source]').forEach(el => {
+      el.style.display = (el.getAttribute('data-when-source') === src) ? '' : 'none';
+    });
   }
 
   function build() {
@@ -4186,14 +4301,26 @@ function initReportBuilder() {
     const distOk = (d) => dist === 'semua' || d === dist;
 
     if (src === 'pengguna') {
+      const incomeF = document.getElementById('rb-income')?.value || 'semua';
+      const minDep = parseInt(document.getElementById('rb-dependents')?.value, 10) || 0;
+      const minOku = parseInt(document.getElementById('rb-oku')?.value, 10) || 0;
+      const povLabel = (u) => {
+        if (!hasIncomeData(u)) return '-';
+        const hh = householdIncome(u);
+        return hh < PGK_TEGAR ? 'Miskin Tegar' : hh < PGK_MISKIN ? 'Bawah PGK' : hh < B40_CEIL ? 'B40' : 'Atas B40';
+      };
       const rows = getUsers().filter(u => (u.role || 'parent') === 'parent').filter(u => {
         if (!distOk(u.district || '')) return false;
         if ((from || to) && !dateInRange(userCreatedISO(u), from, to)) return false;
+        if (!incomeMatch(u, incomeF)) return false;
+        if (minDep && (parseInt(u.dependents, 10) || 0) < minDep) return false;
+        if (minOku && okuChildCount(u.id) < minOku) return false;
         return true;
-      }).map(u => [u.name, u.email, u.phone || '-', u.district || '-',
-        u.accountType === 'knowledge' ? 'e-Pembelajaran' : 'Saringan',
-        childrenOf(u.id).length, getSubmissions().filter(s => s.userId === u.id).length, userCreatedText(u)]);
-      return { title: 'Laporan Pengguna', head: ['Nama', 'E-mel', 'Telefon', 'Daerah', 'Jenis Akaun', 'Bil. Anak', 'Bil. Saringan', 'Daftar'], rows };
+      }).map(u => [u.name, u.phone || '-', u.negeri || '-', u.district || '-',
+        hasIncomeData(u) ? fmtRM(householdIncome(u)) : '-', povLabel(u),
+        parseInt(u.dependents, 10) || 0, okuChildCount(u.id),
+        childrenOf(u.id).length, u.accountType === 'knowledge' ? 'e-Pembelajaran' : 'Saringan']);
+      return { title: 'Laporan Pengguna', head: ['Nama', 'Telefon', 'Negeri', 'Daerah', 'Pendapatan Isi Rumah', 'Status', 'Tanggungan', 'Anak OKU', 'Bil. Anak', 'Jenis Akaun'], rows };
     }
 
     if (src === 'anak') {
