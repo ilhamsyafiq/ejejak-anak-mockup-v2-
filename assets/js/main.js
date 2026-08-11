@@ -793,7 +793,7 @@ function customDropdown(mount, { placeholder = 'Pilih', options = [], value = ''
 
 /* ---------- 5. HEADER / FOOTER (satu sumber) ----------------------- */
 const SITE = {
-  name: ['e-Jejak', 'Anak'],
+  name: ['e-', 'Tunas'],
   tagline: 'Saringan Perkembangan Kanak-kanak',
   // Menu AWAM (guest) — hanya pautan yang boleh diakses tanpa log masuk.
   // Saringan, Pusat Pendidikan & Dashboard dibuang (perlu log masuk); pengguna
@@ -1623,23 +1623,23 @@ function initAnak() {
    risiko; bagi item 2, 5 & 12, jawapan 'ya' menandakan risiko.
    DEMO/SIMULASI — bukan diagnosis. */
 const MCHAT_ITEMS = [
-  { text: 'Sekiranya anda menuding ke arah sesuatu di bilik, adakah anak anda memandang ke arahnya? (cth. jika anda menuding ke arah mainan atau haiwan, adakah anak anda memandang ke arah mainan atau haiwan tersebut?)', riskIf: 'tidak' },
+  { text: 'Sekiranya anda menuding ke arah sesuatu di bilik, adakah anak anda memandang ke arahnya? (cth. sekiranya anda menuding ke arah mainan atau haiwan, adakah anak anda memandang ke arah mainan atau haiwan tersebut?)', riskIf: 'tidak' },
   { text: 'Pernahkah anda terfikir bahawa anak anda mungkin menghadapi masalah pendengaran?', riskIf: 'ya' },
-  { text: 'Adakah anak anda gemar berolok-olok sambil bermain? (cth. berolok-olok minum dari cawan kosong, bercakap melalui telefon, atau menyuap anak patung?)', riskIf: 'tidak' },
+  { text: 'Adakah anak anda gemar berolok-olok sambil bermain? (cth. gemar berolok-olok minum dari cawan kosong, olok-olok bercakap melalui telefon atau olok-olok menyuap anak patung atau mainannya?)', riskIf: 'tidak' },
   { text: 'Adakah anak anda gemar memanjat? (cth. perabot, peralatan taman permainan, atau tangga)', riskIf: 'tidak' },
   { text: 'Adakah anak anda gemar menggerakkan jarinya pada mata dengan cara yang pelik? (cth. kerap menggerak-gerakkan jari dekat pada matanya?)', riskIf: 'ya' },
   { text: 'Adakah anak anda meminta sesuatu dengan menuding satu jari sahaja? (cth. menuding ke arah makanan atau mainan yang tidak dapat dicapainya?)', riskIf: 'tidak' },
-  { text: 'Adakah anak anda menuding dengan satu jari sahaja apabila menunjuk ke arah sesuatu yang menarik minatnya? (cth. menunjuk ke arah kapal terbang di langit atau lori di jalan raya)', riskIf: 'tidak' },
+  { text: 'Adakah anak anda menuding dengan satu jari sahaja apabila menunjuk ke arah sesuatu yang menarik minatnya? (cth. apabila menunjuk ke arah kapal terbang di langit atau lori di jalan raya)', riskIf: 'tidak' },
   { text: 'Adakah anak anda berminat dengan kanak-kanak lain? (cth. memerhati, senyum, atau menuju ke arah kanak-kanak lain?)', riskIf: 'tidak' },
   { text: 'Adakah anak anda gemar menunjukkan sesuatu dengan membawa dan menunjukkannya kepada anda — bukan untuk meminta bantuan, tetapi sekadar ingin berkongsi? (cth. bunga, anak patung atau mainan)', riskIf: 'tidak' },
   { text: 'Adakah anak anda bertindak balas apabila namanya dipanggil? (cth. mendongak, mengomel, atau berhenti melakukan sesuatu apabila namanya dipanggil?)', riskIf: 'tidak' },
   { text: 'Adakah anak anda membalas senyuman anda?', riskIf: 'tidak' },
-  { text: 'Adakah anak anda terganggu dengan bunyi bising di rumah? (cth. menjerit atau menangis apabila mendengar bunyi penyedut vakum atau muzik yang kuat?)', riskIf: 'ya' },
+  { text: 'Adakah anak anda terganggu dengan bunyi bising di rumah? (cth. adakah dia menjerit atau menangis apabila mendengar bunyi penyedut vakum atau muzik yang kuat?)', riskIf: 'ya' },
   { text: 'Adakah anak anda mampu berjalan?', riskIf: 'tidak' },
   { text: 'Adakah anak anda memerhatikan anda sewaktu anda bercakap, bermain dengannya, atau memakaikannya baju?', riskIf: 'tidak' },
   { text: 'Adakah anak anda cuba meniru perbuatan anda? (cth. melambai, bertepuk, atau membuat sebarang bunyi?)', riskIf: 'tidak' },
   { text: 'Apabila anda berpaling ke arah sesuatu, adakah anak anda turut berpaling sama?', riskIf: 'tidak' },
-  { text: 'Adakah anak anda cuba menarik perhatian anda untuk melihat ke arahnya? (cth. melihat ke arah anda untuk mendapatkan pujian, atau berkata "tengoklah, ibu/ayah"?)', riskIf: 'tidak' },
+  { text: 'Adakah anak anda cuba menarik perhatian anda untuk melihat ke arahnya? (cth. adakah dia melihat ke arah anda untuk mendapatkan pujian, atau berkata "tengoklah, ibu/ayah"?)', riskIf: 'tidak' },
   { text: 'Adakah anak anda berupaya memahami arahan anda? (cth. tanpa anda menuding jari, dapatkah dia memahami arahan seperti "letakkan buku di atas kerusi" atau "ambilkan ibu/ayah selimut itu"?)', riskIf: 'tidak' },
   { text: 'Apabila berdepan dengan sesuatu yang baharu, adakah anak anda melihat ke arah anda untuk melihat reaksi anda? (cth. apabila mendengar bunyi pelik atau melihat mainan baharu, adakah dia merenung wajah anda?)', riskIf: 'tidak' },
   { text: 'Adakah anak anda gemar pada aktiviti-aktiviti yang melibatkan pergerakan? (cth. diayun atau dibuai sambil dipangku?)', riskIf: 'tidak' },
