@@ -507,7 +507,7 @@ function ensureSeed() {
       { id: 'LSEED1', at: '2026-07-24T08:30:00', actorId: 'SA1', actorName: 'Webimpian (Superadmin)', actorRole: 'superadmin', actorOrg: 'Webimpian', action: 'login', detail: 'Log masuk panel' },
     ]);
   }
-  if (read('ejejak_seed_v9', false)) return;   // v9: tanda semua anak benih berkeperluan khas
+  if (read('ejejak_seed_v10', false)) return;   // v10: M-CHAT-R 20 item + band markah mentah
 
   if (getUsers().length === 0) {
     // Pengguna benih dengan medan baharu: accountType, verified, district, father, mother.
@@ -638,7 +638,9 @@ function ensureSeed() {
     });
     const risk = answers.filter(a => a.atRisk).length;
     const autismRisk = Math.round(risk / len * 100);
-    const autismBand = autismBandFor(autismRisk);
+    // M-CHAT-R guna band markah mentah rasmi; Sensori kekal band peratus.
+    const isMchat = s.type === 'mchat';
+    const autismBand = isMchat ? mchatBandFor(risk) : autismBandFor(autismRisk);
     const achieved = len - risk;
     return {
       id: 'SEED' + i, submittedAt: s.date, type: s.type, userId: s.uid, childId: s.cid,
@@ -646,12 +648,13 @@ function ensureSeed() {
       parentName: s.pName, parentPhone: s.pPhone, parentEmail: s.pEmail,
       total: len, totalAchieved: achieved, totalNot: risk,
       autismRisk, autismBand,
+      ...(isMchat ? { autismScore: risk, autismMax: len, mchatOutcome: autismBand === 'tinggi' ? 'positif' : (autismBand === 'rendah' ? 'negatif' : null) } : {}),
       domains: { [meta.code]: { name: meta.name, color: meta.color, achieved, total: len, items: answers } },
       status: s.status, note: '',
     };
   });
   saveSubmissions([...seededSubs, ...realSubs]); // benih (terbaharu dahulu) + rekod sebenar
-  write('ejejak_seed_v9', true);
+  write('ejejak_seed_v10', true);
 }
 
 /* ---------- 4b. GEOGRAFI (Negeri → Daerah) ------------------------
@@ -973,7 +976,7 @@ function buildFooter() {
     </div>
     <div class="footer__bar">
       <div class="container">
-        <span>© 2026 e-Jejak Anak. Hak cipta terpelihara.</span>
+        <span>© 2026 e-Jejak Anak. Dikuasakan oleh WebImpian.</span>
         <span>Dasar Privasi · Terma Penggunaan · Penafian Perubatan</span>
       </div>
     </div>
@@ -1613,23 +1616,33 @@ function initAnak() {
 }
 
 /* ---------- 11. SARINGAN ------------------------------------------- */
-/* Soalan M-CHAT (versi ringkas, gaya M-CHAT-R untuk kanak-kanak kecil) —
-   saringan tanda awal autisme. Setiap item: { text, riskIf } di mana `riskIf`
-   ialah jawapan yang menandakan RISIKO ('tidak' bagi kemahiran sepatutnya ada;
-   'ya' bagi tingkah laku membimbangkan). DEMO/SIMULASI — bukan diagnosis. */
+/* Soalan M-CHAT-R™ (20 item penuh; Robins, Fein & Barton, 2009 — terjemahan
+   BM rasmi) — saringan tanda awal autisme untuk kanak-kanak 16–30 bulan.
+   Setiap item: { text, riskIf } di mana `riskIf` ialah jawapan yang menandakan
+   RISIKO. Bagi kesemua item KECUALI 2, 5 & 12, jawapan 'tidak' menandakan
+   risiko; bagi item 2, 5 & 12, jawapan 'ya' menandakan risiko.
+   DEMO/SIMULASI — bukan diagnosis. */
 const MCHAT_ITEMS = [
-  { text: 'Jika anda menunjuk sesuatu di seberang bilik, adakah anak anda memandang ke arah tersebut?', riskIf: 'tidak' },
-  { text: 'Adakah anak anda menunjuk dengan jari untuk meminta sesuatu atau meminta bantuan?', riskIf: 'tidak' },
-  { text: 'Adakah anak anda menunjuk dengan jari untuk menunjukkan sesuatu yang menarik kepada anda?', riskIf: 'tidak' },
-  { text: 'Adakah anak anda melihat wajah anda untuk melihat reaksi anda dalam situasi baharu?', riskIf: 'tidak' },
-  { text: 'Adakah anak anda meniru perbuatan anda (cth. melambai, bertepuk tangan)?', riskIf: 'tidak' },
-  { text: 'Adakah anak anda bertindak balas apabila namanya dipanggil?', riskIf: 'tidak' },
-  { text: 'Adakah anak anda tersenyum balas apabila anda tersenyum kepadanya?', riskIf: 'tidak' },
-  { text: 'Adakah anak anda berminat bermain bersama kanak-kanak lain?', riskIf: 'tidak' },
-  { text: 'Adakah anak anda membawa objek untuk menunjukkannya kepada anda?', riskIf: 'tidak' },
-  { text: 'Adakah anak anda berpura-pura bermain (cth. berpura-pura memberi makan anak patung)?', riskIf: 'tidak' },
-  { text: 'Adakah anak anda kerap melakukan pergerakan berulang yang luar biasa (cth. mengibas tangan, bergoyang badan)?', riskIf: 'ya' },
-  { text: 'Adakah anak anda sangat terganggu oleh bunyi harian (cth. mesin basuh, keramaian)?', riskIf: 'ya' },
+  { text: 'Sekiranya anda menuding ke arah sesuatu di bilik, adakah anak anda memandang ke arahnya? (cth. jika anda menuding ke arah mainan atau haiwan, adakah anak anda memandang ke arah mainan atau haiwan tersebut?)', riskIf: 'tidak' },
+  { text: 'Pernahkah anda terfikir bahawa anak anda mungkin menghadapi masalah pendengaran?', riskIf: 'ya' },
+  { text: 'Adakah anak anda gemar berolok-olok sambil bermain? (cth. berolok-olok minum dari cawan kosong, bercakap melalui telefon, atau menyuap anak patung?)', riskIf: 'tidak' },
+  { text: 'Adakah anak anda gemar memanjat? (cth. perabot, peralatan taman permainan, atau tangga)', riskIf: 'tidak' },
+  { text: 'Adakah anak anda gemar menggerakkan jarinya pada mata dengan cara yang pelik? (cth. kerap menggerak-gerakkan jari dekat pada matanya?)', riskIf: 'ya' },
+  { text: 'Adakah anak anda meminta sesuatu dengan menuding satu jari sahaja? (cth. menuding ke arah makanan atau mainan yang tidak dapat dicapainya?)', riskIf: 'tidak' },
+  { text: 'Adakah anak anda menuding dengan satu jari sahaja apabila menunjuk ke arah sesuatu yang menarik minatnya? (cth. menunjuk ke arah kapal terbang di langit atau lori di jalan raya)', riskIf: 'tidak' },
+  { text: 'Adakah anak anda berminat dengan kanak-kanak lain? (cth. memerhati, senyum, atau menuju ke arah kanak-kanak lain?)', riskIf: 'tidak' },
+  { text: 'Adakah anak anda gemar menunjukkan sesuatu dengan membawa dan menunjukkannya kepada anda — bukan untuk meminta bantuan, tetapi sekadar ingin berkongsi? (cth. bunga, anak patung atau mainan)', riskIf: 'tidak' },
+  { text: 'Adakah anak anda bertindak balas apabila namanya dipanggil? (cth. mendongak, mengomel, atau berhenti melakukan sesuatu apabila namanya dipanggil?)', riskIf: 'tidak' },
+  { text: 'Adakah anak anda membalas senyuman anda?', riskIf: 'tidak' },
+  { text: 'Adakah anak anda terganggu dengan bunyi bising di rumah? (cth. menjerit atau menangis apabila mendengar bunyi penyedut vakum atau muzik yang kuat?)', riskIf: 'ya' },
+  { text: 'Adakah anak anda mampu berjalan?', riskIf: 'tidak' },
+  { text: 'Adakah anak anda memerhatikan anda sewaktu anda bercakap, bermain dengannya, atau memakaikannya baju?', riskIf: 'tidak' },
+  { text: 'Adakah anak anda cuba meniru perbuatan anda? (cth. melambai, bertepuk, atau membuat sebarang bunyi?)', riskIf: 'tidak' },
+  { text: 'Apabila anda berpaling ke arah sesuatu, adakah anak anda turut berpaling sama?', riskIf: 'tidak' },
+  { text: 'Adakah anak anda cuba menarik perhatian anda untuk melihat ke arahnya? (cth. melihat ke arah anda untuk mendapatkan pujian, atau berkata "tengoklah, ibu/ayah"?)', riskIf: 'tidak' },
+  { text: 'Adakah anak anda berupaya memahami arahan anda? (cth. tanpa anda menuding jari, dapatkah dia memahami arahan seperti "letakkan buku di atas kerusi" atau "ambilkan ibu/ayah selimut itu"?)', riskIf: 'tidak' },
+  { text: 'Apabila berdepan dengan sesuatu yang baharu, adakah anak anda melihat ke arah anda untuk melihat reaksi anda? (cth. apabila mendengar bunyi pelik atau melihat mainan baharu, adakah dia merenung wajah anda?)', riskIf: 'tidak' },
+  { text: 'Adakah anak anda gemar pada aktiviti-aktiviti yang melibatkan pergerakan? (cth. diayun atau dibuai sambil dipangku?)', riskIf: 'tidak' },
 ];
 
 /* Soalan Profil Deria (Sensori) — versi ringkas. Setiap item riskIf='ya'
@@ -1651,6 +1664,50 @@ function autismBandFor(pct) {
   return 'rendah';
 }
 
+/* Band RASMI M-CHAT-R mengikut markah mentah (bilangan item berisiko, 0–20):
+   0–2 = rendah, 3–7 = sederhana, 8–20 = tinggi. Julat sederhana mencetuskan
+   Soalan Susulan (Peringkat 2). Rujuk algoritma Robins, Fein & Barton (2009). */
+function mchatBandFor(score) {
+  if (score >= 8) return 'tinggi';
+  if (score >= 3) return 'sederhana';
+  return 'rendah';
+}
+const MCHAT_BAND_META = {
+  rendah:    { label: 'Risiko Rendah',    range: '0–2'  },
+  sederhana: { label: 'Risiko Sederhana', range: '3–7'  },
+  tinggi:    { label: 'Risiko Tinggi',    range: '8–20' },
+};
+
+/* Peringkat 2 — Soalan Susulan (M-CHAT-R/F). Bagi kanak-kanak yang mendapat
+   markah SEDERHANA (3–7) di Peringkat 1, hanya item yang GAGAL ditanya semula
+   dengan satu soalan penjelas untuk menentukan LULUS/GAGAL. Saringan dikira
+   POSITIF jika anak GAGAL 2 item atau lebih. Ini versi ringkas (satu soalan
+   diskriminasi setiap item) daripada carta alir temu duga rasmi.
+   Indeks entri = indeks item M-CHAT-R yang sepadan.
+   { q: soalan susulan, failIf: 'ya'|'tidak' (jawapan yang bermakna GAGAL) }. */
+const MCHAT_FOLLOWUP = [
+  { q: 'Apabila anda menuding sambil berkata "Tengok!", adakah anak biasanya memandang ke arah OBJEK itu (bukan jari anda atau sekeliling bilik)?', failIf: 'tidak' },
+  { q: 'Adakah anak kerap mengabaikan bunyi ATAU mengabaikan orang di sekelilingnya?', failIf: 'ya' },
+  { q: 'Adakah anak pernah menunjukkan sekurang-kurangnya SATU jenis permainan pura-pura (cth. menyuap anak patung, telefon mainan, masak-masak)?', failIf: 'tidak' },
+  { q: 'Adakah anak pernah memanjat sekurang-kurangnya satu benda (tangga, kerusi, perabot atau peralatan taman)?', failIf: 'tidak' },
+  { q: 'Adakah pergerakan jari berhampiran mata itu KERAP berlaku dan kelihatan luar biasa?', failIf: 'ya' },
+  { q: 'Apabila anak mahukan sesuatu yang tidak tercapai dan anda berkata "Tunjukkan", adakah dia menuding dengan satu jari ke arahnya?', failIf: 'tidak' },
+  { q: 'Adakah anak pernah menuding satu jari SEMATA-MATA untuk berkongsi minat (bukan meminta), cth. kapal terbang atau haiwan?', failIf: 'tidak' },
+  { q: 'Di taman permainan atau pasar raya, adakah anak menunjukkan tindak balas positif (memerhati, senyum, mendekati) kepada kanak-kanak lain?', failIf: 'tidak' },
+  { q: 'Adakah anak pernah membawa objek kepada anda SEMATA-MATA untuk berkongsi (bukan meminta bantuan)?', failIf: 'tidak' },
+  { q: 'Apabila tiada apa-apa yang menarik sedang berlaku dan anda memanggil namanya, adakah anak biasanya bertindak balas (dongak, mengomel atau berhenti)?', failIf: 'tidak' },
+  { q: 'Apabila anda tersenyum terus kepadanya, adakah anak biasanya membalas senyuman anda?', failIf: 'tidak' },
+  { q: 'Adakah anak bertindak balas dengan KUAT (menjerit, menangis atau menutup telinga kerana terlalu terganggu) terhadap dua atau lebih bunyi harian?', failIf: 'ya' },
+  { q: 'Adakah anak boleh berjalan tanpa sokongan atau bantuan?', failIf: 'tidak' },
+  { q: 'Dalam sehari bersama, adakah anak merenung wajah anda sekurang-kurangnya beberapa kali semasa aktiviti harian?', failIf: 'tidak' },
+  { q: 'Adakah anak meniru sekurang-kurangnya DUA perbuatan anda (cth. melambai, bertepuk, menjelir lidah)?', failIf: 'tidak' },
+  { q: 'Apabila anda berpaling untuk melihat sesuatu, adakah anak biasanya turut memandang ke arah itu (bukan hanya merenung muka anda atau mengabaikan)?', failIf: 'tidak' },
+  { q: 'Adakah anak cuba menarik perhatian anda untuk melihatnya (cth. berkata "tengok saya", mengomel, atau mencari pandangan anda)?', failIf: 'tidak' },
+  { q: 'Tanpa sebarang isyarat tangan, bolehkah anak menurut sekurang-kurangnya satu arahan lisan mudah (cth. "bawakan selimut itu")?', failIf: 'tidak' },
+  { q: 'Apabila berdepan sesuatu yang baharu atau sedikit menakutkan, adakah anak melihat ke arah anda untuk melihat reaksi anda?', failIf: 'tidak' },
+  { q: 'Adakah anak seronok (ketawa, senyum atau meminta lagi) apabila diayun atau dibuai?', failIf: 'tidak' },
+];
+
 /* Metadata dua jenis saringan aktif (perkembangan telah dibuang). */
 const SCREEN_META = {
   mchat:   { code: 'MCHAT',   name: 'Saringan Autisme (M-CHAT)', short: 'M-CHAT', icon: 'help', color: '#7C6BB0' },
@@ -1660,10 +1717,11 @@ const SCREEN_META = {
 /* Item soalan saringan (M-CHAT & Sensori) kini BOLEH DIEDIT oleh doktor —
    dipindah dari pemalar ke localStorage supaya tab "Urus Soalan" boleh
    tambah/padam. Setiap item: { text, riskIf: 'ya'|'tidak' }. */
+const SCREEN_ITEMS_VERSION = 2;   // naikkan bila set soalan lalai berubah (paksa re-seed)
 function getScreeningItems() {
   let it = read('ejejak_screen_items', null);
-  if (!it || !Array.isArray(it.mchat) || !Array.isArray(it.sensori)) {
-    it = { mchat: MCHAT_ITEMS.slice(), sensori: SENSORI_ITEMS.slice() };
+  if (!it || !Array.isArray(it.mchat) || !Array.isArray(it.sensori) || it._v !== SCREEN_ITEMS_VERSION) {
+    it = { _v: SCREEN_ITEMS_VERSION, mchat: MCHAT_ITEMS.slice(), sensori: SENSORI_ITEMS.slice() };
     write('ejejak_screen_items', it);
   }
   return it;
@@ -1722,8 +1780,10 @@ function initScreening() {
   const modeTabs = document.getElementById('screen-mode');
   function selectedChild() { return kids.find(c => c.id === childSelect.value) || kids[0]; }
 
-  let mode = 'perkembangan';   // 'perkembangan' (7 domain ikut umur) | 'sensori' | 'mchat' (disorok)
+  let mode = 'perkembangan';   // 'perkembangan' (7 domain ikut umur) | 'sensori' | 'mchat'
   let total = 0;
+  let followup = null;         // bukan-null bila berada di Peringkat 2 (Soalan Susulan M-CHAT)
+  const SUBMIT_LABEL = `Hantar Saringan <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`;
 
   // Domain + soalan yang SEPADAN dengan umur anak (Checklist mengikut umur)
   function checklistFor(ageM) {
@@ -1829,9 +1889,74 @@ function initScreening() {
     refresh();
   }
 
+  // ---- Peringkat 2: Soalan Susulan M-CHAT (hanya item yang GAGAL) ----
+  function buildFollowup(failed, stage1) {
+    host.innerHTML = '';
+    if (domainNav) domainNav.innerHTML = '';
+    if (bannerEl) bannerEl.innerHTML = `${ICONS.warning}<span><strong>Peringkat 2 — Soalan Susulan (M-CHAT-R/F).</strong> Markah Peringkat 1 anak berada dalam julat <strong>sederhana (3–7)</strong>. Sila jawab ${failed.length} soalan lanjut ini berdasarkan tingkah laku <strong>biasa</strong> anak untuk keputusan yang lebih tepat.</span>`;
+    const block = document.createElement('div');
+    block.className = 'domain-block';
+    block.id = 'dom-FUP';
+    block.style.setProperty('--dc', '#7C6BB0');
+    const qhtml = failed.map((f, i) => {
+      const nm = `FUP_${f.idx}`;
+      return `<div class="q-item" data-q="${nm}">
+        <div class="q-item__text"><span class="qn">${i + 1}.</span>${f.q}</div>
+        <div class="yn">
+          <input type="radio" id="${nm}_y" name="${nm}" value="ya">
+          <label for="${nm}_y">${ICONS.check} Ya</label>
+          <input type="radio" id="${nm}_t" name="${nm}" value="tidak">
+          <label for="${nm}_t">Tidak</label>
+        </div>
+      </div>`;
+    }).join('');
+    block.innerHTML = `<div class="domain-block__head"><span class="badge-ico">${ICONS.help}</span><h3>Soalan Susulan</h3></div>` +
+      `<div class="notice notice--warn" style="margin:0 0 var(--sp-3)">${ICONS.warning}<span>Saringan dikira <strong>POSITIF</strong> jika anak GAGAL <strong>2 item atau lebih</strong> di peringkat ini. Ini <strong>bukan diagnosis</strong>. <em>(demo/simulasi)</em></span></div>` + qhtml;
+    host.appendChild(block);
+    total = failed.length;
+    if (totalEl) totalEl.textContent = total;
+    if (submitBtn) submitBtn.innerHTML = `Hantar Keputusan Akhir <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    refresh();
+  }
+
+  // ---- Muktamadkan keputusan M-CHAT & hantar ke doktor ----
+  function finalizeMchat(c, m, items, stage1, foll) {
+    const score = stage1.score;                 // markah Peringkat 1 (0–20)
+    const stage1Band = mchatBandFor(score);
+    let band, outcome;
+    if (stage1Band === 'tinggi')      { band = 'tinggi'; outcome = 'positif'; }
+    else if (stage1Band === 'rendah') { band = 'rendah'; outcome = 'negatif'; }
+    else { outcome = (foll.fail >= 2) ? 'positif' : 'negatif'; band = outcome === 'positif' ? 'tinggi' : 'rendah'; }
+
+    const autismRisk = Math.round((score / items.length) * 100);
+    const achieved = items.length - score;
+    const dom = { MCHAT: { name: 'Saringan Autisme (M-CHAT)', color: '#7C6BB0', achieved, total: items.length, items: stage1.answers } };
+    const base = {
+      total: items.length, totalAchieved: achieved, totalNot: score,
+      autismRisk, autismBand: band, autismScore: score, autismMax: items.length,
+      mchatStage2: !!foll.done, mchatFollowFail: foll.done ? foll.fail : null, mchatOutcome: outcome,
+    };
+    const result = { childName: c.name, type: 'mchat', ...base, domains: dom, followup: foll.done ? foll.answers : null };
+    sessionStorage.setItem('ejejak_result', JSON.stringify(result));
+
+    const submission = {
+      id: 'S' + Date.now() + Math.floor(Math.random() * 1000),
+      submittedAt: new Date().toISOString(),
+      type: 'mchat', userId: user.id, childId: c.id,
+      childName: c.name, childGender: c.gender, ageMonths: m, ageGroup: ageGroupLabel(m),
+      parentName: user.name, parentPhone: user.phone, parentEmail: user.email,
+      ...base, domains: dom, status: 'baharu', note: '',
+    };
+    const list = getSubmissions(); list.unshift(submission); saveSubmissions(list);
+    window.location.href = 'keputusan.html';
+  }
+
   function build() {
+    followup = null;                                    // keluar dari Peringkat 2 bila mod/anak ditukar
+    if (submitBtn) submitBtn.innerHTML = SUBMIT_LABEL;
     if (mode === 'perkembangan') buildDevelopment();   // 7 domain OTIKA ikut umur
-    else buildYnScreen(mode);                           // Sensori (M-CHAT disorok)
+    else buildYnScreen(mode);                           // 'mchat' atau 'sensori'
   }
 
   // Maklumat ibu bapa (dari akaun — selari dengan data doktor)
@@ -1871,11 +1996,53 @@ function initScreening() {
       return;
     }
 
-    if (mode === 'mchat' || mode === 'sensori') {
-      const items = getScreeningItems()[mode];
-      const code = mode === 'mchat' ? 'MCHAT' : 'SENSORI';
-      const domName = mode === 'mchat' ? 'Saringan Autisme (M-CHAT)' : 'Profil Deria (Sensori)';
-      const domColor = mode === 'mchat' ? '#7C6BB0' : '#E0913C';
+    // ---- MOD: M-CHAT-R — band markah mentah + Soalan Susulan 2 peringkat ----
+    if (mode === 'mchat') {
+      const items = getScreeningItems().mchat;
+
+      // PERINGKAT 2: kira item GAGAL, tentukan positif/negatif (≥2 gagal = positif).
+      if (followup) {
+        let fail = 0; const fAnswers = [];
+        followup.failed.forEach(f => {
+          const ans = host.querySelector(`input[name="FUP_${f.idx}"]:checked`)?.value || 'tidak';
+          const gagal = ans === f.failIf;
+          if (gagal) fail++;
+          fAnswers.push({ idx: f.idx, text: f.q, answer: ans, gagal });
+        });
+        finalizeMchat(c, m, items, followup.stage1, { done: true, fail, answers: fAnswers });
+        return;
+      }
+
+      // PERINGKAT 1: kira markah mentah & band rasmi.
+      let risk = 0; const answers = [];
+      items.forEach((q, i) => {
+        const ans = host.querySelector(`input[name="MCHAT_${i}"]:checked`)?.value || 'tidak';
+        const atRisk = ans === q.riskIf;
+        if (atRisk) risk++;
+        answers.push({ text: q.text, answer: ans, atRisk });
+      });
+      const stage1 = { answers, score: risk };
+
+      // Sederhana (3–7) → masuk Peringkat 2 untuk item yang gagal sahaja.
+      if (mchatBandFor(risk) === 'sederhana') {
+        const failed = answers
+          .map((a, i) => a.atRisk ? { idx: i, q: MCHAT_FOLLOWUP[i].q, failIf: MCHAT_FOLLOWUP[i].failIf } : null)
+          .filter(Boolean);
+        followup = { failed, stage1 };
+        buildFollowup(failed, stage1);
+        return;
+      }
+      // Rendah (0–2) atau Tinggi (8–20) → keputusan muktamad tanpa susulan.
+      finalizeMchat(c, m, items, stage1, { done: false });
+      return;
+    }
+
+    // ---- MOD: Sensori (profil deria) — kekal model peratus ----
+    if (mode === 'sensori') {
+      const items = getScreeningItems().sensori;
+      const code = 'SENSORI';
+      const domName = 'Profil Deria (Sensori)';
+      const domColor = '#E0913C';
       let risk = 0; const answers = [];
       items.forEach((q, i) => {
         const ans = host.querySelector(`input[name="${code}_${i}"]:checked`)?.value || 'tidak';
@@ -1885,7 +2052,6 @@ function initScreening() {
       });
       const autismRisk = Math.round((risk / items.length) * 100);
       const autismBand = autismBandFor(autismRisk);
-      // "achieved" = item TIADA risiko (untuk paparan carta domain sedia ada).
       const achieved = items.length - risk;
 
       const result = {
@@ -1967,7 +2133,46 @@ function initResult() {
   const autismEl = document.getElementById('autism-summary');
   const hasAutism = typeof data.autismRisk === 'number';
   if (autismEl) {
-    if (hasAutism) {
+    if (hasAutism && data.type === 'mchat') {
+      // --- M-CHAT-R: paparan markah mentah rasmi + keputusan Peringkat 2 ---
+      const score = typeof data.autismScore === 'number' ? data.autismScore : data.totalNot;
+      const max = data.autismMax || data.total || 20;
+      const s1band = mchatBandFor(score);
+      const bm = MCHAT_BAND_META[s1band] || MCHAT_BAND_META.sederhana;
+      const outcome = data.mchatOutcome || (data.autismBand === 'tinggi' ? 'positif' : 'negatif');
+      const positif = outcome === 'positif';
+      const col = positif ? '#D06B7A' : '#4FA96A';
+      const tint = positif ? 'rgba(208,107,122,.14)' : 'rgba(79,169,106,.12)';
+      let stage2 = '';
+      if (data.mchatStage2) {
+        stage2 = ` Peringkat 2 (Soalan Susulan): <strong>${data.mchatFollowFail}</strong> item gagal — ${data.mchatFollowFail >= 2 ? 'saringan <strong>positif</strong>' : 'saringan <strong>negatif</strong>'}.`;
+      } else if (score >= 8) {
+        stage2 = ' Markah tinggi — rujukan terus disyorkan tanpa perlu Soalan Susulan.';
+      } else {
+        stage2 = ' Markah rendah — tiada tindakan lanjut diperlukan buat masa ini.';
+      }
+      const advice = positif
+        ? 'Keputusan saringan adalah <strong>positif</strong>. <strong>Kami sangat menggalakkan rujukan</strong> kepada pegawai perubatan, pakar pediatrik atau ahli terapi untuk penilaian diagnostik dan kelayakan intervensi awal.'
+        : 'Keputusan saringan adalah <strong>negatif</strong> buat masa ini. Teruskan pemantauan berkala dan ulang saringan pada lawatan kesihatan akan datang. Rujuk profesional jika anda mempunyai sebarang kebimbangan.';
+      autismEl.style.display = 'block';
+      autismEl.innerHTML = `
+        <div class="card" style="border-left:6px solid ${col}; background:${tint}">
+          <div class="flex items-center gap-2" style="justify-content:space-between; flex-wrap:wrap; gap:var(--sp-3)">
+            <div>
+              <span class="chip" style="background:${col}; color:#fff; border:none">Keputusan Saringan Autisme (M-CHAT-R)</span>
+              <h2 style="margin:var(--sp-2) 0 2px; font-size:var(--fs-lg)">Keputusan: <span style="color:${col}">${positif ? 'Positif' : 'Negatif'}</span></h2>
+              <p class="muted" style="margin:0; font-size:var(--fs-sm)">Markah Peringkat 1: <strong>${score} / ${max}</strong> (${bm.label} · julat ${bm.range}).${stage2}</p>
+            </div>
+            <div style="text-align:center; flex:none">
+              <div class="tnum" style="font-family:var(--font-head); font-weight:800; font-size:2.6rem; line-height:1; color:${col}">${score}<span style="font-size:1.3rem; color:var(--muted); font-weight:700">/${max}</span></div>
+              <div class="muted" style="font-size:var(--fs-xs); letter-spacing:.06em; text-transform:uppercase">markah M-CHAT-R</div>
+            </div>
+          </div>
+          <div class="progress-bar" style="margin:var(--sp-3) 0"><span style="width:${Math.round(score / max * 100)}%; background:${col}"></span></div>
+          <p style="margin:0 0 var(--sp-3); font-size:var(--fs-sm)">${advice}</p>
+          <div class="notice notice--warn" style="margin:0">${ICONS.warning}<span><strong>PENAFIAN PENTING:</strong> Ini adalah <strong>saringan awal, BUKAN diagnosis perubatan</strong>. Skor ini tidak mengesahkan atau menolak autisme. Hanya profesional kesihatan yang berkelayakan boleh membuat diagnosis. <em>(demo/simulasi)</em></span></div>
+        </div>`;
+    } else if (hasAutism) {
       const band = data.autismBand || autismBandFor(data.autismRisk);
       const bandMap = {
         rendah:    { label: 'Risiko Rendah',    color: '#4FA96A', tint: 'rgba(79,169,106,.12)' },
@@ -1975,8 +2180,7 @@ function initResult() {
         tinggi:    { label: 'Risiko Tinggi',    color: '#D06B7A', tint: 'rgba(208,107,122,.14)' },
       };
       const b = bandMap[band] || bandMap.sederhana;
-      const isMchat = data.type === 'mchat';
-      const title = isMchat ? 'Keputusan Saringan Autisme (M-CHAT)' : 'Keputusan Profil Deria (Sensori)';
+      const title = 'Keputusan Profil Deria (Sensori)';
       const advice = band === 'tinggi'
         ? 'Skor menunjukkan beberapa tanda yang perlu diberi perhatian. <strong>Kami sangat menggalakkan rujukan</strong> kepada pegawai perubatan, pakar pediatrik atau ahli terapi untuk penilaian lanjut.'
         : band === 'sederhana'
