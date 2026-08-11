@@ -1,5 +1,5 @@
 /* =====================================================================
-   e-JEJAK ANAK — Skrip Template
+   e-TUNAS — Skrip Template
    ---------------------------------------------------------------------
    MODEL DATA (localStorage) — dikongsi antara ibu bapa & panel doktor:
      ejejak_users        : akaun ibu bapa berdaftar
@@ -272,7 +272,7 @@ const DEFAULT_ARTICLES = [
   { id: 'A7', category: 'aktiviti', title: 'Permainan motor halus di rumah', body: 'Idea permainan menggunakan barangan rumah seperti menyusun blok dan meronce manik untuk melatih koordinasi jari.', published: true },
   { id: 'A8', category: 'aktiviti', title: 'Permainan menggalakkan motor kasar', body: 'Aktiviti fizikal seronok seperti melompat, memanjat dan bermain bola untuk membina kekuatan otot besar.', published: true },
   { id: 'A9', category: 'aktiviti', title: 'Aktiviti membaca bersama', body: 'Cara menjadikan waktu membaca menyeronokkan dan interaktif untuk memupuk minat membaca sejak kecil.', published: true },
-  { id: 'F1', category: 'faq', title: 'Adakah e-Jejak Anak memberikan diagnosis perubatan?', body: 'Tidak. Sistem ini menyediakan saringan awal sahaja untuk meningkatkan kesedaran ibu bapa. Ia bukan pengganti penilaian klinikal. Sila rujuk profesional kesihatan untuk diagnosis.', published: true },
+  { id: 'F1', category: 'faq', title: 'Adakah e-Tunas memberikan diagnosis perubatan?', body: 'Tidak. Sistem ini menyediakan saringan awal sahaja untuk meningkatkan kesedaran ibu bapa. Ia bukan pengganti penilaian klinikal. Sila rujuk profesional kesihatan untuk diagnosis.', published: true },
   { id: 'F2', category: 'faq', title: 'Bagaimana umur anak dikira?', body: 'Umur dikira secara automatik dalam bulan daripada tarikh lahir hingga tarikh hari ini. Ibu bapa tidak perlu memasukkan umur secara manual.', published: true },
   { id: 'F3', category: 'faq', title: 'Bolehkah saya menyaring lebih daripada seorang anak?', body: 'Ya. Satu akaun ibu bapa boleh menyimpan seberapa banyak profil anak, dan setiap anak mempunyai sejarah saringan tersendiri.', published: true },
   { id: 'F4', category: 'faq', title: 'Adakah data saya selamat?', body: 'Ya. Data peribadi anda hanya boleh dilihat oleh akaun anda dan tidak dikongsi dengan pihak ketiga. Kata laluan disimpan dalam bentuk tersulit.', published: true },
@@ -794,7 +794,7 @@ function customDropdown(mount, { placeholder = 'Pilih', options = [], value = ''
 /* ---------- 5. HEADER / FOOTER (satu sumber) ----------------------- */
 const SITE = {
   name: ['e-', 'Tunas'],
-  tagline: 'Saringan Perkembangan Kanak-kanak',
+  tagline: 'Saringan Perkembangan Kanak-kanak USM-MAIK',
   // Menu AWAM (guest) — hanya pautan yang boleh diakses tanpa log masuk.
   // Saringan, Pusat Pendidikan & Dashboard dibuang (perlu log masuk); pengguna
   // berdaftar dapat MEMBER_MENU dalam buildHeader.
@@ -818,7 +818,7 @@ const SITE = {
 function buildHeader(active) {
   const user = currentUser();
   const brand = `
-    <a class="brand" href="index.html" aria-label="e-Jejak Anak — Beranda">
+    <a class="brand" href="index.html" aria-label="e-Tunas — Beranda">
       <span class="brand__logos">
         <img class="brand__logo brand__logo--maik" src="assets/img/logo-maik.png?v=2" alt="Logo MAIK">
         <img class="brand__logo brand__logo--usm" src="assets/img/logo-usm.png?v=2" alt="Logo USM">
@@ -976,7 +976,7 @@ function buildFooter() {
     </div>
     <div class="footer__bar">
       <div class="container">
-        <span>© 2026 e-Jejak Anak. Dikuasakan oleh WebImpian.</span>
+        <span>© 2026 e-Tunas. Dikuasakan oleh WebImpian.</span>
         <span>Dasar Privasi · Terma Penggunaan · Penafian Perubatan</span>
       </div>
     </div>
@@ -1129,7 +1129,7 @@ function setupRoleAccess() {
   // Jenama panel ikut peranan: doktor → "Panel Doktor", pentadbir → "Panel
   // Pentadbir", superadmin → "Panel Superadmin".
   const panelName = 'Panel ' + (ROLE_LABEL[role] || 'Doktor');
-  document.title = panelName + ' — e-Jejak Anak';   // tajuk tab pelayar ikut peranan
+  document.title = panelName + ' — e-Tunas';   // tajuk tab pelayar ikut peranan
   const h1 = document.querySelector('.page-head h1'); if (h1) h1.textContent = panelName;
   const bc = document.querySelector('.page-head .breadcrumb span:last-child'); if (bc) bc.textContent = panelName;
   const tag = document.querySelector('.nav .brand__tag'); if (tag) tag.textContent = panelName;
@@ -1423,7 +1423,7 @@ function openGoogleChooser(onPick) {
           <span class="g-logo" style="width:22px; height:22px">${GOOGLE_G_SVG}</span>
           <strong style="font-family:var(--font-head)">Pilih akaun</strong>
         </div>
-        <p class="muted" style="font-size:var(--fs-sm); margin:0 0 var(--sp-3)">untuk meneruskan ke <b>e-Jejak Anak</b></p>
+        <p class="muted" style="font-size:var(--fs-sm); margin:0 0 var(--sp-3)">untuk meneruskan ke <b>e-Tunas</b></p>
         <div class="g-list">
           ${rows}
           <button class="g-acct g-acct--other" type="button" data-g="other">
@@ -1717,7 +1717,7 @@ const SCREEN_META = {
 /* Item soalan saringan (M-CHAT & Sensori) kini BOLEH DIEDIT oleh doktor —
    dipindah dari pemalar ke localStorage supaya tab "Urus Soalan" boleh
    tambah/padam. Setiap item: { text, riskIf: 'ya'|'tidak' }. */
-const SCREEN_ITEMS_VERSION = 2;   // naikkan bila set soalan lalai berubah (paksa re-seed)
+const SCREEN_ITEMS_VERSION = 3;   // naikkan bila set soalan lalai berubah (paksa re-seed)
 function getScreeningItems() {
   let it = read('ejejak_screen_items', null);
   if (!it || !Array.isArray(it.mchat) || !Array.isArray(it.sensori) || it._v !== SCREEN_ITEMS_VERSION) {
@@ -2374,9 +2374,9 @@ function initAdmin() {
       (s.parentPhone ? `<div class="contact-row">${ICONS.phone}<span><b>Telefon:</b> ${s.parentPhone}</span></div>` : '') +
       (s.parentEmail ? `<div class="contact-row">${ICONS.mail}<span><b>E-mel:</b> ${s.parentEmail}</span></div>` : '') +
       `<div class="contact-row">${ICONS.baby}<span><b>Status:</b> ${s.status === 'dihubungi' ? 'Sudah dihubungi' : 'Belum dihubungi'}${s.contactedBy ? ` oleh ${s.contactedBy}` : ''}${s.contactedAt ? ` · ${fmtDate(s.contactedAt)}` : ''}</span></div>`;
-    const subj = encodeURIComponent('e-Jejak Anak — Susulan Keputusan Saringan ' + s.childName);
+    const subj = encodeURIComponent('e-Tunas — Susulan Keputusan Saringan ' + s.childName);
     const resultTxt = t.risk ? `saringan ${screenTypeLabel(s)} (risiko autisme ${s.autismRisk}%)` : `saringan perkembangan (${s.totalAchieved}/${s.total} kemahiran dicapai)`;
-    const body = encodeURIComponent(`Salam ${s.parentName},\n\nSaya ${admin ? admin.name : 'doktor'} dari e-Jejak Anak. Berdasarkan keputusan ${resultTxt} bagi ${s.childName}, kami ingin menjemput anda untuk sesi susulan.\n\nSekian, terima kasih.`);
+    const body = encodeURIComponent(`Salam ${s.parentName},\n\nSaya ${admin ? admin.name : 'doktor'} dari e-Tunas. Berdasarkan keputusan ${resultTxt} bagi ${s.childName}, kami ingin menjemput anda untuk sesi susulan.\n\nSekian, terima kasih.`);
     const call = document.getElementById('m-call'), wa = document.getElementById('m-wa'), mail = document.getElementById('m-mail');
     call.href = s.parentPhone ? 'tel:' + s.parentPhone : '#';
     wa.href = s.parentPhone ? waLink(s.parentPhone) : '#';
@@ -2625,7 +2625,7 @@ function printRegion(html) {
 // Kepala surat cetak (dikongsi keputusan.html & sejarah.html).
 function printLetterhead(sub) {
   return `<div class="print-head">
-    <div><h2>e-Jejak Anak</h2><div class="print-sub">Laporan Saringan Perkembangan Kanak-kanak</div></div>
+    <div><h2>e-Tunas</h2><div class="print-sub">Laporan Saringan Perkembangan Kanak-kanak</div></div>
     <div class="print-sub" style="text-align:right">USM &middot; MAIK<br>${sub || 'Saringan Awal'}</div>
   </div>`;
 }
@@ -2701,7 +2701,7 @@ function historyReportHTML(child, subInfo, subs) {
   }).join('');
   return `<div style="font-family:Arial,Helvetica,sans-serif; color:#16303A; width:700px; box-sizing:border-box; padding:8px 4px">
     <div style="display:flex; justify-content:space-between; align-items:flex-start; border-bottom:2px solid #12718A; padding-bottom:10px; margin-bottom:14px">
-      <div><div style="font-size:22px; font-weight:800; color:#12718A; line-height:1.1">e-Jejak Anak</div>
+      <div><div style="font-size:22px; font-weight:800; color:#12718A; line-height:1.1">e-Tunas</div>
         <div style="font-size:12px; color:#333">Laporan Sejarah Saringan Perkembangan Kanak-kanak</div></div>
       <div style="text-align:right; font-size:11px; color:#333; white-space:nowrap">USM &middot; MAIK<br>${child.name}</div>
     </div>
@@ -2745,7 +2745,7 @@ function sessionReportPDF(heading, subtitle, s) {
   }).join('');
   return `<div style="font-family:Arial,Helvetica,sans-serif; color:#16303A; width:700px; box-sizing:border-box; padding:8px 4px">
     <div style="display:flex; justify-content:space-between; align-items:flex-start; border-bottom:2px solid #12718A; padding-bottom:10px; margin-bottom:14px">
-      <div><div style="font-size:22px; font-weight:800; color:#12718A; line-height:1.1">e-Jejak Anak</div>
+      <div><div style="font-size:22px; font-weight:800; color:#12718A; line-height:1.1">e-Tunas</div>
         <div style="font-size:12px; color:#333">Laporan Saringan Perkembangan Kanak-kanak</div></div>
       <div style="text-align:right; font-size:11px; color:#333; white-space:nowrap">USM &middot; MAIK<br>Saringan Awal</div>
     </div>
@@ -2758,7 +2758,7 @@ function sessionReportPDF(heading, subtitle, s) {
     ${bars}
     ${answers}
     <p style="font-size:9px; color:#555; margin-top:16px; border-top:1px solid #ddd; padding-top:8px">
-      Penafian: e-Jejak Anak menyediakan saringan awal sahaja dan bukan diagnosis perubatan.
+      Penafian: e-Tunas menyediakan saringan awal sahaja dan bukan diagnosis perubatan.
       Dijana pada ${new Date().toLocaleDateString('ms-MY', { day: 'numeric', month: 'long', year: 'numeric' })}.</p>
   </div>`;
 }
@@ -3324,7 +3324,7 @@ function parentReportPrintHTML(u, kids, subs) {
   }).join('') : `<p style="color:#777">Tiada profil anak.</p>`;
   return `<div style="font-family:Arial,Helvetica,sans-serif;color:#16303A;width:700px;box-sizing:border-box;padding:8px 4px">
     <div style="display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid #12718A;padding-bottom:10px;margin-bottom:14px">
-      <div><div style="font-size:22px;font-weight:800;color:#12718A;line-height:1.1">e-Jejak Anak</div>
+      <div><div style="font-size:22px;font-weight:800;color:#12718A;line-height:1.1">e-Tunas</div>
         <div style="font-size:12px;color:#333">Laporan Pengguna — Ringkasan Saringan</div></div>
       <div style="text-align:right;font-size:11px;color:#333;white-space:nowrap">USM &middot; MAIK<br>${u.name}</div>
     </div>
@@ -4465,7 +4465,7 @@ function reportBuilderPrintHTML(rep) {
     <h3 style="margin:0 0 4pt">${rep.title}</h3>
     <p class="print-sub" style="margin:0 0 8pt">${rep.rows.length} rekod · dijana ${new Date().toLocaleDateString('ms-MY', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
     <table style="width:100%; border-collapse:collapse"><thead>${thead}</thead><tbody>${tbody}</tbody></table>
-    <p style="font-size:8pt; color:#555; margin-top:12pt; border-top:1px solid #ddd; padding-top:6pt">e-Jejak Anak · USM &amp; MAIK — laporan dijana untuk kegunaan dalaman.</p>`;
+    <p style="font-size:8pt; color:#555; margin-top:12pt; border-top:1px solid #ddd; padding-top:6pt">e-Tunas · USM &amp; MAIK — laporan dijana untuk kegunaan dalaman.</p>`;
 }
 function initReportBuilder() {
   const table = document.getElementById('rb-table');
